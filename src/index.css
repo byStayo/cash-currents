@@ -247,16 +247,14 @@
   }
 }
 
-/* Enhanced UI Classes */
+/* Apple-inspired Clean UI Classes */
 @layer components {
   .glass-card {
-    @apply backdrop-blur-md border border-glass-border shadow-glass transition-all duration-300;
-    background: var(--card-premium);
+    @apply bg-card border border-border shadow-sm transition-all duration-200;
   }
   
   .glass-card:hover {
-    @apply shadow-lg transform scale-[1.02];
-    background: var(--card-interactive);
+    @apply shadow-md;
   }
   
   .premium-button {
@@ -283,18 +281,15 @@
   }
   
   .metric-card {
-    @apply glass-card p-6 space-y-3 cursor-pointer;
-    animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply bg-card border border-border shadow-sm p-6 space-y-3 transition-all duration-200;
   }
   
   .metric-card:hover {
-    @apply shadow-xl;
-    background: var(--card-elevated);
-    transform: translateY(-4px) scale(1.02);
+    @apply shadow-md;
   }
   
   .metric-value {
-    @apply text-3xl font-bold bg-gradient-to-br from-primary to-beneficial bg-clip-text text-transparent;
+    @apply text-2xl font-semibold text-foreground;
   }
   
   .chart-container {
