@@ -78,6 +78,11 @@
 
     --radius: 12px;
 
+    /* Enhanced animations and transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-glass: backdrop-filter 0.3s ease, background-color 0.3s ease;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;

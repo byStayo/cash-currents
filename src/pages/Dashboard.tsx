@@ -3,6 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine } from "recharts";
 import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from "lucide-react";
+import ScenarioComparison from "@/components/ScenarioComparison";
+import AssetOverlay from "@/components/AssetOverlay";
+import ExportTools from "@/components/ExportTools";
 
 // Historical data simulation (inflation and interest rates)
 const generateHistoricalData = () => {
@@ -212,6 +215,15 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Scenario Comparison */}
+        <ScenarioComparison currentInflation={currentData.inflation} />
+
+        {/* Asset Price Overlay */}
+        <AssetOverlay selectedYear={selectedYear} onYearChange={setSelectedYear} />
+
+        {/* Export Tools */}
+        <ExportTools data={historicalData} scenarios={[]} />
 
         {/* Explanation */}
         <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
