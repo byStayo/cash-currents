@@ -2,41 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Apple-inspired Financial Dashboard Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core backgrounds - clean, sophisticated */
+    --background: 240 10% 99%;
+    --foreground: 220 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Glass morphism card system */
+    --card: 240 20% 98%;
+    --card-foreground: 220 15% 15%;
+    --glass: 240 30% 95%;
+    --glass-border: 240 20% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Interactive elements */
+    --popover: 240 20% 98%;
+    --popover-foreground: 220 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Financial brand colors - sophisticated blues */
+    --primary: 220 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-subtle: 220 60% 95%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary system - elegant grays */
+    --secondary: 240 5% 94%;
+    --secondary-foreground: 220 15% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted tones for backgrounds */
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 5% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent for highlights */
+    --accent: 220 70% 88%;
+    --accent-foreground: 220 15% 25%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Financial indicators */
+    --beneficial: 142 76% 36%;
+    --beneficial-foreground: 0 0% 100%;
+    --beneficial-subtle: 142 50% 95%;
+    
+    --risk: 0 72% 51%;
+    --risk-foreground: 0 0% 100%;
+    --risk-subtle: 0 50% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-subtle: 38 50% 95%;
 
-    --radius: 0.5rem;
+    /* Borders and inputs */
+    --border: 240 15% 88%;
+    --input: 240 15% 92%;
+    --ring: 220 100% 50%;
+
+    /* Glass morphism effects */
+    --glass-gradient: linear-gradient(135deg, 
+      hsla(240, 30%, 98%, 0.8) 0%, 
+      hsla(240, 20%, 96%, 0.9) 100%);
+    
+    --card-gradient: linear-gradient(135deg,
+      hsla(240, 25%, 99%, 0.95) 0%,
+      hsla(240, 15%, 97%, 0.98) 100%);
+
+    /* Shadows for depth */
+    --shadow-glass: 0 8px 32px -12px hsla(220, 50%, 20%, 0.08);
+    --shadow-card: 0 4px 16px -8px hsla(220, 30%, 15%, 0.04);
+    --shadow-deep: 0 12px 40px -16px hsla(220, 70%, 10%, 0.12);
+
+    /* Chart colors */
+    --chart-primary: 220 100% 50%;
+    --chart-secondary: 142 76% 36%;
+    --chart-tertiary: 0 72% 51%;
+    --chart-accent: 38 92% 50%;
+    --chart-grid: 240 10% 90%;
+
+    --radius: 12px;
 
     --sidebar-background: 0 0% 98%;
 

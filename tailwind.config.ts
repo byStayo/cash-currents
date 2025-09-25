@@ -19,18 +19,38 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        
+        // Glass morphism system
+        glass: "hsl(var(--glass))",
+        "glass-border": "hsl(var(--glass-border))",
+        
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          subtle: "hsl(var(--primary-subtle))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        
+        // Financial indicators
+        beneficial: {
+          DEFAULT: "hsl(var(--beneficial))",
+          foreground: "hsl(var(--beneficial-foreground))",
+          subtle: "hsl(var(--beneficial-subtle))",
         },
+        risk: {
+          DEFAULT: "hsl(var(--risk))",
+          foreground: "hsl(var(--risk-foreground))",
+          subtle: "hsl(var(--risk-subtle))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+          subtle: "hsl(var(--warning-subtle))",
+        },
+        
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -47,6 +67,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        
+        // Chart colors
+        chart: {
+          primary: "hsl(var(--chart-primary))",
+          secondary: "hsl(var(--chart-secondary))",
+          tertiary: "hsl(var(--chart-tertiary))",
+          accent: "hsl(var(--chart-accent))",
+          grid: "hsl(var(--chart-grid))",
+        },
+        
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +87,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      
+      backgroundImage: {
+        "glass-gradient": "var(--glass-gradient)",
+        "card-gradient": "var(--card-gradient)",
+      },
+      
+      boxShadow: {
+        "glass": "var(--shadow-glass)",
+        "card": "var(--shadow-card)",
+        "deep": "var(--shadow-deep)",
       },
       borderRadius: {
         lg: "var(--radius)",
