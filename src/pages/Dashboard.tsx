@@ -6,6 +6,7 @@ import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from "lucide-react";
 import ScenarioComparison from "@/components/ScenarioComparison";
 import AssetOverlay from "@/components/AssetOverlay";
 import ExportTools from "@/components/ExportTools";
+import PortfolioIntegration from "@/components/PortfolioIntegration";
 
 // Historical data simulation (inflation and interest rates)
 const generateHistoricalData = () => {
@@ -218,6 +219,12 @@ const Dashboard = () => {
 
         {/* Scenario Comparison */}
         <ScenarioComparison currentInflation={currentData.inflation} />
+
+        {/* Portfolio Integration */}
+        <PortfolioIntegration 
+          currentInflation={currentData.inflation}
+          loanImpact={undefined}
+        />
 
         {/* Asset Price Overlay */}
         <AssetOverlay selectedYear={selectedYear} onYearChange={setSelectedYear} />

@@ -15,6 +15,9 @@ interface Scenario {
   interestRate: number;
   termYears: number;
   purpose: string;
+  taxDeductible: boolean;
+  taxBracket: number;
+  compoundFrequency: number;
 }
 
 interface ScenarioComparisonProps {
@@ -29,7 +32,10 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
       loanAmount: 500000,
       interestRate: 6.5,
       termYears: 30,
-      purpose: "Real Estate"
+      purpose: "Real Estate",
+      taxDeductible: true,
+      taxBracket: 22,
+      compoundFrequency: 12
     }
   ]);
 
@@ -38,33 +44,73 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
     loanAmount: 0,
     interestRate: 0,
     termYears: 0,
-    purpose: "Real Estate"
+    purpose: "Real Estate",
+    taxDeductible: false,
+    taxBracket: 22,
+    compoundFrequency: 12
   });
 
   const calculateScenarioMetrics = (scenario: Scenario) => {
-    const monthlyRate = scenario.interestRate / 100 / 12;
-    const numPayments = scenario.termYears * 12;
-    const monthlyPayment = scenario.loanAmount * 
-      (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
-      (Math.pow(1 + monthlyRate, numPayments) - 1);
+    // Enhanced compound interest calculation
+    const periodsPerYear = scenario.compoundFrequency;
+    const periodicRate = scenario.interestRate / 100 / periodsPerYear;
+    const totalPeriods = scenario.termYears * periodsPerYear;
     
-    const totalInterest = (monthlyPayment * numPayments) - scenario.loanAmount;
-    const realCostAdjustment = scenario.interestRate - currentInflation;
+    // Calculate monthly payment using compound interest formula
+    const monthlyPayment = scenario.loanAmount * 
+      (periodicRate * Math.pow(1 + periodicRate, totalPeriods)) / 
+      (Math.pow(1 + periodicRate, totalPeriods) - 1);
+    
+    const totalInterest = (monthlyPayment * totalPeriods) - scenario.loanAmount;
+    
+    // Tax-adjusted calculations
+    const effectiveInterestRate = scenario.taxDeductible 
+      ? scenario.interestRate * (1 - scenario.taxBracket / 100)
+      : scenario.interestRate;
+    
+    const taxSavings = scenario.taxDeductible 
+      ? totalInterest * (scenario.taxBracket / 100)
+      : 0;
+    
+    const afterTaxInterest = totalInterest - taxSavings;
+    const afterTaxRate = effectiveInterestRate;
+    
+    // Real cost analysis with tax considerations
+    const realCostAdjustment = afterTaxRate - currentInflation;
     const inflationBenefit = realCostAdjustment < 0;
     
+    // Compound growth of debt erosion by inflation
+    const inflationErosion = scenario.loanAmount * 
+      (Math.pow(1 + currentInflation / 100, scenario.termYears) - 1);
+    
     return {
-      monthlyPayment,
+      monthlyPayment: monthlyPayment / (periodsPerYear / 12), // Convert to monthly
       totalInterest,
+      afterTaxInterest,
+      taxSavings,
+      effectiveInterestRate: afterTaxRate,
       realCostAdjustment,
       inflationBenefit,
-      totalCost: scenario.loanAmount + totalInterest
+      inflationErosion,
+      netRealCost: afterTaxInterest - inflationErosion,
+      totalCost: scenario.loanAmount + totalInterest,
+      afterTaxCost: scenario.loanAmount + afterTaxInterest
     };
   };
 
   const addScenario = () => {
     if (newScenario.name && newScenario.loanAmount > 0) {
       setScenarios([...scenarios, { ...newScenario, id: Date.now().toString() }]);
-      setNewScenario({ name: "", loanAmount: 0, interestRate: 0, termYears: 0, purpose: "Real Estate" });
+      setNewScenario({ 
+        name: "", 
+        loanAmount: 0, 
+        interestRate: 0, 
+        termYears: 0, 
+        purpose: "Real Estate",
+        taxDeductible: false,
+        taxBracket: 22,
+        compoundFrequency: 12
+      });
     }
   };
 
@@ -169,6 +215,57 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
                   </div>
                 </div>
 
+                {/* Tax and Advanced Options */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="tax-bracket">Tax Bracket (%)</Label>
+                    <Select value={newScenario.taxBracket.toString()} onValueChange={(value) => setNewScenario({...newScenario, taxBracket: parseInt(value)})}>
+                      <SelectTrigger className="transition-all duration-200 focus:scale-105">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="10">10% - Low Income</SelectItem>
+                        <SelectItem value="12">12% - Lower Middle</SelectItem>
+                        <SelectItem value="22">22% - Middle Class</SelectItem>
+                        <SelectItem value="24">24% - Upper Middle</SelectItem>
+                        <SelectItem value="32">32% - High Income</SelectItem>
+                        <SelectItem value="35">35% - Very High</SelectItem>
+                        <SelectItem value="37">37% - Top Bracket</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="compound-freq">Compounding</Label>
+                    <Select value={newScenario.compoundFrequency.toString()} onValueChange={(value) => setNewScenario({...newScenario, compoundFrequency: parseInt(value)})}>
+                      <SelectTrigger className="transition-all duration-200 focus:scale-105">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="12">Monthly</SelectItem>
+                        <SelectItem value="4">Quarterly</SelectItem>
+                        <SelectItem value="2">Semi-Annual</SelectItem>
+                        <SelectItem value="1">Annual</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2 flex items-end">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="tax-deductible"
+                        checked={newScenario.taxDeductible}
+                        onChange={(e) => setNewScenario({...newScenario, taxDeductible: e.target.checked})}
+                        className="rounded border-border"
+                      />
+                      <Label htmlFor="tax-deductible" className="text-sm">
+                        Tax Deductible Interest
+                      </Label>
+                    </div>
+                  </div>
+                </div>
+
                 <Button 
                   onClick={addScenario} 
                   className="w-full hover:scale-105 transition-transform duration-200"
@@ -202,7 +299,7 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
                             </span>
                           </div>
                           
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm">
                             <div>
                               <p className="text-muted-foreground">Loan Amount</p>
                               <p className="font-semibold">${scenario.loanAmount.toLocaleString()}</p>
@@ -212,15 +309,27 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
                               <p className="font-semibold">${metrics.monthlyPayment.toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
                             </div>
                             <div>
+                              <p className="text-muted-foreground">Effective Rate</p>
+                              <p className="font-semibold text-accent-foreground">
+                                {metrics.effectiveInterestRate.toFixed(2)}%
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-muted-foreground">Tax Savings</p>
+                              <p className="font-semibold text-beneficial">
+                                ${metrics.taxSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}
+                              </p>
+                            </div>
+                            <div>
                               <p className="text-muted-foreground">Real Cost Impact</p>
                               <p className={`font-semibold ${metrics.inflationBenefit ? 'text-beneficial' : 'text-risk'}`}>
                                 {metrics.realCostAdjustment > 0 ? '+' : ''}{metrics.realCostAdjustment.toFixed(2)}%
                               </p>
                             </div>
                             <div>
-                              <p className="text-muted-foreground">Status</p>
-                              <p className={`font-semibold ${metrics.inflationBenefit ? 'text-beneficial' : 'text-risk'}`}>
-                                {metrics.inflationBenefit ? 'Beneficial' : 'Costly'}
+                              <p className="text-muted-foreground">Net Benefit</p>
+                              <p className={`font-semibold ${metrics.netRealCost < 0 ? 'text-beneficial' : 'text-risk'}`}>
+                                ${Math.abs(metrics.netRealCost).toLocaleString(undefined, {maximumFractionDigits: 0})}
                               </p>
                             </div>
                           </div>
