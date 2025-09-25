@@ -2,28 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Apple-inspired Financial Dashboard Design System */
+/* Apple-inspired Financial Dashboard Design System - Enhanced UI */
 
 @layer base {
   :root {
-    /* Core backgrounds - clean, sophisticated */
-    --background: 240 10% 99%;
-    --foreground: 220 15% 15%;
+    /* Core backgrounds - ultra clean, sophisticated */
+    --background: 240 8% 99%;
+    --foreground: 220 18% 12%;
+    
+    /* Enhanced gradient backgrounds */
+    --background-gradient: linear-gradient(135deg, 
+      hsl(240, 8%, 99%) 0%, 
+      hsl(240, 12%, 97%) 50%,
+      hsl(240, 8%, 98%) 100%);
+    
+    /* Subtle texture overlay */
+    --texture-overlay: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f1f5f9' fill-opacity='0.3' fill-rule='nonzero'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 
-    /* Glass morphism card system */
-    --card: 240 20% 98%;
-    --card-foreground: 220 15% 15%;
-    --glass: 240 30% 95%;
-    --glass-border: 240 20% 90%;
+    /* Enhanced glass morphism card system */
+    --card: 240 25% 98%;
+    --card-foreground: 220 18% 12%;
+    --glass: 240 35% 96%;
+    --glass-border: 240 25% 88%;
+    --glass-shadow: 0 8px 32px -12px hsla(220, 40%, 15%, 0.08);
+    
+    /* Premium card variants */
+    --card-elevated: 240 30% 99%;
+    --card-premium: linear-gradient(135deg, 
+      hsla(240, 30%, 99%, 0.98) 0%, 
+      hsla(240, 20%, 97%, 0.95) 100%);
+    --card-interactive: 240 28% 97%;
 
     /* Interactive elements */
     --popover: 240 20% 98%;
     --popover-foreground: 220 15% 15%;
 
-    /* Financial brand colors - sophisticated blues */
-    --primary: 220 100% 50%;
+    /* Enhanced financial brand colors - sophisticated blues with depth */
+    --primary: 220 85% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-subtle: 220 60% 95%;
+    --primary-subtle: 220 65% 96%;
+    --primary-hover: 220 90% 50%;
+    --primary-glow: 220 85% 65%;
+    --primary-gradient: linear-gradient(135deg, 
+      hsl(220, 85%, 55%) 0%, 
+      hsl(220, 90%, 48%) 100%);
 
     /* Secondary system - elegant grays */
     --secondary: 240 5% 94%;
@@ -78,10 +100,13 @@
 
     --radius: 12px;
 
-    /* Enhanced animations and transitions */
+    /* Professional animations and transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-glass: backdrop-filter 0.3s ease, background-color 0.3s ease;
+    --transition-micro: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-modal: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-spring: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     --sidebar-background: 0 0% 98%;
 
@@ -222,12 +247,151 @@
   }
 }
 
+/* Enhanced UI Classes */
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-md border border-glass-border shadow-glass transition-all duration-300;
+    background: var(--card-premium);
+  }
+  
+  .glass-card:hover {
+    @apply shadow-lg transform scale-[1.02];
+    background: var(--card-interactive);
+  }
+  
+  .premium-button {
+    @apply relative overflow-hidden transition-all duration-300 font-medium;
+    background: var(--primary-gradient);
+  }
+  
+  .premium-button:hover {
+    @apply shadow-lg transform scale-105;
+    box-shadow: 0 8px 25px -8px hsl(var(--primary) / 0.4);
+  }
+  
+  .premium-button::after {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+    transform: translateX(-100%);
+  }
+  
+  .premium-button:hover::after {
+    @apply opacity-100;
+    transform: translateX(100%);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .metric-card {
+    @apply glass-card p-6 space-y-3 cursor-pointer;
+    animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .metric-card:hover {
+    @apply shadow-xl;
+    background: var(--card-elevated);
+    transform: translateY(-4px) scale(1.02);
+  }
+  
+  .metric-value {
+    @apply text-3xl font-bold bg-gradient-to-br from-primary to-beneficial bg-clip-text text-transparent;
+  }
+  
+  .chart-container {
+    @apply relative overflow-hidden rounded-xl;
+    background: var(--glass-gradient);
+  }
+  
+  .chart-container::before {
+    content: '';
+    @apply absolute inset-0 opacity-20 pointer-events-none;
+    background: var(--texture-overlay);
+  }
+  
+  .animated-border {
+    @apply relative overflow-hidden;
+  }
+  
+  .animated-border::before {
+    content: '';
+    @apply absolute inset-0 -z-10;
+    background: linear-gradient(45deg, hsl(var(--primary)), transparent, hsl(var(--primary)));
+    background-size: 200% 200%;
+    animation: shimmer 3s linear infinite;
+    padding: 1px;
+    border-radius: inherit;
+  }
+  
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .stagger-children > * {
+    animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  
+  /* Enhanced scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted/20;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image: var(--background-gradient);
+    background-attachment: fixed;
+  }
+  
+  /* Typography enhancements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans;
+  }
+  
+  h1 {
+    @apply text-4xl font-light tracking-tight;
+  }
+  
+  h2 {
+    @apply text-3xl font-medium tracking-tight;
+  }
+  
+  h3 {
+    @apply text-2xl font-medium tracking-tight;
+  }
+  
+  /* Focus states */
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+  
+  /* Selection colors */
+  ::selection {
+    @apply bg-primary/20 text-primary-foreground;
   }
 }

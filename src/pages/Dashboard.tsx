@@ -54,84 +54,126 @@ const Dashboard = () => {
   const impactLevel = Math.abs(differenceValue);
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-light text-foreground tracking-tight">
-            Borrowing Intelligence
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Visualize when inflation makes borrowing mathematically beneficial across time
+    <div className="min-h-screen bg-background p-4 md:p-6">
+      <div className="max-w-7xl mx-auto space-y-8 stagger-children">
+        {/* Enhanced Header */}
+        <div className="text-center space-y-6 py-8">
+          <div className="floating-element">
+            <h1 className="text-5xl md:text-6xl font-light text-foreground tracking-tight mb-4">
+              <span className="bg-gradient-to-br from-primary via-primary-glow to-beneficial bg-clip-text text-transparent">
+                Cash Currents
+              </span>
+            </h1>
+            <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+          </div>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Navigate the flow of money through time • Discover when inflation transforms borrowing into profit
           </p>
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <div className="w-2 h-2 rounded-full bg-beneficial animate-pulse"></div>
+            <span>Real-time financial intelligence</span>
+          </div>
         </div>
 
-        {/* Key Metrics Cards */}
+        {/* Enhanced Key Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Current Outlook</CardTitle>
-              {currentData.beneficial ? (
-                <TrendingUp className="h-4 w-4 text-beneficial" />
-              ) : (
-                <TrendingDown className="h-4 w-4 text-risk" />
-              )}
+          <Card className="metric-card group animated-border">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Current Outlook</CardTitle>
+              <div className={`p-2 rounded-lg transition-colors ${currentData.beneficial ? 'bg-beneficial/20' : 'bg-risk/20'}`}>
+                {currentData.beneficial ? (
+                  <TrendingUp className="h-5 w-5 text-beneficial" />
+                ) : (
+                  <TrendingDown className="h-5 w-5 text-risk" />
+                )}
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className={`metric-value ${currentData.beneficial ? 'from-beneficial to-beneficial' : 'from-risk to-risk'}`}>
                 {currentData.beneficial ? "Beneficial" : "Not Beneficial"}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground mt-2">
                 {currentData.beneficial 
-                  ? "Inflation is eroding debt faster than interest accumulates"
+                  ? "Inflation eroding debt faster than interest accumulates"
                   : "Interest costs exceed inflation benefits"
                 }
               </p>
+              <div className="mt-4 h-2 bg-muted/20 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full rounded-full transition-all duration-1000 ${currentData.beneficial ? 'bg-beneficial' : 'bg-risk'}`}
+                  style={{ width: `${Math.min(100, Math.abs(differenceValue) * 10)}%` }}
+                ></div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Net Impact</CardTitle>
-              <DollarSign className="h-4 w-4 text-primary" />
+          <Card className="metric-card group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Net Impact</CardTitle>
+              <div className="p-2 rounded-lg bg-primary/20 transition-colors group-hover:bg-primary/30">
+                <DollarSign className="h-5 w-5 text-primary" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="metric-value">
                 {differenceValue > 0 ? "+" : ""}{differenceValue.toFixed(2)}%
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground mt-2">
                 Interest rate vs inflation difference
               </p>
+              <div className="mt-4 flex items-center gap-2 text-xs">
+                <span className="px-2 py-1 bg-muted/50 rounded-full">
+                  {Math.abs(differenceValue) < 1 ? 'Minimal' : Math.abs(differenceValue) < 3 ? 'Moderate' : 'Significant'} Impact
+                </span>
+              </div>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Impact Level</CardTitle>
-              <BarChart3 className="h-4 w-4 text-accent-foreground" />
+          <Card className="metric-card group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Impact Level</CardTitle>
+              <div className="p-2 rounded-lg bg-accent/20 transition-colors group-hover:bg-accent/30">
+                <BarChart3 className="h-5 w-5 text-accent-foreground" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="metric-value from-accent-foreground to-primary">
                 {impactLevel < 1 ? "Low" : impactLevel < 3 ? "Moderate" : "High"}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground mt-2">
                 {impactLevel.toFixed(1)}% magnitude difference
               </p>
+              <div className="mt-4 grid grid-cols-3 gap-1">
+                {[1, 2, 3].map((level) => (
+                  <div 
+                    key={level}
+                    className={`h-2 rounded-full transition-all duration-500 ${
+                      impactLevel >= level ? 'bg-accent-foreground' : 'bg-muted/30'
+                    }`}
+                    style={{ animationDelay: `${level * 0.1}s` }}
+                  ></div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Interactive Controls */}
-        <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
+        {/* Enhanced Interactive Controls */}
+        <Card className="glass-card">
           <CardHeader>
-            <CardTitle>Current Analysis</CardTitle>
+            <CardTitle className="flex items-center gap-3">
+              <span className="text-2xl font-light">Interactive Analysis</span>
+              <div className="flex-1 h-px bg-gradient-to-r from-primary/50 to-transparent"></div>
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Inflation Rate: {customInflation[0].toFixed(1)}%
+          <CardContent className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6 p-6 rounded-xl bg-gradient-to-br from-muted/30 to-transparent border border-muted/40">
+                <div className="space-y-4">
+                  <label className="text-base font-medium mb-4 block flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-beneficial" />
+                    Inflation Rate: 
+                    <span className="font-mono text-lg text-beneficial">{customInflation[0].toFixed(1)}%</span>
                   </label>
                   <Slider
                     value={customInflation}
@@ -141,13 +183,19 @@ const Dashboard = () => {
                     step={0.1}
                     className="w-full"
                   />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Deflation (0%)</span>
+                    <span>Hyperinflation (15%)</span>
+                  </div>
                 </div>
               </div>
               
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Interest Rate: {customInterest[0].toFixed(1)}%
+              <div className="space-y-6 p-6 rounded-xl bg-gradient-to-br from-muted/30 to-transparent border border-muted/40">
+                <div className="space-y-4">
+                  <label className="text-base font-medium mb-4 block flex items-center gap-2">
+                    <DollarSign className="h-4 w-4 text-primary" />
+                    Interest Rate: 
+                    <span className="font-mono text-lg text-primary">{customInterest[0].toFixed(1)}%</span>
                   </label>
                   <Slider
                     value={customInterest}
@@ -157,16 +205,41 @@ const Dashboard = () => {
                     step={0.1}
                     className="w-full"
                   />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Zero rates (0%)</span>
+                    <span>High rates (20%)</span>
+                  </div>
                 </div>
+              </div>
+            </div>
+            
+            {/* Real-time calculation display */}
+            <div className="mt-6 p-4 rounded-lg bg-gradient-to-r from-primary/10 to-beneficial/10 border border-primary/20">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Real-time Calculation:</span>
+                <span className="font-mono text-lg">
+                  {customInflation[0].toFixed(1)}% - {customInterest[0].toFixed(1)}% = 
+                  <span className={`ml-2 font-bold ${differenceValue < 0 ? 'text-beneficial' : 'text-risk'}`}>
+                    {differenceValue > 0 ? '+' : ''}{differenceValue.toFixed(2)}%
+                  </span>
+                </span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Historical Chart */}
-        <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
+        {/* Enhanced Historical Chart */}
+        <Card className="glass-card chart-container">
           <CardHeader>
-            <CardTitle>Historical Trends (1970-2024)</CardTitle>
+            <CardTitle className="flex items-center gap-3">
+              <span className="text-2xl font-light">Historical Market Intelligence</span>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="w-2 h-2 rounded-full bg-chart-primary"></div>
+                <span>Interest Rates</span>
+                <div className="w-2 h-2 rounded-full bg-chart-secondary"></div>
+                <span>Inflation</span>
+              </div>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-96 w-full">
