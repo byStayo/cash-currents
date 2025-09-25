@@ -136,6 +136,89 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Mobile optimization variables */
+    --mobile-nav-height: 60px;
+    --mobile-padding: 16px;
+    --mobile-card-spacing: 12px;
+    --mobile-text-scale: 0.9;
+  }
+}
+
+/* Enhanced Mobile Optimization */
+@media (max-width: 768px) {
+  .glass-card {
+    padding: var(--mobile-card-spacing);
+    margin: var(--mobile-card-spacing) 0;
+  }
+  
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  /* Chart container adjustments */
+  .recharts-wrapper {
+    font-size: calc(var(--mobile-text-scale) * 12px);
+  }
+  
+  /* Tab adjustments */
+  [data-state="active"] {
+    font-size: calc(var(--mobile-text-scale) * 14px);
+  }
+  
+  /* Slider adjustments for mobile */
+  .slider-container {
+    padding: var(--mobile-padding);
+  }
+  
+  /* Reduce padding on cards for mobile */
+  .backdrop-blur-md {
+    padding: calc(var(--mobile-card-spacing) * 1.5);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .glass-card {
+    padding: calc(var(--mobile-card-spacing) * 0.75);
+  }
+  
+  /* Further reduce text sizes on very small screens */
+  .text-lg {
+    font-size: 1rem;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem;
+  }
+  
+  /* Make charts more mobile friendly */
+  .recharts-wrapper {
+    font-size: 10px;
+  }
+  
+  /* Adjust spacing for very small screens */
+  .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem;
   }
 }
 

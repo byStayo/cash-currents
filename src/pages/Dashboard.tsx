@@ -7,6 +7,10 @@ import ScenarioComparison from "@/components/ScenarioComparison";
 import AssetOverlay from "@/components/AssetOverlay";
 import ExportTools from "@/components/ExportTools";
 import PortfolioIntegration from "@/components/PortfolioIntegration";
+import AdvancedMarketIndicators from "@/components/AdvancedMarketIndicators";
+import MonteCarloSimulation from "@/components/MonteCarloSimulation";
+import SectorAnalysis from "@/components/SectorAnalysis";
+import CurrencyExchange from "@/components/CurrencyExchange";
 
 // Historical data simulation (inflation and interest rates)
 const generateHistoricalData = () => {
@@ -231,6 +235,39 @@ const Dashboard = () => {
 
         {/* Export Tools */}
         <ExportTools data={historicalData} scenarios={[]} />
+
+        {/* Advanced Analytics Section */}
+        <div className="space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-light text-foreground tracking-tight">
+              Advanced Analytics & Predictive Models
+            </h2>
+            <p className="text-muted-foreground">
+              Comprehensive market analysis, simulations, and strategic insights
+            </p>
+          </div>
+
+          {/* Market Indicators */}
+          <AdvancedMarketIndicators />
+          
+          {/* Monte Carlo & Sector Analysis */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <MonteCarloSimulation 
+              currentInflation={customInflation[0]}
+              customInterest={customInterest[0]}
+            />
+            <SectorAnalysis 
+              currentInflation={customInflation[0]}
+              currentInterest={customInterest[0]}
+            />
+          </div>
+          
+          {/* Currency Exchange */}
+          <CurrencyExchange 
+            baseInflation={customInflation[0]}
+            baseInterest={customInterest[0]}
+          />
+        </div>
 
         {/* Explanation */}
         <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass">
