@@ -177,6 +177,11 @@
     margin: var(--mobile-card-spacing) 0;
   }
   
+  /* Better grid responsiveness */
+  .grid-cols-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
   .grid-cols-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -185,12 +190,26 @@
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   
-  .text-2xl {
-    font-size: 1.5rem;
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  /* Typography scaling */
+  .text-5xl {
+    font-size: 2.5rem;
   }
   
   .text-4xl {
     font-size: 2rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  /* Button adjustments */
+  .h-12 {
+    height: 2.5rem;
   }
   
   /* Chart container adjustments */
@@ -212,13 +231,34 @@
   .backdrop-blur-md {
     padding: calc(var(--mobile-card-spacing) * 1.5);
   }
+  
+  /* Mobile-specific spacing */
+  .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  /* Further optimize for smaller tablets */
   .grid-cols-2 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   
+  .px-8 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .gap-8 {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
   .glass-card {
     padding: calc(var(--mobile-card-spacing) * 0.75);
   }
@@ -237,13 +277,14 @@
     font-size: 10px;
   }
   
-  /* Adjust spacing for very small screens */
-  .space-y-8 > * + * {
-    margin-top: 1.5rem;
+  /* Optimize button sizes */
+  .h-11 {
+    height: 2.25rem;
   }
   
-  .space-y-6 > * + * {
-    margin-top: 1rem;
+  .px-8 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 
