@@ -42,6 +42,8 @@ const Dashboard = () => {
   const [customInflation, setCustomInflation] = useState([3.2]);
   const [customInterest, setCustomInterest] = useState([5.8]);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showProfessional, setShowProfessional] = useState(false);
   
   const historicalData = useMemo(() => generateHistoricalData(), []);
   
@@ -59,18 +61,34 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
-      <div className="max-w-5xl mx-auto space-y-12">
-        {/* Simplified Header */}
-        <div className="text-center space-y-4 py-12">
-          <h1 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
-            Should I Borrow Money?
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A simple way to understand when borrowing money makes financial sense
-          </p>
+      <div className="max-w-6xl mx-auto space-y-8">
+        {/* Header with Dual Appeal */}
+        <div className="text-center space-y-6 py-8">
+          <div className="space-y-2">
+            <h1 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
+              Should I Borrow Money?
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Smart borrowing decisions made simple
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-beneficial"></div>
+              <span>Real-time analysis</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
+              <span>Historical data</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-accent-foreground"></div>
+              <span>Professional tools</span>
+            </div>
+          </div>
         </div>
 
-        {/* Main Answer Card */}
+        {/* Main Answer Card - Prominent but Balanced */}
         <Card className="text-center p-8 border-2 transition-all duration-300 hover:shadow-lg">
           <div className={`inline-flex items-center gap-3 px-6 py-4 rounded-full text-lg font-medium mb-4 ${
             currentData.beneficial 
@@ -92,21 +110,42 @@ const Dashboard = () => {
               : "Current interest rates are higher than inflation. Your money costs more than the inflation benefit."
             }
           </p>
-          <div className="mt-6 text-sm text-muted-foreground">
-            <span className="font-medium">Quick math:</span> {customInflation[0].toFixed(1)}% inflation - {customInterest[0].toFixed(1)}% interest = {differenceValue > 0 ? '+' : ''}{differenceValue.toFixed(1)}%
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <span className="font-medium">Inflation:</span>
+              <span className="font-bold text-beneficial">{customInflation[0].toFixed(1)}%</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <span className="font-medium">Your Rate:</span>
+              <span className="font-bold text-primary">{customInterest[0].toFixed(1)}%</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <span className="font-medium">Difference:</span>
+              <span className={`font-bold ${differenceValue < 0 ? 'text-beneficial' : 'text-risk'}`}>
+                {differenceValue > 0 ? '+' : ''}{differenceValue.toFixed(1)}%
+              </span>
+            </div>
           </div>
         </Card>
 
-        {/* Simple Controls */}
+        {/* Interactive Controls - Enhanced but Clean */}
         <Card className="p-6">
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-center">Try Different Scenarios</h3>
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-medium">Try Different Scenarios</h3>
+              <p className="text-sm text-muted-foreground">Adjust the rates to see when borrowing makes sense</p>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-base font-medium">Inflation Rate</label>
-                  <span className="font-semibold text-beneficial">{customInflation[0].toFixed(1)}%</span>
+                  <label className="text-base font-medium flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-beneficial" />
+                    Inflation Rate
+                  </label>
+                  <span className="font-semibold text-beneficial bg-beneficial/10 px-3 py-1 rounded-full">
+                    {customInflation[0].toFixed(1)}%
+                  </span>
                 </div>
                 <Slider
                   value={customInflation}
@@ -117,15 +156,20 @@ const Dashboard = () => {
                   className="w-full"
                 />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>0%</span>
-                  <span>10%</span>
+                  <span>No inflation</span>
+                  <span>High inflation</span>
                 </div>
               </div>
               
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-base font-medium">Loan Interest Rate</label>
-                  <span className="font-semibold text-primary">{customInterest[0].toFixed(1)}%</span>
+                  <label className="text-base font-medium flex items-center gap-2">
+                    <DollarSign className="h-4 w-4 text-primary" />
+                    Loan Interest Rate
+                  </label>
+                  <span className="font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                    {customInterest[0].toFixed(1)}%
+                  </span>
                 </div>
                 <Slider
                   value={customInterest}
@@ -136,107 +180,195 @@ const Dashboard = () => {
                   className="w-full"
                 />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>0%</span>
-                  <span>15%</span>
+                  <span>Free money</span>
+                  <span>Expensive loans</span>
                 </div>
+              </div>
+            </div>
+            
+            {/* Real-time feedback */}
+            <div className="text-center p-4 bg-gradient-to-r from-primary/5 to-beneficial/5 rounded-lg border">
+              <div className="text-sm text-muted-foreground mb-1">Real-time impact:</div>
+              <div className="text-lg font-medium">
+                {Math.abs(differenceValue) < 0.5 ? (
+                  "Minimal difference - decision depends on other factors"
+                ) : differenceValue < 0 ? (
+                  `Inflation helps you save ${Math.abs(differenceValue).toFixed(1)}% per year`
+                ) : (
+                  `Borrowing costs you an extra ${differenceValue.toFixed(1)}% per year`
+                )}
               </div>
             </div>
           </div>
         </Card>
 
-        {/* Progressive Disclosure for More Info */}
-        <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+        {/* Tiered Information Architecture */}
+        <div className="space-y-6">
+          {/* Level 1: Basic Understanding */}
           <div className="text-center">
-            <CollapsibleTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Info className="h-4 w-4" />
-                {showAdvanced ? 'Show Less' : 'Learn More & See History'}
-                <ChevronDown className={`h-4 w-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
-              </Button>
-            </CollapsibleTrigger>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="gap-2"
+            >
+              <Info className="h-4 w-4" />
+              {showAdvanced ? 'Hide Details' : 'Learn How This Works'}
+              <ChevronDown className={`h-4 w-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
-          
-          <CollapsibleContent className="space-y-8 mt-8">
-            {/* Simple explanation first */}
-            <Card className="p-6">
-              <h3 className="text-lg font-medium mb-4">How This Works</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-beneficial">✓ When to Borrow</h4>
-                  <p className="text-muted-foreground">
-                    When inflation is higher than your loan rate, inflation helps pay off your debt. 
-                    Your monthly payments become "cheaper" over time.
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-risk">✗ When to Wait</h4>
-                  <p className="text-muted-foreground">
-                    When loan rates are higher than inflation, you're paying more than inflation helps. 
-                    Better to wait for rates to drop or inflation to rise.
-                  </p>
-                </div>
-              </div>
-            </Card>
 
-            {/* Historical Chart */}
-            <Card className="p-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium">Historical Perspective</h3>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+            <CollapsibleContent className="space-y-6">
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-4 text-center">Understanding the Basics</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3 p-4 bg-beneficial/5 rounded-lg border border-beneficial/20">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-primary"></div>
-                      <span>Interest Rates</span>
+                      <TrendingUp className="h-5 w-5 text-beneficial" />
+                      <h4 className="font-semibold text-beneficial">Good Time to Borrow</h4>
                     </div>
+                    <p className="text-sm text-muted-foreground">
+                      When inflation is higher than your loan rate, inflation essentially helps pay off your debt. 
+                      Each dollar you owe becomes worth less over time.
+                    </p>
+                    <div className="text-xs text-beneficial font-medium">
+                      Example: 6% inflation, 4% loan rate = 2% benefit per year
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3 p-4 bg-risk/5 rounded-lg border border-risk/20">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-beneficial"></div>
-                      <span>Inflation</span>
+                      <TrendingDown className="h-5 w-5 text-risk" />
+                      <h4 className="font-semibold text-risk">Wait for Better Rates</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      When loan rates exceed inflation, you're paying a real cost. 
+                      Your payments hurt more than inflation helps.
+                    </p>
+                    <div className="text-xs text-risk font-medium">
+                      Example: 3% inflation, 7% loan rate = 4% real cost per year
                     </div>
                   </div>
                 </div>
-                
-                <div className="h-80 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={historicalData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis 
-                        dataKey="year" 
-                        stroke="hsl(var(--muted-foreground))"
-                        fontSize={12}
-                      />
-                      <YAxis 
-                        stroke="hsl(var(--muted-foreground))"
-                        fontSize={12}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="inflation"
-                        stroke="hsl(var(--beneficial))"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="interestRate"
-                        stroke="hsl(var(--primary))"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Level 2: Historical Context */}
+          <div className="text-center">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowHistory(!showHistory)}
+              className="gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              {showHistory ? 'Hide History' : 'See Historical Trends'}
+              <ChevronDown className={`h-4 w-4 transition-transform ${showHistory ? 'rotate-180' : ''}`} />
+            </Button>
+          </div>
+
+          <Collapsible open={showHistory} onOpenChange={setShowHistory}>
+            <CollapsibleContent className="space-y-6">
+              <Card className="p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">50+ Years of Market Data</h3>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-primary"></div>
+                        <span>Interest Rates</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-beneficial"></div>
+                        <span>Inflation</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="h-80 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={historicalData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis 
+                          dataKey="year" 
+                          stroke="hsl(var(--muted-foreground))"
+                          fontSize={12}
+                        />
+                        <YAxis 
+                          stroke="hsl(var(--muted-foreground))"
+                          fontSize={12}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="inflation"
+                          stroke="hsl(var(--beneficial))"
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="interestRate"
+                          stroke="hsl(var(--primary))"
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <div className="font-semibold text-beneficial">1970s-1980s</div>
+                      <div className="text-muted-foreground">High inflation era</div>
+                      <div className="text-xs">Great time to borrow</div>
+                    </div>
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <div className="font-semibold text-primary">1990s-2000s</div>
+                      <div className="text-muted-foreground">Stable period</div>
+                      <div className="text-xs">Mixed conditions</div>
+                    </div>
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <div className="font-semibold text-risk">2020s</div>
+                      <div className="text-muted-foreground">Rising rates</div>
+                      <div className="text-xs">Careful evaluation needed</div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Level 3: Professional Tools */}
+          <div className="text-center">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowProfessional(!showProfessional)}
+              className="gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              {showProfessional ? 'Hide Professional Tools' : 'Advanced Analysis & Simulations'}
+              <ChevronDown className={`h-4 w-4 transition-transform ${showProfessional ? 'rotate-180' : ''}`} />
+            </Button>
+          </div>
+
+          <Collapsible open={showProfessional} onOpenChange={setShowProfessional}>
+            <CollapsibleContent className="space-y-6">
+              <div className="bg-gradient-to-r from-primary/5 to-beneficial/5 p-4 rounded-lg border border-primary/20">
+                <div className="text-center space-y-2">
+                  <h3 className="text-lg font-semibold">Professional Financial Analysis</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Advanced tools for financial advisors, investors, and detailed personal analysis
+                  </p>
                 </div>
               </div>
-            </Card>
-            
-            {/* Advanced Features in Tabs */}
-            <Card className="p-6">
-              <h3 className="text-lg font-medium mb-4">Advanced Analysis</h3>
+
               <Tabs defaultValue="scenarios" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
                   <TabsTrigger value="scenarios">Scenarios</TabsTrigger>
                   <TabsTrigger value="assets">Assets</TabsTrigger>
                   <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-                  <TabsTrigger value="tools">Tools</TabsTrigger>
+                  <TabsTrigger value="simulation">Simulation</TabsTrigger>
+                  <TabsTrigger value="tools">Export</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="scenarios" className="mt-6">
@@ -254,9 +386,8 @@ const Dashboard = () => {
                   />
                 </TabsContent>
                 
-                <TabsContent value="tools" className="mt-6">
+                <TabsContent value="simulation" className="mt-6">
                   <div className="space-y-6">
-                    <ExportTools data={historicalData} scenarios={[]} />
                     <div className="grid lg:grid-cols-2 gap-6">
                       <MonteCarloSimulation 
                         currentInflation={customInflation[0]}
@@ -271,12 +402,17 @@ const Dashboard = () => {
                       baseInflation={customInflation[0]}
                       baseInterest={customInterest[0]}
                     />
+                    <AdvancedMarketIndicators />
                   </div>
                 </TabsContent>
+                
+                <TabsContent value="tools" className="mt-6">
+                  <ExportTools data={historicalData} scenarios={[]} />
+                </TabsContent>
               </Tabs>
-            </Card>
-          </CollapsibleContent>
-        </Collapsible>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
 
       </div>
     </div>
