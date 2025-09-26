@@ -217,14 +217,28 @@
     font-size: calc(var(--mobile-text-scale) * 12px);
   }
   
-  /* Chart text consistency */
+  /* Chart text consistency - standardized typography */
   .recharts-cartesian-axis-tick-value {
     font-size: 12px;
     fill: hsl(var(--muted-foreground));
+    font-family: inherit;
   }
   
   .recharts-tooltip-wrapper {
     font-size: 14px;
+    font-family: inherit;
+  }
+  
+  .recharts-legend-item-text {
+    font-size: 13px !important;
+    fill: hsl(var(--foreground)) !important;
+    font-family: inherit;
+  }
+  
+  .recharts-label {
+    font-size: 12px;
+    fill: hsl(var(--muted-foreground));
+    font-family: inherit;
   }
   
   /* Tab adjustments */
@@ -305,7 +319,40 @@
   }
   
   .glass-card:hover {
-    @apply shadow-md;
+    @apply shadow-md transform translate-y-[-1px];
+  }
+  
+  /* Enhanced micro-interactions */
+  .interactive-element {
+    @apply transition-all duration-200 ease-out;
+  }
+  
+  .interactive-element:hover {
+    @apply transform scale-[1.02] shadow-lg;
+  }
+  
+  .interactive-element:active {
+    @apply transform scale-[0.98];
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .card-hover:hover {
+    @apply shadow-lg transform translate-y-[-2px] border-primary/20;
+  }
+  
+  .button-hover {
+    @apply transition-all duration-200 ease-out;
+  }
+  
+  .button-hover:hover {
+    @apply transform translate-y-[-1px] shadow-md;
+  }
+  
+  .button-hover:active {
+    @apply transform translate-y-0 shadow-sm;
   }
   
   .premium-button {
@@ -397,6 +444,32 @@
   
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/50;
+  }
+  
+  /* Loading pulse effect */
+  .loading-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  /* Smooth state transitions */
+  .state-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Focus ring for better keyboard navigation */
+  .focus-ring {
+    @apply focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none;
+  }
+  
+  /* Error shake animation */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  
+  .error-shake {
+    animation: shake 0.5s ease-in-out;
   }
 }
 

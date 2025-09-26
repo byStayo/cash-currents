@@ -124,7 +124,7 @@ const Dashboard = () => {
             <Button 
               variant="outline" 
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="gap-2"
+              className="gap-2 button-hover focus-ring"
               aria-expanded={showAdvanced}
               aria-controls="advanced-content"
             >
@@ -136,7 +136,7 @@ const Dashboard = () => {
 
           <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
             <CollapsibleContent className="space-y-6" id="advanced-content">
-              <Card className="p-6">
+              <Card className="p-6 card-hover state-transition">
                 <h3 className="text-lg font-semibold mb-4 text-center">Understanding the Basics</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3 p-4 bg-beneficial/5 rounded-lg border border-beneficial/20">
@@ -176,7 +176,7 @@ const Dashboard = () => {
             <Button 
               variant="outline" 
               onClick={() => setShowHistory(!showHistory)}
-              className="gap-2"
+              className="gap-2 button-hover focus-ring"
               aria-expanded={showHistory}
               aria-controls="history-content"
             >
@@ -188,7 +188,7 @@ const Dashboard = () => {
 
           <Collapsible open={showHistory} onOpenChange={setShowHistory}>
             <CollapsibleContent className="space-y-6" id="history-content">
-              <Card className="p-6">
+              <Card className="p-6 card-hover state-transition">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">50+ Years of Market Data</h3>
@@ -262,7 +262,7 @@ const Dashboard = () => {
             <Button 
               variant="outline" 
               onClick={() => setShowProfessional(!showProfessional)}
-              className="gap-2"
+              className="gap-2 button-hover focus-ring"
               aria-expanded={showProfessional}
               aria-controls="professional-content"
             >

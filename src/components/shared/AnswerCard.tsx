@@ -10,7 +10,7 @@ interface AnswerCardProps {
 
 export const AnswerCard = ({ beneficial, inflationRate, interestRate, difference }: AnswerCardProps) => {
   return (
-    <Card className="text-center p-8 border-2 transition-all duration-300 hover:shadow-lg">
+    <Card className="text-center p-8 border-2 card-hover">
       <div 
         className={`inline-flex items-center gap-3 px-6 py-4 rounded-full text-lg font-medium mb-4 ${
           beneficial 

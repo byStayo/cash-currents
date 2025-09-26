@@ -18,7 +18,7 @@ export const InteractiveControls = ({
   differenceValue
 }: InteractiveControlsProps) => {
   return (
-    <Card className="p-6">
+    <Card className="p-6 card-hover">
       <div className="space-y-6">
         <div className="text-center space-y-2">
           <h3 className="text-lg font-medium">Try Different Scenarios</h3>
