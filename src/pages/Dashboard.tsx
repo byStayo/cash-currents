@@ -15,6 +15,8 @@ import SectorAnalysis from "@/components/SectorAnalysis";
 import CurrencyExchange from "@/components/CurrencyExchange";
 import { AnswerCard } from "@/components/shared/AnswerCard";
 import { InteractiveControls } from "@/components/shared/InteractiveControls";
+import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
+import { SkeletonLoader } from "@/components/shared/SkeletonLoader";
 
 // Historical data simulation (inflation and interest rates)
 const generateHistoricalData = () => {
@@ -63,6 +65,11 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="max-w-6xl mx-auto space-y-8">
+        {/* Skip link for accessibility */}
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+
         {/* Header with Dual Appeal */}
         <header className="text-center space-y-6 py-8">
           <div className="space-y-2">
@@ -90,7 +97,7 @@ const Dashboard = () => {
         </header>
 
         {/* Main Answer Card */}
-        <main>
+        <main id="main-content">
           <AnswerCard 
             beneficial={currentData.beneficial}
             inflationRate={customInflation[0]}
@@ -286,42 +293,52 @@ const Dashboard = () => {
                 </TabsList>
                 
                 <TabsContent value="scenarios" className="mt-6">
-                  <ScenarioComparison currentInflation={currentData.inflation} />
+                  <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
+                    <ScenarioComparison currentInflation={currentData.inflation} />
+                  </ErrorBoundary>
                 </TabsContent>
                 
                 <TabsContent value="assets" className="mt-6">
-                  <AssetOverlay selectedYear={selectedYear} onYearChange={setSelectedYear} />
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <AssetOverlay selectedYear={selectedYear} onYearChange={setSelectedYear} />
+                  </ErrorBoundary>
                 </TabsContent>
                 
                 <TabsContent value="portfolio" className="mt-6">
-                  <PortfolioIntegration 
-                    currentInflation={currentData.inflation}
-                    loanImpact={undefined}
-                  />
+                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                    <PortfolioIntegration 
+                      currentInflation={currentData.inflation}
+                      loanImpact={undefined}
+                    />
+                  </ErrorBoundary>
                 </TabsContent>
                 
                 <TabsContent value="simulation" className="mt-6">
-                  <div className="space-y-6">
-                    <div className="grid lg:grid-cols-2 gap-6">
-                      <MonteCarloSimulation 
-                        currentInflation={customInflation[0]}
-                        customInterest={customInterest[0]}
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" count={2} />}>
+                    <div className="space-y-6">
+                      <div className="grid lg:grid-cols-2 gap-6">
+                        <MonteCarloSimulation 
+                          currentInflation={customInflation[0]}
+                          customInterest={customInterest[0]}
+                        />
+                        <SectorAnalysis 
+                          currentInflation={customInflation[0]}
+                          currentInterest={customInterest[0]}
+                        />
+                      </div>
+                      <CurrencyExchange 
+                        baseInflation={customInflation[0]}
+                        baseInterest={customInterest[0]}
                       />
-                      <SectorAnalysis 
-                        currentInflation={customInflation[0]}
-                        currentInterest={customInterest[0]}
-                      />
+                      <AdvancedMarketIndicators />
                     </div>
-                    <CurrencyExchange 
-                      baseInflation={customInflation[0]}
-                      baseInterest={customInterest[0]}
-                    />
-                    <AdvancedMarketIndicators />
-                  </div>
+                  </ErrorBoundary>
                 </TabsContent>
                 
                 <TabsContent value="tools" className="mt-6">
-                  <ExportTools data={historicalData} scenarios={[]} />
+                  <ErrorBoundary fallback={<SkeletonLoader type="list" />}>
+                    <ExportTools data={historicalData} scenarios={[]} />
+                  </ErrorBoundary>
                 </TabsContent>
               </Tabs>
             </CollapsibleContent>

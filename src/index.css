@@ -217,6 +217,16 @@
     font-size: calc(var(--mobile-text-scale) * 12px);
   }
   
+  /* Chart text consistency */
+  .recharts-cartesian-axis-tick-value {
+    font-size: 12px;
+    fill: hsl(var(--muted-foreground));
+  }
+  
+  .recharts-tooltip-wrapper {
+    font-size: 14px;
+  }
+  
   /* Tab adjustments */
   [data-state="active"] {
     font-size: calc(var(--mobile-text-scale) * 14px);
@@ -418,12 +428,23 @@
     @apply text-2xl font-medium tracking-tight;
   }
   
-  /* Focus states */
+  /* Enhanced focus states */
   button:focus-visible,
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+    transition: var(--transition-micro);
+  }
+  
+  /* Keyboard navigation enhancement */
+  [tabindex]:focus-visible {
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+  
+  /* Skip link for accessibility */
+  .skip-link {
+    @apply absolute left-0 top-0 bg-primary text-primary-foreground px-4 py-2 rounded-br-md transform -translate-y-full focus:translate-y-0 transition-transform duration-200 z-50;
   }
   
   /* Selection colors */
