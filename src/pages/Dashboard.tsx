@@ -13,6 +13,13 @@ import AdvancedMarketIndicators from "@/components/AdvancedMarketIndicators";
 import MonteCarloSimulation from "@/components/MonteCarloSimulation";
 import SectorAnalysis from "@/components/SectorAnalysis";
 import CurrencyExchange from "@/components/CurrencyExchange";
+import { LoanCalculator } from "@/components/LoanCalculator";
+import { CreditScoreImpact } from "@/components/CreditScoreImpact";
+import { TaxImplications } from "@/components/TaxImplications";
+import { DebtConsolidation } from "@/components/DebtConsolidation";
+import { InvestmentComparison } from "@/components/InvestmentComparison";
+import { RiskAssessment } from "@/components/RiskAssessment";
+import { RatePredictor } from "@/components/RatePredictor";
 import { AnswerCard } from "@/components/shared/AnswerCard";
 import { InteractiveControls } from "@/components/shared/InteractiveControls";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
@@ -353,6 +360,60 @@ const Dashboard = () => {
                 <TabsContent value="indicators" className="mt-6">
                   <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
                     <AdvancedMarketIndicators />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="loan-calc" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
+                    <LoanCalculator />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="credit" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                    <CreditScoreImpact 
+                      currentInflation={customInflation[0]}
+                      currentInterest={customInterest[0]}
+                    />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="tax" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <TaxImplications 
+                      currentInflation={customInflation[0]}
+                      currentInterest={customInterest[0]}
+                    />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="debt" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
+                    <DebtConsolidation />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="invest" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <InvestmentComparison 
+                      currentInflation={customInflation[0]}
+                      currentInterest={customInterest[0]}
+                    />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="risk" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                    <RiskAssessment />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="predictor" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <RatePredictor 
+                      currentInflation={customInflation[0]}
+                      currentInterest={customInterest[0]}
+                    />
                   </ErrorBoundary>
                 </TabsContent>
                 
