@@ -144,6 +144,8 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
         totalScore += score;
         maxScore += 5;
       }
+    });
+
     const percentage = (totalScore / maxScore) * 100;
     
     let profile = 'Conservative';
