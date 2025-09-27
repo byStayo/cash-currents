@@ -910,7 +910,7 @@
   
   /* Professional tool card layout */
   .tool-card {
-    @apply bg-card border border-border rounded-2xl p-6 space-y-4 transition-all duration-300 cursor-pointer hover:shadow-lg hover:border-primary/30 hover:bg-card-elevated focus-ring;
+    @apply bg-card border border-border rounded-2xl p-6 space-y-4 transition-all duration-300 cursor-pointer hover:shadow-lg hover:border-primary/30 hover:bg-card focus-ring;
   }
   
   .tool-card:hover {
