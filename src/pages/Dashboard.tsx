@@ -20,6 +20,7 @@ import { InvestmentComparison } from "@/components/InvestmentComparison";
 import { RiskAssessment } from "@/components/RiskAssessment";
 import { RatePredictor } from "@/components/RatePredictor";
 import { LoanApprovalTool } from "@/components/LoanApprovalTool";
+import { InvestmentArbitrageAnalyzer } from "@/components/InvestmentArbitrageAnalyzer";
 import { AnswerCard } from "@/components/shared/AnswerCard";
 import { InteractiveControls } from "@/components/shared/InteractiveControls";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
@@ -335,6 +336,7 @@ const Dashboard = () => {
                   { id: 'debt', name: 'Debt Consolidation', icon: Coins, description: 'Debt optimization strategies' },
                   { id: 'invest', name: 'Investment Comparison', icon: Investment, description: 'Investment option analysis' },
                   { id: 'predictor', name: 'Rate Predictor', icon: TrendingUp, description: 'Interest rate forecasting' },
+                  { id: 'arbitrage', name: 'Investment Arbitrage', icon: Target, description: 'Optimal investment analysis & arbitrage opportunities' },
                   { id: 'export', name: 'Export Tools', icon: FileText, description: 'Data export and reporting' }
                 ].map((tool) => (
                   <div
@@ -482,6 +484,15 @@ const Dashboard = () => {
                   {selectedTool === 'predictor' && (
                     <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
                       <RatePredictor 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'arbitrage' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
+                      <InvestmentArbitrageAnalyzer 
                         currentInflation={customInflation[0]}
                         currentInterest={customInterest[0]}
                       />
