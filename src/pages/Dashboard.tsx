@@ -75,13 +75,18 @@ const Dashboard = () => {
     };
   }, [selectedYear, customInflation, customInterest, historicalData]);
 
-  // Real-time calculation of interest rate differential
-  const differenceValue = currentData.interestRate - currentData.inflation;
-  const impactLevel = Math.abs(differenceValue);
+  // Real-time calculation of interest rate differential with proper reactivity
+  const differenceValue = useMemo(() => {
+    return customInterest[0] - customInflation[0];
+  }, [customInterest, customInflation]);
+  
+  const impactLevel = useMemo(() => {
+    return Math.abs(differenceValue);
+  }, [differenceValue]);
 
   console.log('Dashboard calculations:', {
-    inflation: currentData.inflation,
-    interestRate: currentData.interestRate,
+    inflation: customInflation[0],
+    interestRate: customInterest[0],
     beneficial: currentData.beneficial,
     difference: differenceValue
   });
@@ -126,7 +131,7 @@ const Dashboard = () => {
         <main id="main-content" className="space-y-6">
           <div className="animate-scale-in">
             <AnswerCard 
-              beneficial={currentData.beneficial}
+              beneficial={customInflation[0] > customInterest[0]}
               inflationRate={customInflation[0]}
               interestRate={customInterest[0]}
               difference={differenceValue}
