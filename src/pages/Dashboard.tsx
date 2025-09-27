@@ -284,7 +284,7 @@ const Dashboard = () => {
               </div>
 
               <Tabs defaultValue="scenarios" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 lg:grid-cols-8 gap-1">
+                <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 xl:grid-cols-15 gap-1">
                   <TabsTrigger value="scenarios" className="text-xs">Scenarios</TabsTrigger>
                   <TabsTrigger value="assets" className="text-xs">Assets</TabsTrigger>
                   <TabsTrigger value="portfolio" className="text-xs">Portfolio</TabsTrigger>
@@ -292,6 +292,13 @@ const Dashboard = () => {
                   <TabsTrigger value="sectors" className="text-xs">Sectors</TabsTrigger>
                   <TabsTrigger value="currency" className="text-xs">Currency</TabsTrigger>
                   <TabsTrigger value="indicators" className="text-xs">Indicators</TabsTrigger>
+                  <TabsTrigger value="loan-calc" className="text-xs">Loan Calc</TabsTrigger>
+                  <TabsTrigger value="credit" className="text-xs">Credit</TabsTrigger>
+                  <TabsTrigger value="tax" className="text-xs">Tax</TabsTrigger>
+                  <TabsTrigger value="debt" className="text-xs">Debt</TabsTrigger>
+                  <TabsTrigger value="invest" className="text-xs">Invest</TabsTrigger>
+                  <TabsTrigger value="risk" className="text-xs">Risk</TabsTrigger>
+                  <TabsTrigger value="predictor" className="text-xs">Predictor</TabsTrigger>
                   <TabsTrigger value="tools" className="text-xs">Export</TabsTrigger>
                 </TabsList>
                 
