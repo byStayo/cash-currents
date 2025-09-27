@@ -25,29 +25,50 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({
     const monthlyRate = interestRate[0] / 100 / 12;
     const numPayments = loanTerm[0] * 12;
     
+    // Input validation
+    if (principal <= 0) return 0;
+    if (monthlyRate < 0) return 0;
+    if (numPayments <= 0) return 0;
+    
     if (monthlyRate === 0) return principal / numPayments;
     
     const monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
                           (Math.pow(1 + monthlyRate, numPayments) - 1);
     
-    return monthlyPayment;
+    return isNaN(monthlyPayment) || !isFinite(monthlyPayment) ? 0 : monthlyPayment;
   };
 
   const monthlyPayment = calculateMonthlyPayment();
   const totalPayment = monthlyPayment * loanTerm[0] * 12;
   const totalInterest = totalPayment - (loanAmount[0] - downPayment[0]);
   
-  // Calculate inflation-adjusted real cost properly
+  // Calculate inflation-adjusted real cost properly with validation
   const realInterestRate = ((1 + (interestRate[0] / 100)) / (1 + (currentInflation / 100))) - 1;
   const realMonthlyRate = realInterestRate / 12;
   const principal = loanAmount[0] - downPayment[0];
   const numPayments = loanTerm[0] * 12;
   
-  // Real monthly payment in today's purchasing power
-  const realMonthlyPayment = realMonthlyRate === 0 
-    ? principal / numPayments 
-    : principal * (realMonthlyRate * Math.pow(1 + realMonthlyRate, numPayments)) / 
-      (Math.pow(1 + realMonthlyRate, numPayments) - 1);
+  // Real monthly payment in today's purchasing power with error handling
+  let realMonthlyPayment = 0;
+  if (principal > 0 && numPayments > 0) {
+    if (realMonthlyRate === 0) {
+      realMonthlyPayment = principal / numPayments;
+    } else {
+      const calculation = principal * (realMonthlyRate * Math.pow(1 + realMonthlyRate, numPayments)) / 
+        (Math.pow(1 + realMonthlyRate, numPayments) - 1);
+      realMonthlyPayment = isNaN(calculation) || !isFinite(calculation) ? monthlyPayment : calculation;
+    }
+  }
+
+  // Log for debugging (only in development)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('LoanCalculator calculations:', {
+      monthlyPayment: monthlyPayment.toFixed(2),
+      totalInterest: totalInterest.toFixed(2),
+      realMonthlyPayment: realMonthlyPayment.toFixed(2),
+      realInterestRate: (realInterestRate * 100).toFixed(2) + '%'
+    });
+  }
 
   return (
     <Card className="w-full">

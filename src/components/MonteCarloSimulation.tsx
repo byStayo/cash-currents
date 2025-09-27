@@ -64,21 +64,34 @@ const MonteCarloSimulation: React.FC<MonteCarloProps> = ({
         
         let cumulativeBenefit = 0;
         for (let year = 0; year < years; year++) {
-          // Calculate net benefit with proper discounting
-          const annualBenefit = inflationPath[year] - interestPath[year];
-          const discountFactor = Math.pow(1.03, -(year + 1)); // 3% discount rate
-          const presentValueBenefit = annualBenefit * discountFactor;
-          
-          cumulativeBenefit += presentValueBenefit;
-          
-          batchResults.push({
-            scenario: sim,
-            year,
-            inflationRate: inflationPath[year],
-            interestRate: interestPath[year],
-            netBenefit: annualBenefit,
-            cumulativeBenefit
-          });
+    // Calculate net benefit with proper discounting and validation
+    for (let year = 0; year < years; year++) {
+      const annualBenefit = inflationPath[year] - interestPath[year];
+      const discountFactor = Math.pow(1.03, -(year + 1)); // 3% discount rate
+      const presentValueBenefit = annualBenefit * discountFactor;
+      
+      // Validate calculations
+      if (isNaN(presentValueBenefit) || !isFinite(presentValueBenefit)) {
+        console.warn('Invalid calculation in Monte Carlo simulation', {
+          year,
+          annualBenefit,
+          discountFactor,
+          presentValueBenefit
+        });
+        continue;
+      }
+      
+      cumulativeBenefit += presentValueBenefit;
+      
+      batchResults.push({
+        scenario: sim,
+        year,
+        inflationRate: Number(inflationPath[year].toFixed(2)),
+        interestRate: Number(interestPath[year].toFixed(2)),
+        netBenefit: Number(annualBenefit.toFixed(2)),
+        cumulativeBenefit: Number(cumulativeBenefit.toFixed(2))
+      });
+    }
         }
       }
       
@@ -314,9 +327,14 @@ const MonteCarloSimulation: React.FC<MonteCarloProps> = ({
               </ResponsiveContainer>
             </div>
 
-            <div className="text-sm text-muted-foreground">
-              Based on {analysisData.totalScenarios.toLocaleString()} simulations with {volatility}% annual volatility
+        <div className="text-sm text-muted-foreground">
+          Based on {analysisData.totalScenarios.toLocaleString()} simulations with {volatility}% annual volatility.
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-2 text-xs">
+              Debug: {results.length.toLocaleString()} total data points processed
             </div>
+          )}
+        </div>
           </div>
         )}
       </CardContent>

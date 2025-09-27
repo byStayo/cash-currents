@@ -56,19 +56,35 @@ const Dashboard = () => {
   const [showProfessional, setShowProfessional] = useState(false);
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   
+  // Enhanced historical data generation with more realistic patterns
   const historicalData = useMemo(() => generateHistoricalData(), []);
   
+  // Current economic conditions with proper mathematical calculation
   const currentData = useMemo(() => {
     const yearData = historicalData.find(d => d.year === selectedYear);
+    const inflationRate = yearData?.inflation || customInflation[0];
+    const interestRate = yearData?.interestRate || customInterest[0];
+    
+    // Core mathematical logic: borrowing is beneficial when inflation > interest rate
+    const beneficial = inflationRate > interestRate;
+    
     return {
-      inflation: yearData?.inflation || customInflation[0],
-      interestRate: yearData?.interestRate || customInterest[0],
-      beneficial: (yearData?.inflation || customInflation[0]) > (yearData?.interestRate || customInterest[0]),
+      inflation: inflationRate,
+      interestRate: interestRate,
+      beneficial,
     };
   }, [selectedYear, customInflation, customInterest, historicalData]);
 
+  // Real-time calculation of interest rate differential
   const differenceValue = currentData.interestRate - currentData.inflation;
   const impactLevel = Math.abs(differenceValue);
+
+  console.log('Dashboard calculations:', {
+    inflation: currentData.inflation,
+    interestRate: currentData.interestRate,
+    beneficial: currentData.beneficial,
+    difference: differenceValue
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -400,7 +416,10 @@ const Dashboard = () => {
                   
                   {selectedTool === 'loan-calc' && (
                     <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
-                      <LoanCalculator />
+                      <LoanCalculator 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
                     </ErrorBoundary>
                   )}
                   
@@ -430,7 +449,10 @@ const Dashboard = () => {
                   
                   {selectedTool === 'debt' && (
                     <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
-                      <DebtConsolidation />
+                      <DebtConsolidation 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
                     </ErrorBoundary>
                   )}
                   
@@ -445,7 +467,10 @@ const Dashboard = () => {
                   
                   {selectedTool === 'risk' && (
                     <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
-                      <RiskAssessment />
+                      <RiskAssessment 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
                     </ErrorBoundary>
                   )}
                   
