@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Shield, AlertTriangle, CheckCircle, XCircle, User, TrendingUp, Home, Briefcase } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, XCircle, User, TrendingUp, Home, Briefcase, Target, Clock, DollarSign, Calculator } from 'lucide-react';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
 interface RiskAssessmentProps {
@@ -226,28 +226,64 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
 
   const borrowingGuidelines = {
     'Very Conservative': {
-      maxDebtRatio: 15, // More conservative for 2024 conditions
+      maxDebtRatio: 15,
       recommendedTypes: ['Essential housing (primary residence)', 'Emergency medical expenses', 'Critical home repairs'],
       avoidTypes: ['Luxury items', 'Investment properties', 'Vacations', 'Non-essential consumer goods'],
-      color: 'text-risk'
+      color: 'text-risk',
+      strategies: [
+        'Build emergency fund to 12+ months expenses',
+        'Focus on debt elimination before new borrowing',
+        'Only consider secured, low-risk borrowing options',
+        'Prioritize fixed-rate, predictable payment structures'
+      ],
+      riskThreshold: 10,
+      optimalLoanTerms: ['Short-term (1-3 years)', 'Fixed rates only', 'High down payments'],
+      creditRequirements: 'Excellent credit required (750+)'
     },
     'Conservative': {
-      maxDebtRatio: 25, // Adjusted for current economic conditions
+      maxDebtRatio: 25,
       recommendedTypes: ['Primary residence mortgage', 'Essential education', 'Reliable transportation', 'Home improvements (value-adding)'],
       avoidTypes: ['High-interest consumer debt', 'Speculative investments', 'Luxury vehicles', 'Crypto loans'],
-      color: 'text-warning'
+      color: 'text-warning',
+      strategies: [
+        'Maintain 6+ months emergency fund',
+        'Prioritize tax-advantaged borrowing',
+        'Consider rate locks during favorable periods',
+        'Focus on asset-building debt only'
+      ],
+      riskThreshold: 25,
+      optimalLoanTerms: ['Medium-term (3-7 years)', '80% fixed, 20% variable acceptable', 'Standard down payments'],
+      creditRequirements: 'Good credit preferred (700+)'
     },
     'Moderate': {
-      maxDebtRatio: 35, // Slightly more conservative than traditional 36%
+      maxDebtRatio: 35,
       recommendedTypes: ['Real estate (primary + rental)', 'Business investment', 'Quality education/training', 'Value-appreciating assets'],
       avoidTypes: ['Payday loans', 'High-risk investments', 'Unnecessary consumer debt', 'Variable rate speculation'],
-      color: 'text-primary'
+      color: 'text-primary',
+      strategies: [
+        'Balance growth opportunities with stability',
+        'Consider strategic leverage for income-producing assets',
+        'Monitor debt service ratios carefully',
+        'Diversify borrowing across asset classes'
+      ],
+      riskThreshold: 40,
+      optimalLoanTerms: ['Flexible terms (5-15 years)', 'Mixed rate structures', 'Moderate down payments'],
+      creditRequirements: 'Good credit required (680+)'
     },
     'Aggressive': {
-      maxDebtRatio: 45, // More aggressive but still prudent
+      maxDebtRatio: 45,
       recommendedTypes: ['Strategic leverage opportunities', 'Investment properties', 'Business expansion', 'Income-producing assets'],
       avoidTypes: ['Emotional purchases', 'Trend-based investments', 'Unhedged currency exposure'],
-      color: 'text-beneficial'
+      color: 'text-beneficial',
+      strategies: [
+        'Maximize tax-efficient leverage',
+        'Utilize inflation arbitrage opportunities',
+        'Consider complex financial instruments',
+        'Focus on cash flow positive investments'
+      ],
+      riskThreshold: 60,
+      optimalLoanTerms: ['Long-term (10+ years)', 'Variable rates acceptable', 'Minimal down payments'],
+      creditRequirements: 'Excellent credit and income stability (720+)'
     }
   };
 
@@ -401,46 +437,103 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
           </div>
 
           <div className="space-y-6">
-            <Card>
-              <CardContent className="pt-6">
+            <Card className="p-6">
+              <CardContent className="pt-0">
                 <h4 className="font-medium mb-4 flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-beneficial" />
-                  Recommended Borrowing
+                  Recommended Borrowing Strategy
                 </h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Max Debt Ratio</span>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 rounded-lg bg-primary/5">
+                    <span className="text-sm font-medium">Maximum Debt Ratio</span>
                     <Badge variant="outline">{currentGuideline.maxDebtRatio}%</Badge>
                   </div>
                   
                   <div>
-                    <div className="text-sm font-medium mb-2">Suitable For:</div>
+                    <div className="text-sm font-medium mb-3">Strategic Approach:</div>
+                    <div className="space-y-2">
+                      {currentGuideline.strategies.map((strategy, index) => (
+                        <div key={`strategy-${index}`} className="flex items-start gap-2 text-sm p-2 rounded bg-beneficial/5">
+                          <Target className="h-3 w-3 text-beneficial mt-0.5 flex-shrink-0" />
+                          {strategy}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium mb-2">Suitable Borrowing:</div>
                     <div className="space-y-1">
-                      {currentGuideline.recommendedTypes.map((type) => (
-                        <div key={`recommended-${type}`} className="flex items-center gap-2 text-sm">
+                      {currentGuideline.recommendedTypes.map((type, index) => (
+                        <div key={`recommended-${index}`} className="flex items-center gap-2 text-sm">
                           <CheckCircle className="h-3 w-3 text-beneficial" />
                           {type}
                         </div>
                       ))}
                     </div>
                   </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium mb-2">Credit Requirements:</div>
+                    <Badge variant="secondary" className="text-xs">
+                      {currentGuideline.creditRequirements}
+                    </Badge>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="pt-6">
+            <Card className="p-6">
+              <CardContent className="pt-0">
                 <h4 className="font-medium mb-4 flex items-center gap-2">
                   <XCircle className="h-4 w-4 text-risk" />
-                  Avoid Borrowing For
+                  Avoid These Borrowing Types
                 </h4>
-                <div className="space-y-1">
-                  {currentGuideline.avoidTypes.map((type) => (
-                    <div key={`avoid-${type}`} className="flex items-center gap-2 text-sm">
+                <div className="space-y-3">
+                  {currentGuideline.avoidTypes.map((type, index) => (
+                    <div key={`avoid-${index}`} className="flex items-center gap-2 text-sm p-2 rounded bg-risk/5">
                       <XCircle className="h-3 w-3 text-risk" />
                       {type}
                     </div>
                   ))}
+                  
+                  <div className="mt-4 p-3 rounded-lg bg-warning/10 border border-warning/20">
+                    <div className="text-sm font-medium text-warning mb-1">Risk Threshold</div>
+                    <div className="text-xs text-muted-foreground">
+                      Avoid borrowing when total debt service exceeds {currentGuideline.riskThreshold}% of income
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="p-6">
+              <CardContent className="pt-0">
+                <h4 className="font-medium mb-4 flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-primary" />
+                  Optimal Loan Structure
+                </h4>
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-sm font-medium mb-2">Preferred Terms:</div>
+                    <div className="space-y-1">
+                      {currentGuideline.optimalLoanTerms.map((term, index) => (
+                        <div key={`term-${index}`} className="flex items-center gap-2 text-sm">
+                          <div className="w-2 h-2 rounded-full bg-primary" />
+                          {term}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="p-3 rounded-lg bg-primary/5">
+                    <div className="text-sm font-medium">Current Market Advantage:</div>
+                    <div className="text-xs text-muted-foreground">
+                      {currentInflation > currentInterest 
+                        ? `Inflation (${currentInflation}%) exceeds borrowing costs - favorable for debt` 
+                        : `Borrowing costs exceed inflation - focus on high-return opportunities`}
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
