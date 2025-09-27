@@ -135,7 +135,7 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowAdvanced(!showAdvanced)}
               variant="outline"
-              className="gap-2 h-12 px-6 apple-button smooth-transition"
+              className="gap-2 h-12 px-6 smooth-transition hover-scale focus-ring touch-feedback"
               aria-expanded={showAdvanced}
               aria-controls="advanced-content"
             >
@@ -189,7 +189,7 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowHistory(!showHistory)}
               variant="outline"
-              className="gap-2 h-12 px-6 smooth-transition hover-scale"
+              className="gap-2 h-12 px-6 smooth-transition hover-scale focus-ring touch-feedback"
               aria-expanded={showHistory}
               aria-controls="history-content"
             >
@@ -224,11 +224,11 @@ const Dashboard = () => {
                         <XAxis 
                           dataKey="year" 
                           stroke="hsl(var(--muted-foreground))"
-                          fontSize={12}
+                          className="chart-text-sm"
                         />
                         <YAxis 
                           stroke="hsl(var(--muted-foreground))"
-                          fontSize={12}
+                          className="chart-text-sm"
                         />
                         <Line
                           type="monotone"
@@ -274,7 +274,7 @@ const Dashboard = () => {
           <div className="text-center">
             <Button
               onClick={() => setShowProfessional(!showProfessional)}
-              className="gap-2 h-12 px-6 smooth-transition hover-scale"
+              className="gap-2 h-12 px-6 smooth-transition hover-scale focus-ring touch-feedback premium-hover"
               aria-expanded={showProfessional}
               aria-controls="professional-content"
             >
@@ -297,27 +297,27 @@ const Dashboard = () => {
 
               <Tabs defaultValue="scenarios" className="w-full">
                 <div className="overflow-x-auto pb-2">
-                  <TabsList className="flex w-max gap-1 mx-auto">
-                    <TabsTrigger value="scenarios">Scenarios</TabsTrigger>
-                    <TabsTrigger value="assets">Assets</TabsTrigger>
-                    <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-                    <TabsTrigger value="monte-carlo">Monte Carlo</TabsTrigger>
-                    <TabsTrigger value="sectors">Sectors</TabsTrigger>
-                    <TabsTrigger value="currency">Currency</TabsTrigger>
-                    <TabsTrigger value="indicators">Indicators</TabsTrigger>
-                    <TabsTrigger value="loan-calc">Loan Calc</TabsTrigger>
-                    <TabsTrigger value="credit">Credit</TabsTrigger>
-                    <TabsTrigger value="risk">Risk</TabsTrigger>
-                    <TabsTrigger value="tax">Tax</TabsTrigger>
-                    <TabsTrigger value="debt">Debt</TabsTrigger>
-                    <TabsTrigger value="invest">Invest</TabsTrigger>
-                    <TabsTrigger value="predictor">Predictor</TabsTrigger>
-                    <TabsTrigger value="export">Export</TabsTrigger>
+                  <TabsList className="flex w-max gap-1 mx-auto focus-ring">
+                    <TabsTrigger value="scenarios" className="focus-ring">Scenarios</TabsTrigger>
+                    <TabsTrigger value="assets" className="focus-ring">Assets</TabsTrigger>
+                    <TabsTrigger value="portfolio" className="focus-ring">Portfolio</TabsTrigger>
+                    <TabsTrigger value="monte-carlo" className="focus-ring">Monte Carlo</TabsTrigger>
+                    <TabsTrigger value="sectors" className="focus-ring">Sectors</TabsTrigger>
+                    <TabsTrigger value="currency" className="focus-ring">Currency</TabsTrigger>
+                    <TabsTrigger value="indicators" className="focus-ring">Indicators</TabsTrigger>
+                    <TabsTrigger value="loan-calc" className="focus-ring">Loan Calc</TabsTrigger>
+                    <TabsTrigger value="credit" className="focus-ring">Credit</TabsTrigger>
+                    <TabsTrigger value="risk" className="focus-ring">Risk</TabsTrigger>
+                    <TabsTrigger value="tax" className="focus-ring">Tax</TabsTrigger>
+                    <TabsTrigger value="debt" className="focus-ring">Debt</TabsTrigger>
+                    <TabsTrigger value="invest" className="focus-ring">Invest</TabsTrigger>
+                    <TabsTrigger value="predictor" className="focus-ring">Predictor</TabsTrigger>
+                    <TabsTrigger value="export" className="focus-ring">Export</TabsTrigger>
                   </TabsList>
                 </div>
                 
                 <TabsContent value="scenarios" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
+                  <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
                     <ScenarioComparison currentInflation={currentData.inflation} />
                   </ErrorBoundary>
                 </TabsContent>
@@ -329,7 +329,7 @@ const Dashboard = () => {
                 </TabsContent>
                 
                 <TabsContent value="portfolio" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                  <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
                     <PortfolioIntegration 
                       currentInflation={currentData.inflation}
                       loanImpact={undefined}
@@ -347,7 +347,7 @@ const Dashboard = () => {
                 </TabsContent>
                 
                 <TabsContent value="sectors" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                  <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
                     <SectorAnalysis 
                       currentInflation={customInflation[0]}
                       currentInterest={customInterest[0]}
