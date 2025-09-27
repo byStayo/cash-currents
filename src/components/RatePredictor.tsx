@@ -324,8 +324,8 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
                     Best Borrowing Windows
                   </h4>
                   <div className="space-y-2">
-                    {bestBorrowingPeriods.map((period, index) => (
-                      <div key={index} className="flex justify-between items-center text-sm">
+                    {bestBorrowingPeriods.map((period) => (
+                      <div key={`period-${period.date}-${period.borrowingScore}`} className="flex justify-between items-center text-sm">
                         <span>{period.date}</span>
                         <div className="text-right">
                           <Badge variant="outline" className="text-green-600">

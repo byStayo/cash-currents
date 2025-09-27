@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -33,7 +33,7 @@ interface RiskAnswers {
   [key: string]: string | number;
 }
 
-export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
+export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
   currentInflation = 3.2,
   currentInterest = 7.5
 }) => {
@@ -144,8 +144,6 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
         totalScore += score;
         maxScore += 5;
       }
-    });
-
     const percentage = (totalScore / maxScore) * 100;
     
     let profile = 'Conservative';
@@ -238,8 +236,8 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
         <CardContent className="space-y-6">
           <Progress value={(currentStep / questions.length) * 100} className="w-full" />
           
-          {questions.map((question, index) => (
-            <div key={question.id} className={index === currentStep ? 'block' : 'hidden'}>
+          {questions.map((question, questionIndex) => (
+            <div key={question.id} className={questionIndex === currentStep ? 'block' : 'hidden'} role="tabpanel" aria-labelledby={`question-${question.id}`}>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">{question.title}</CardTitle>
@@ -385,8 +383,8 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
                   <div>
                     <div className="text-sm font-medium mb-2">Suitable For:</div>
                     <div className="space-y-1">
-                      {currentGuideline.recommendedTypes.map((type, index) => (
-                        <div key={index} className="flex items-center gap-2 text-sm">
+                      {currentGuideline.recommendedTypes.map((type) => (
+                        <div key={`recommended-${type}`} className="flex items-center gap-2 text-sm">
                           <CheckCircle className="h-3 w-3 text-green-500" />
                           {type}
                         </div>
@@ -404,8 +402,8 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
                   Avoid Borrowing For
                 </h4>
                 <div className="space-y-1">
-                  {currentGuideline.avoidTypes.map((type, index) => (
-                    <div key={index} className="flex items-center gap-2 text-sm">
+                  {currentGuideline.avoidTypes.map((type) => (
+                    <div key={`avoid-${type}`} className="flex items-center gap-2 text-sm">
                       <XCircle className="h-3 w-3 text-red-500" />
                       {type}
                     </div>
@@ -447,4 +445,6 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
+
+RiskAssessment.displayName = 'RiskAssessment';

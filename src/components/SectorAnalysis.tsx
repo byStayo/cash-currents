@@ -305,8 +305,8 @@ const SectorAnalysis: React.FC<SectorAnalysisProps> = ({
               <Card className="p-4">
                 <h4 className="font-semibold mb-3">Strategic Recommendations</h4>
                 <ul className="space-y-2">
-                  {selectedSectorData.recommendations.map((rec, index) => (
-                    <li key={index} className="text-sm flex items-start gap-2">
+                  {selectedSectorData.recommendations.map((rec) => (
+                    <li key={`rec-${rec.substring(0, 20)}`} className="text-sm flex items-start gap-2">
                       <TrendingUp className="h-3 w-3 mt-1 text-beneficial flex-shrink-0" />
                       {rec}
                     </li>
@@ -317,8 +317,8 @@ const SectorAnalysis: React.FC<SectorAnalysisProps> = ({
               <Card className="p-4">
                 <h4 className="font-semibold mb-3">Common Loan Types</h4>
                 <div className="space-y-2">
-                  {selectedSectorData.commonLoanTypes.map((type, index) => (
-                    <Badge key={index} variant="secondary" className="mr-2 mb-2">
+                  {selectedSectorData.commonLoanTypes.map((type) => (
+                    <Badge key={`loan-type-${type}`} variant="secondary" className="mr-2 mb-2">
                       {type}
                     </Badge>
                   ))}
@@ -356,8 +356,8 @@ const SectorAnalysis: React.FC<SectorAnalysisProps> = ({
                   </ResponsiveContainer>
                 </div>
                 <div className="grid grid-cols-1 gap-2 text-sm">
-                  {marketConditionsData.map((condition, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                  {marketConditionsData.map((condition) => (
+                    <div key={`condition-${condition.name}`} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div 
                           className="w-3 h-3 rounded-full" 

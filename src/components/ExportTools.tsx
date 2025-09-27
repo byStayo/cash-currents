@@ -1,8 +1,8 @@
+import React, { memo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, FileText, Image, Share2 } from "lucide-react";
+import { Download, FileText, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useMemo, useCallback } from "react";
 
 interface ExportToolsProps {
   data?: Array<{
@@ -23,7 +23,7 @@ interface ExportToolsProps {
   }>;
 }
 
-const ExportTools = ({ data, scenarios }: ExportToolsProps) => {
+const ExportTools = memo(({ data, scenarios }: ExportToolsProps) => {
   const { toast } = useToast();
 
   const exportToCSV = useCallback(() => {
@@ -153,15 +153,6 @@ When inflation exceeds your borrowing rate, the purchasing power of your debt pa
     }
   }, [toast]);
 
-  const captureChart = useCallback(() => {
-    // This would typically use html2canvas or similar library
-    // For now, we'll show a placeholder message
-    toast({
-      title: "Feature Coming Soon",
-      description: "Chart capture functionality will be available in the next update",
-    });
-  }, [toast]);
-
   return (
     <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass animate-fade-in">
       <CardHeader>
@@ -171,44 +162,52 @@ When inflation exceeds your borrowing rate, the purchasing power of your debt pa
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3" role="group" aria-label="Export options">
           <Button
             variant="outline"
             onClick={exportToCSV}
             className="transition-all duration-200 hover:scale-105 hover:shadow-md"
             disabled={!data}
+            aria-describedby="export-data-desc"
           >
             <FileText className="h-4 w-4 mr-2" />
             Export Data
           </Button>
+          <span id="export-data-desc" className="sr-only">Export historical inflation and interest rate data to CSV</span>
           
           <Button
             variant="outline"
             onClick={exportScenariosToCSV}
             className="transition-all duration-200 hover:scale-105 hover:shadow-md"
             disabled={!scenarios || scenarios.length === 0}
+            aria-describedby="export-scenarios-desc"
           >
             <FileText className="h-4 w-4 mr-2" />
             Export Scenarios
           </Button>
+          <span id="export-scenarios-desc" className="sr-only">Export borrowing scenarios comparison to CSV</span>
           
           <Button
             variant="outline"
             onClick={generateReport}
             className="transition-all duration-200 hover:scale-105 hover:shadow-md"
+            aria-describedby="generate-report-desc"
           >
             <Download className="h-4 w-4 mr-2" />
             Generate Report
           </Button>
+          <span id="generate-report-desc" className="sr-only">Generate comprehensive analysis report as markdown file</span>
           
           <Button
             variant="outline"
             onClick={shareAnalysis}
             className="transition-all duration-200 hover:scale-105 hover:shadow-md"
+            aria-describedby="share-analysis-desc"
           >
             <Share2 className="h-4 w-4 mr-2" />
             Share Analysis
           </Button>
+          <span id="share-analysis-desc" className="sr-only">Share analysis link via native share or copy to clipboard</span>
         </div>
         
         <div className="mt-4 p-3 bg-muted/20 rounded-lg">
@@ -220,6 +219,8 @@ When inflation exceeds your borrowing rate, the purchasing power of your debt pa
       </CardContent>
     </Card>
   );
-};
+});
+
+ExportTools.displayName = 'ExportTools';
 
 export default ExportTools;
