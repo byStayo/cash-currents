@@ -212,7 +212,7 @@ const PortfolioIntegration = ({ currentInflation, loanImpact }: PortfolioIntegra
                           label={({ name, percentage }) => `${name}: ${percentage.toFixed(1)}%`}
                         >
                           {assetAllocation.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
+                            <Cell key={`portfolio-cell-${entry.name}-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
                         <Tooltip formatter={(value: number) => [`$${value.toLocaleString()}`, 'Value']} />

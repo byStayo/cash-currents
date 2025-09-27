@@ -73,28 +73,28 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
           title: 'Economic Recovery',
           description: 'Inflation cooling, Fed cutting rates, economic stability',
           probability: '25%',
-          color: 'text-green-600'
+          color: 'text-beneficial'
         };
       case 'base':
         return {
           title: 'Gradual Normalization',
-          description: 'Moderate inflation control, steady rate adjustments',
+          description: 'Moderate inflation control, steady rate adjustments',  
           probability: '50%',
-          color: 'text-blue-600'
+          color: 'text-primary'
         };
       case 'pessimistic':
         return {
           title: 'Economic Uncertainty',
           description: 'Persistent inflation, aggressive rate hikes, volatility',
           probability: '25%',
-          color: 'text-red-600'
+          color: 'text-risk'
         };
       default:
         return {
           title: 'Gradual Normalization',
           description: 'Moderate inflation control, steady rate adjustments',
           probability: '50%',
-          color: 'text-blue-600'
+          color: 'text-primary'
         };
     }
   };
@@ -202,19 +202,19 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div className="text-center">
                 <div className="font-medium">Inflation Change</div>
-                <div className={`text-lg font-bold ${inflationChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                <div className={`text-lg font-bold ${inflationChange > 0 ? 'text-risk' : 'text-beneficial'}`}>
                   {inflationChange > 0 ? '+' : ''}{inflationChange.toFixed(1)}%
                 </div>
               </div>
               <div className="text-center">
                 <div className="font-medium">Interest Change</div>
-                <div className={`text-lg font-bold ${interestChange > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                <div className={`text-lg font-bold ${interestChange > 0 ? 'text-risk' : 'text-beneficial'}`}>
                   {interestChange > 0 ? '+' : ''}{interestChange.toFixed(1)}%
                 </div>
               </div>
               <div className="text-center">
                 <div className="font-medium">Final Real Rate</div>
-                <div className={`text-lg font-bold ${finalPrediction.realRate < 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                <div className={`text-lg font-bold ${finalPrediction.realRate < 0 ? 'text-beneficial' : 'text-warning'}`}>
                   {finalPrediction.realRate.toFixed(1)}%
                 </div>
               </div>
@@ -303,8 +303,8 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
                         </div>
                         <div className={`text-xs ${
                           indicator.predicted > indicator.current ? 
-                            (indicator.name === 'Unemployment' ? 'text-red-500' : 'text-green-500') :
-                            (indicator.name === 'Unemployment' ? 'text-green-500' : 'text-red-500')
+                            (indicator.name === 'Unemployment' ? 'text-risk' : 'text-beneficial') :
+                            (indicator.name === 'Unemployment' ? 'text-beneficial' : 'text-risk')
                         }`}>
                           {indicator.predicted > indicator.current ? '↗' : '↘'} 
                           {Math.abs(((indicator.predicted - indicator.current) / indicator.current) * 100).toFixed(1)}%
@@ -320,7 +320,7 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
               <Card>
                 <CardContent className="pt-6">
                   <h4 className="font-medium mb-4 flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-green-500" />
+                    <Calendar className="h-4 w-4 text-beneficial" />
                     Best Borrowing Windows
                   </h4>
                   <div className="space-y-2">
@@ -328,7 +328,7 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
                       <div key={`period-${period.date}-${period.borrowingScore}`} className="flex justify-between items-center text-sm">
                         <span>{period.date}</span>
                         <div className="text-right">
-                          <Badge variant="outline" className="text-green-600">
+                          <Badge variant="outline" className="text-beneficial">
                             Score: {period.borrowingScore.toFixed(0)}
                           </Badge>
                           <div className="text-xs text-muted-foreground">
@@ -342,13 +342,13 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
               </Card>
             )}
 
-            <Card className="border-orange-200 bg-orange-50">
+            <Card className="border-warning/20 bg-warning/5">
               <CardContent className="pt-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertCircle className="h-4 w-4 text-orange-600" />
-                  <span className="text-sm font-medium text-orange-900">Disclaimer</span>
+                  <AlertCircle className="h-4 w-4 text-warning" />
+                  <span className="text-sm font-medium text-warning-foreground">Disclaimer</span>
                 </div>
-                <div className="text-xs text-orange-700 space-y-1">
+                <div className="text-xs text-muted-foreground space-y-1">
                   <p>• Predictions are based on economic models and historical patterns</p>
                   <p>• Actual rates may vary significantly due to unforeseen events</p>
                   <p>• Use as guidance only, not financial advice</p>

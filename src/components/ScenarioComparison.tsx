@@ -392,7 +392,7 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
                   >
                     {comparisonData.map((entry, index) => (
                       <Cell 
-                        key={`cell-${index}`} 
+                        key={`scenario-cell-${entry.name}-${index}`} 
                         fill={entry.beneficial ? "hsl(var(--beneficial))" : "hsl(var(--risk))"}
                       />
                     ))}

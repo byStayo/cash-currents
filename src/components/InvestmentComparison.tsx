@@ -216,7 +216,7 @@ export const InvestmentComparison: React.FC<InvestmentComparisonProps> = ({
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">Debt Paydown Value</span>
-                    <span className="font-bold text-green-600">
+                    <span className="font-bold text-beneficial">
                       ${scenarios.debtPaydown.totalValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                     </span>
                   </div>
@@ -231,7 +231,7 @@ export const InvestmentComparison: React.FC<InvestmentComparisonProps> = ({
                   <div className="flex justify-between items-center pt-2 border-t">
                     <span className="text-sm font-medium">Net Advantage</span>
                     <div className="text-right">
-                      <div className={`font-bold ${scenarios.investment.netReturn > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <div className={`font-bold ${scenarios.investment.netReturn > 0 ? 'text-beneficial' : 'text-risk'}`}>
                         ${Math.abs(scenarios.investment.netReturn).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                       </div>
                       <div className="text-xs text-muted-foreground">

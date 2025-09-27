@@ -9,9 +9,9 @@ const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Only log in development environment
+    // Only log in development environment for debugging purposes
     if (process.env.NODE_ENV === 'development') {
-      console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+      console.warn("404 Error: User attempted to access non-existent route:", location.pathname);
     }
   }, [location.pathname]);
 

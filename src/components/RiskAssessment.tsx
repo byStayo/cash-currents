@@ -122,7 +122,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
     }
   ];
 
-  const handleAnswer = (questionId: string, value: any) => {
+  const handleAnswer = (questionId: string, value: string | number) => {
     setAnswers({ ...answers, [questionId]: value });
   };
 
@@ -198,25 +198,25 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
       maxDebtRatio: 20,
       recommendedTypes: ['Essential housing', 'Emergency medical'],
       avoidTypes: ['Luxury items', 'Investments', 'Vacations'],
-      color: 'text-red-600'
+      color: 'text-risk'
     },
     'Conservative': {
       maxDebtRatio: 30,
       recommendedTypes: ['Mortgage', 'Education', 'Reliable vehicle'],
       avoidTypes: ['High-interest debt', 'Speculative investments'],
-      color: 'text-orange-600'
+      color: 'text-warning'
     },
     'Moderate': {
       maxDebtRatio: 40,
       recommendedTypes: ['Real estate', 'Business investment', 'Quality education'],
       avoidTypes: ['Consumer debt', 'Volatile investments'],
-      color: 'text-yellow-600'
+      color: 'text-primary'
     },
     'Aggressive': {
       maxDebtRatio: 50,
       recommendedTypes: ['Strategic leverage', 'Investment properties', 'Business expansion'],
       avoidTypes: ['Unnecessary luxury debt'],
-      color: 'text-green-600'
+      color: 'text-beneficial'
     }
   };
 
@@ -373,7 +373,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
             <Card>
               <CardContent className="pt-6">
                 <h4 className="font-medium mb-4 flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-beneficial" />
                   Recommended Borrowing
                 </h4>
                 <div className="space-y-3">
@@ -387,7 +387,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
                     <div className="space-y-1">
                       {currentGuideline.recommendedTypes.map((type) => (
                         <div key={`recommended-${type}`} className="flex items-center gap-2 text-sm">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-beneficial" />
                           {type}
                         </div>
                       ))}
@@ -400,13 +400,13 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
             <Card>
               <CardContent className="pt-6">
                 <h4 className="font-medium mb-4 flex items-center gap-2">
-                  <XCircle className="h-4 w-4 text-red-500" />
+                  <XCircle className="h-4 w-4 text-risk" />
                   Avoid Borrowing For
                 </h4>
                 <div className="space-y-1">
                   {currentGuideline.avoidTypes.map((type) => (
                     <div key={`avoid-${type}`} className="flex items-center gap-2 text-sm">
-                      <XCircle className="h-3 w-3 text-red-500" />
+                      <XCircle className="h-3 w-3 text-risk" />
                       {type}
                     </div>
                   ))}
@@ -414,10 +414,10 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
               </CardContent>
             </Card>
 
-            <Card className="bg-accent/50">
+            <Card className="bg-warning/5">
               <CardContent className="pt-6">
                 <h4 className="font-medium mb-4 flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                  <AlertTriangle className="h-4 w-4 text-warning" />
                   Key Considerations
                 </h4>
                 <div className="space-y-2 text-sm text-muted-foreground">

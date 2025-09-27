@@ -278,7 +278,7 @@ export const TaxImplications: React.FC<TaxImplicationsProps> = ({
                         dataKey="value"
                       >
                         {pieData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                          <Cell key={`tax-cell-${entry.name}-${index}`} fill={entry.fill} />
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />

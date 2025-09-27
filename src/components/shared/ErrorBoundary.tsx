@@ -12,8 +12,14 @@ interface Props {
 interface State {
   hasError: boolean;
   error?: Error;
-  errorInfo?: any;
+  errorInfo?: ErrorInfo;
   retryCount: number;
+}
+
+interface ErrorInfo {
+  componentStack: string;
+  errorBoundary?: string;
+  errorBoundaryStack?: string;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -28,13 +34,18 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Only log in development environment
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    }
+    
     this.setState({ errorInfo });
     
-    // In a real app, you'd send this to an error reporting service
+    // In production, send to error reporting service
     if (process.env.NODE_ENV === 'production') {
       // Analytics or error reporting would go here
+      // Example: errorReportingService.captureException(error, errorInfo);
     }
   }
 

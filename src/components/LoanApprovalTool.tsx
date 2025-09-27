@@ -232,20 +232,20 @@ export const LoanApprovalTool: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'text-green-600';
-      case 'likely': return 'text-blue-600';
-      case 'unlikely': return 'text-orange-600';
-      case 'denied': return 'text-red-600';
+      case 'approved': return 'text-beneficial';
+      case 'likely': return 'text-primary';
+      case 'unlikely': return 'text-warning';
+      case 'denied': return 'text-risk';
       default: return 'text-muted-foreground';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'approved': return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case 'likely': return <CheckCircle className="h-4 w-4 text-blue-600" />;
-      case 'unlikely': return <AlertCircle className="h-4 w-4 text-orange-600" />;
-      case 'denied': return <XCircle className="h-4 w-4 text-red-600" />;
+      case 'approved': return <CheckCircle className="h-4 w-4 text-beneficial" />;
+      case 'likely': return <CheckCircle className="h-4 w-4 text-primary" />;
+      case 'unlikely': return <AlertCircle className="h-4 w-4 text-warning" />;
+      case 'denied': return <XCircle className="h-4 w-4 text-risk" />;
       default: return null;
     }
   };
@@ -526,7 +526,7 @@ export const LoanApprovalTool: React.FC = () => {
                             label={({ name, score }) => `${name}: ${score}%`}
                           >
                             {approvalChartData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                              <Cell key={`approval-cell-${entry.name}-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                           </Pie>
                           <Tooltip />

@@ -21,11 +21,11 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
   const [currentDebt, setCurrentDebt] = useState([15000]);
 
   const getCreditScoreRange = (score: number) => {
-    if (score >= 800) return { range: 'Excellent', color: 'bg-green-500', textColor: 'text-green-600' };
-    if (score >= 740) return { range: 'Very Good', color: 'bg-blue-500', textColor: 'text-blue-600' };
-    if (score >= 670) return { range: 'Good', color: 'bg-yellow-500', textColor: 'text-yellow-600' };
-    if (score >= 580) return { range: 'Fair', color: 'bg-orange-500', textColor: 'text-orange-600' };
-    return { range: 'Poor', color: 'bg-red-500', textColor: 'text-red-600' };
+    if (score >= 800) return { range: 'Excellent', color: 'bg-beneficial', textColor: 'text-beneficial' };
+    if (score >= 740) return { range: 'Very Good', color: 'bg-primary', textColor: 'text-primary' };
+    if (score >= 670) return { range: 'Good', color: 'bg-warning', textColor: 'text-warning' };
+    if (score >= 580) return { range: 'Fair', color: 'bg-warning', textColor: 'text-warning' };
+    return { range: 'Poor', color: 'bg-risk', textColor: 'text-risk' };
   };
 
   const calculateScoreImpact = () => {
@@ -192,20 +192,20 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-risk rounded-full"></div>
                   <span>Hard inquiry: -5 points</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-warning rounded-full"></div>
                   <span>Credit utilization change: {creditUtilization[0] > 30 ? '-15' : creditUtilization[0] > 10 ? '-5' : '0'} points</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
                   <span>New account age: -3 points</span>
                 </div>
                 {newLoanAmount[0] > 50000 && (
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-risk rounded-full"></div>
                     <span>Large loan impact: -10 points</span>
                   </div>
                 )}
