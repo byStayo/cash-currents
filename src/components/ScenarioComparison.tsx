@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlusCircle, Trash2, Calculator } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { PlusCircle, Trash2, Calculator, TrendingUp, DollarSign, AlertTriangle, Calendar } from "lucide-react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from "recharts";
 
 interface Scenario {
@@ -118,15 +119,48 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
     setScenarios(scenarios.filter(s => s.id !== id));
   };
 
+  // Enhanced comparison data with more metrics
   const comparisonData = scenarios.map(scenario => {
     const metrics = calculateScenarioMetrics(scenario);
     return {
       name: scenario.name,
       realCost: metrics.realCostAdjustment,
       monthlyPayment: metrics.monthlyPayment,
-      beneficial: metrics.inflationBenefit
+      totalCost: metrics.totalCost,
+      netBenefit: metrics.netRealCost,
+      taxSavings: metrics.taxSavings,
+      effectiveRate: metrics.effectiveInterestRate,
+      beneficial: metrics.inflationBenefit,
+      riskScore: calculateRiskScore(scenario, metrics)
     };
   });
+
+  // Risk scoring function
+  const calculateRiskScore = (scenario: Scenario, metrics: ReturnType<typeof calculateScenarioMetrics>) => {
+    let score = 50; // Base score
+    
+    // Interest rate risk
+    if (scenario.interestRate > 8) score += 20;
+    else if (scenario.interestRate < 4) score -= 15;
+    
+    // Term risk
+    if (scenario.termYears > 25) score += 10;
+    else if (scenario.termYears < 5) score -= 5;
+    
+    // Inflation benefit
+    if (metrics.inflationBenefit) score -= 25;
+    else score += 15;
+    
+    // Loan purpose risk
+    switch (scenario.purpose) {
+      case 'Real Estate': score -= 10; break;
+      case 'Business': score += 5; break;
+      case 'Personal': score += 20; break;
+      case 'Education': score -= 5; break;
+    }
+    
+    return Math.max(0, Math.min(100, score));
+  };
 
   return (
     <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass animate-fade-in">
@@ -352,54 +386,209 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
           </TabsContent>
 
           <TabsContent value="comparison" className="space-y-6">
-            <div className="h-80 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={comparisonData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--chart-grid))" />
-                  <XAxis 
-                    dataKey="name" 
-                    stroke="hsl(var(--muted-foreground))" 
-                    fontSize={12}
-                  />
-                  <YAxis 
-                    stroke="hsl(var(--muted-foreground))" 
-                    fontSize={12}
-                    label={{ value: 'Real Cost Impact (%)', angle: -90, position: 'insideLeft' }}
-                  />
-                  <Tooltip 
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        const data = payload[0].payload;
+            <Tabs defaultValue="cost" className="space-y-4">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="cost">Cost Analysis</TabsTrigger>
+                <TabsTrigger value="risk">Risk Assessment</TabsTrigger>
+                <TabsTrigger value="optimization">Optimization</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="cost" className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Real Cost Impact</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={comparisonData}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
+                            <XAxis dataKey="name" fontSize={10} />
+                            <YAxis fontSize={12} />
+                            <Tooltip 
+                              content={({ active, payload, label }) => {
+                                if (active && payload && payload.length) {
+                                  const data = payload[0].payload;
+                                  return (
+                                    <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+                                      <p className="font-semibold">{label}</p>
+                                      <p className="text-sm text-muted-foreground">
+                                        Monthly: ${data.monthlyPayment.toLocaleString(undefined, {maximumFractionDigits: 0})}
+                                      </p>
+                                      <p className={`text-sm font-medium ${data.beneficial ? 'text-beneficial' : 'text-risk'}`}>
+                                        Real Cost: {data.realCost > 0 ? '+' : ''}{data.realCost.toFixed(2)}%
+                                      </p>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              }}
+                            />
+                            <Bar dataKey="realCost" radius={[4, 4, 0, 0]}>
+                              {comparisonData.map((entry, index) => (
+                                <Cell 
+                                  key={`scenario-cell-${entry.name}-${index}`} 
+                                  fill={entry.beneficial ? "hsl(var(--beneficial))" : "hsl(var(--risk))"}
+                                />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Total Cost Comparison</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={comparisonData}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
+                            <XAxis dataKey="name" fontSize={10} />
+                            <YAxis fontSize={12} />
+                            <Tooltip formatter={(value: number) => [`$${Number(value).toLocaleString()}`, 'Total Cost']} />
+                            <Bar dataKey="totalCost" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="risk" className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Risk Score Analysis</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={comparisonData}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
+                            <XAxis dataKey="name" fontSize={10} />
+                            <YAxis domain={[0, 100]} fontSize={12} />
+                            <Tooltip formatter={(value: number) => [`${Number(value).toFixed(0)}`, 'Risk Score']} />
+                            <Bar dataKey="riskScore" radius={[4, 4, 0, 0]}>
+                              {comparisonData.map((entry, index) => (
+                                <Cell 
+                                  key={`risk-cell-${entry.name}-${index}`} 
+                                  fill={entry.riskScore > 70 ? "hsl(var(--risk))" : 
+                                        entry.riskScore > 40 ? "hsl(var(--warning))" : "hsl(var(--beneficial))"}
+                                />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Risk Breakdown</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {scenarios.map((scenario, index) => {
+                          const data = comparisonData[index];
+                          return (
+                            <div key={scenario.id} className="flex justify-between items-center p-3 rounded-lg border">
+                              <div>
+                                <p className="font-medium">{scenario.name}</p>
+                                <p className="text-sm text-muted-foreground">{scenario.purpose}</p>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <Badge 
+                                  variant={data.riskScore > 70 ? "destructive" : 
+                                          data.riskScore > 40 ? "secondary" : "default"}
+                                >
+                                  {data.riskScore.toFixed(0)}
+                                </Badge>
+                                <span className="text-xs text-muted-foreground">
+                                  {data.riskScore > 70 ? 'High Risk' : 
+                                   data.riskScore > 40 ? 'Moderate' : 'Low Risk'}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="optimization" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Scenario Recommendations</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {scenarios.map((scenario, index) => {
+                        const data = comparisonData[index];
+                        const metrics = calculateScenarioMetrics(scenario);
+                        
                         return (
-                          <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
-                            <p className="font-semibold">{label}</p>
-                            <p className="text-sm text-muted-foreground">
-                              Monthly: ${data.monthlyPayment.toLocaleString(undefined, {maximumFractionDigits: 0})}
-                            </p>
-                            <p className={`text-sm font-medium ${data.beneficial ? 'text-beneficial' : 'text-risk'}`}>
-                              Real Cost: {data.realCost > 0 ? '+' : ''}{data.realCost.toFixed(2)}%
-                            </p>
+                          <div key={scenario.id} className="p-4 rounded-lg border">
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-semibold">{scenario.name}</h4>
+                              <Badge variant={data.beneficial ? "default" : "secondary"}>
+                                {data.beneficial ? 'Recommended' : 'Caution'}
+                              </Badge>
+                            </div>
+                            
+                            <div className="space-y-2 text-sm">
+                              {metrics.inflationBenefit && (
+                                <div className="flex items-center gap-2 text-beneficial">
+                                  <TrendingUp className="h-3 w-3" />
+                                  <span>Inflation arbitrage opportunity - real rate is negative</span>
+                                </div>
+                              )}
+                              
+                              {metrics.taxSavings > 5000 && (
+                                <div className="flex items-center gap-2 text-primary">
+                                  <DollarSign className="h-3 w-3" />
+                                  <span>Significant tax savings: ${metrics.taxSavings.toLocaleString()}/year</span>
+                                </div>
+                              )}
+                              
+                              {scenario.interestRate > 8 && (
+                                <div className="flex items-center gap-2 text-warning">
+                                  <AlertTriangle className="h-3 w-3" />
+                                  <span>High interest rate - consider refinancing options</span>
+                                </div>
+                              )}
+                              
+                              {scenario.termYears > 25 && (
+                                <div className="flex items-center gap-2 text-muted-foreground">
+                                  <Calendar className="h-3 w-3" />
+                                  <span>Long-term commitment - ensure rate is competitive</span>
+                                </div>
+                              )}
+                              
+                              <div className="text-muted-foreground">
+                                Net benefit over {scenario.termYears} years: 
+                                <span className={`font-medium ml-1 ${metrics.netRealCost < 0 ? 'text-beneficial' : 'text-risk'}`}>
+                                  ${Math.abs(metrics.netRealCost).toLocaleString()}
+                                  {metrics.netRealCost < 0 ? ' saved' : ' cost'}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Bar 
-                    dataKey="realCost" 
-                    radius={[4, 4, 0, 0]}
-                    className="transition-all duration-300"
-                  >
-                    {comparisonData.map((entry, index) => (
-                      <Cell 
-                        key={`scenario-cell-${entry.name}-${index}`} 
-                        fill={entry.beneficial ? "hsl(var(--beneficial))" : "hsl(var(--risk))"}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </TabsContent>
         </Tabs>
       </CardContent>
