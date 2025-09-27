@@ -499,6 +499,50 @@
   .button-hover:hover {
     @apply transform translate-y-[-1px] shadow-md;
   }
+
+  /* Apple-style glass morphism */
+  .glass-morphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Smooth transitions */
+  .smooth-transition {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Apple-style buttons */
+  .apple-button {
+    @apply rounded-xl font-medium;
+    min-height: 44px;
+    min-width: 44px;
+    background: linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%);
+    box-shadow: 0 4px 12px hsla(var(--primary), 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .apple-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px hsla(var(--primary), 0.4);
+  }
+
+  .apple-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px hsla(var(--primary), 0.3);
+  }
+
+  /* Enhanced hover scale */
+  .hover-scale {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  }
   
   .button-hover:active {
     @apply transform translate-y-0 shadow-sm;
@@ -630,7 +674,6 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-}
 
 @layer base {
   * {

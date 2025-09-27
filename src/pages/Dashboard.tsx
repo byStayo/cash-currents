@@ -78,7 +78,7 @@ const Dashboard = () => {
         </a>
 
         {/* Clean Header */}
-        <header className="text-center space-y-6">
+        <header className="text-center space-y-6 animate-fade-in">
           <div className="space-y-4">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
               Should I Borrow Money?
@@ -90,15 +90,15 @@ const Dashboard = () => {
           
           {/* Feature indicators */}
           <div className="flex items-center justify-center gap-4 md:gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-beneficial"></div>
+            <div className="flex items-center gap-2 smooth-transition hover:scale-105">
+              <div className="w-2 h-2 rounded-full bg-beneficial animate-pulse"></div>
               <span className="font-medium text-muted-foreground">Real-time</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 smooth-transition hover:scale-105">
               <div className="w-2 h-2 rounded-full bg-primary"></div>
               <span className="font-medium text-muted-foreground">Historical</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 smooth-transition hover:scale-105">
               <div className="w-2 h-2 rounded-full bg-accent-foreground"></div>
               <span className="font-medium text-muted-foreground">Professional</span>
             </div>
@@ -107,21 +107,25 @@ const Dashboard = () => {
 
         {/* Main Answer Card */}
         <main id="main-content" className="space-y-6">
-          <AnswerCard 
-            beneficial={currentData.beneficial}
-            inflationRate={customInflation[0]}
-            interestRate={customInterest[0]}
-            difference={differenceValue}
-          />
+          <div className="animate-scale-in">
+            <AnswerCard 
+              beneficial={currentData.beneficial}
+              inflationRate={customInflation[0]}
+              interestRate={customInterest[0]}
+              difference={differenceValue}
+            />
+          </div>
 
           {/* Interactive Controls */}
-          <InteractiveControls
-            customInflation={customInflation}
-            setCustomInflation={setCustomInflation}
-            customInterest={customInterest}
-            setCustomInterest={setCustomInterest}
-            differenceValue={differenceValue}
-          />
+          <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <InteractiveControls
+              customInflation={customInflation}
+              setCustomInflation={setCustomInflation}
+              customInterest={customInterest}
+              setCustomInterest={setCustomInterest}
+              differenceValue={differenceValue}
+            />
+          </div>
         </main>
 
         {/* Information Architecture */}
@@ -131,19 +135,19 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowAdvanced(!showAdvanced)}
               variant="outline"
-              className="gap-2 h-12 px-6"
+              className="gap-2 h-12 px-6 apple-button smooth-transition"
               aria-expanded={showAdvanced}
               aria-controls="advanced-content"
             >
               <Info className="h-4 w-4" />
               {showAdvanced ? 'Hide Details' : 'Learn How This Works'}
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showAdvanced ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showAdvanced ? 'rotate-180' : ''}`} />
             </Button>
           </div>
 
           <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-            <CollapsibleContent className="space-y-4 md:space-y-6 animate-fade-in-up" id="advanced-content">
-              <Card className="glass-card card-hover state-transition">
+            <CollapsibleContent className="space-y-4 md:space-y-6 animate-fade-in" id="advanced-content" style={{ animationDelay: '0.1s' }}>
+              <Card className="glass-card card-hover smooth-transition">
                 <div className="p-4 md:p-6">
                   <h3 className="text-lg font-semibold mb-4 text-center font-display">Understanding the Basics</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -185,19 +189,19 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowHistory(!showHistory)}
               variant="outline"
-              className="gap-2 h-12 px-6"
+              className="gap-2 h-12 px-6 smooth-transition hover-scale"
               aria-expanded={showHistory}
               aria-controls="history-content"
             >
               <BarChart3 className="h-4 w-4" />
               {showHistory ? 'Hide History' : 'Historical Trends'}
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showHistory ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showHistory ? 'rotate-180' : ''}`} />
             </Button>
           </div>
 
           <Collapsible open={showHistory} onOpenChange={setShowHistory}>
-            <CollapsibleContent className="space-y-6" id="history-content">
-              <Card className="p-6 card-hover state-transition">
+            <CollapsibleContent className="space-y-6 animate-fade-in" id="history-content" style={{ animationDelay: '0.2s' }}>
+              <Card className="p-6 card-hover smooth-transition">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">50+ Years of Market Data</h3>
@@ -270,19 +274,19 @@ const Dashboard = () => {
           <div className="text-center">
             <Button
               onClick={() => setShowProfessional(!showProfessional)}
-              className="gap-2 h-12 px-6"
+              className="gap-2 h-12 px-6 smooth-transition hover-scale"
               aria-expanded={showProfessional}
               aria-controls="professional-content"
             >
               <BarChart3 className="h-4 w-4" />
               {showProfessional ? 'Hide Tools' : 'Professional Analysis'}
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showProfessional ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${showProfessional ? 'rotate-180' : ''}`} />
             </Button>
           </div>
 
           <Collapsible open={showProfessional} onOpenChange={setShowProfessional}>
-            <CollapsibleContent className="space-y-4 md:space-y-6 animate-fade-in-up" id="professional-content">
-              <div className="bg-gradient-to-r from-primary/5 to-beneficial/5 p-4 md:p-6 rounded-2xl border border-primary/10">
+            <CollapsibleContent className="space-y-4 md:space-y-6 animate-fade-in" id="professional-content" style={{ animationDelay: '0.3s' }}>
+              <div className="bg-gradient-to-r from-primary/5 to-beneficial/5 p-4 md:p-6 rounded-2xl border border-primary/10 glass-morphism">
                 <div className="text-center space-y-2">
                   <h3 className="text-lg md:text-xl font-semibold font-display">Professional Financial Analysis</h3>
                   <p className="text-sm md:text-base text-muted-foreground">
