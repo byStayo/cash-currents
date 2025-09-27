@@ -297,22 +297,22 @@ const Dashboard = () => {
 
               <Tabs defaultValue="scenarios" className="w-full">
                 <div className="overflow-x-auto pb-2">
-                  <TabsList className="flex w-max gap-1 mx-auto focus-ring">
-                    <TabsTrigger value="scenarios" className="focus-ring">Scenarios</TabsTrigger>
-                    <TabsTrigger value="assets" className="focus-ring">Assets</TabsTrigger>
-                    <TabsTrigger value="portfolio" className="focus-ring">Portfolio</TabsTrigger>
-                    <TabsTrigger value="monte-carlo" className="focus-ring">Monte Carlo</TabsTrigger>
-                    <TabsTrigger value="sectors" className="focus-ring">Sectors</TabsTrigger>
-                    <TabsTrigger value="currency" className="focus-ring">Currency</TabsTrigger>
-                    <TabsTrigger value="indicators" className="focus-ring">Indicators</TabsTrigger>
-                    <TabsTrigger value="loan-calc" className="focus-ring">Loan Calc</TabsTrigger>
-                    <TabsTrigger value="credit" className="focus-ring">Credit</TabsTrigger>
-                    <TabsTrigger value="risk" className="focus-ring">Risk</TabsTrigger>
-                    <TabsTrigger value="tax" className="focus-ring">Tax</TabsTrigger>
-                    <TabsTrigger value="debt" className="focus-ring">Debt</TabsTrigger>
-                    <TabsTrigger value="invest" className="focus-ring">Invest</TabsTrigger>
-                    <TabsTrigger value="predictor" className="focus-ring">Predictor</TabsTrigger>
-                    <TabsTrigger value="export" className="focus-ring">Export</TabsTrigger>
+                  <TabsList className="flex w-max gap-1 mx-auto focus-ring min-w-full md:min-w-max">
+                    <TabsTrigger value="scenarios" className="focus-ring flex-shrink-0">Scenarios</TabsTrigger>
+                    <TabsTrigger value="assets" className="focus-ring flex-shrink-0">Assets</TabsTrigger>
+                    <TabsTrigger value="portfolio" className="focus-ring flex-shrink-0">Portfolio</TabsTrigger>
+                    <TabsTrigger value="monte-carlo" className="focus-ring flex-shrink-0">Monte Carlo</TabsTrigger>
+                    <TabsTrigger value="sectors" className="focus-ring flex-shrink-0">Sectors</TabsTrigger>
+                    <TabsTrigger value="currency" className="focus-ring flex-shrink-0">Currency</TabsTrigger>
+                    <TabsTrigger value="indicators" className="focus-ring flex-shrink-0">Indicators</TabsTrigger>
+                    <TabsTrigger value="loan-calc" className="focus-ring flex-shrink-0">Loan Calc</TabsTrigger>
+                    <TabsTrigger value="credit" className="focus-ring flex-shrink-0">Credit</TabsTrigger>
+                    <TabsTrigger value="risk" className="focus-ring flex-shrink-0">Risk</TabsTrigger>
+                    <TabsTrigger value="tax" className="focus-ring flex-shrink-0">Tax</TabsTrigger>
+                    <TabsTrigger value="debt" className="focus-ring flex-shrink-0">Debt</TabsTrigger>
+                    <TabsTrigger value="invest" className="focus-ring flex-shrink-0">Investment</TabsTrigger>
+                    <TabsTrigger value="predictor" className="focus-ring flex-shrink-0">Rate Predictor</TabsTrigger>
+                    <TabsTrigger value="export" className="focus-ring flex-shrink-0">Export</TabsTrigger>
                   </TabsList>
                 </div>
                 
