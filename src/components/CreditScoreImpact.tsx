@@ -150,9 +150,9 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
                       <div className="text-2xl font-bold flex items-center gap-2">
                         {projectedScore}
                         {scoreImpact < 0 ? (
-                          <TrendingDown className="h-5 w-5 text-red-500" />
+                          <TrendingDown className="h-5 w-5 text-destructive" />
                         ) : scoreImpact > 0 ? (
-                          <TrendingUp className="h-5 w-5 text-green-500" />
+                          <TrendingUp className="h-5 w-5 text-beneficial" />
                         ) : null}
                       </div>
                       <Badge variant="outline" className={projectedRange.textColor}>
@@ -164,7 +164,7 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Score Change</span>
-                      <span className={scoreImpact < 0 ? 'text-red-600' : 'text-green-600'}>
+                      <span className={scoreImpact < 0 ? 'text-destructive font-semibold' : 'text-beneficial font-semibold'}>
                         {scoreImpact > 0 ? '+' : ''}{scoreImpact} points
                       </span>
                     </div>

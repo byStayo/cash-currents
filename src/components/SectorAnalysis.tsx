@@ -347,9 +347,9 @@ const SectorAnalysis: React.FC<SectorAnalysisProps> = ({
                         dataKey="value"
                         nameKey="name"
                       >
-                        {marketConditionsData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
+                  {marketConditionsData.map((entry, index) => (
+                    <Cell key={`market-condition-${entry.name}-${index}`} fill={entry.color} />
+                  ))}
                       </Pie>
                       <Tooltip formatter={(value: number) => `${value}%`} />
                     </PieChart>

@@ -175,7 +175,7 @@ export const DebtConsolidation: React.FC<DebtConsolidationProps> = ({
                         variant="ghost"
                         size="sm"
                         onClick={() => removeDebt(debt.id)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-destructive hover:text-destructive/80"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -253,7 +253,7 @@ export const DebtConsolidation: React.FC<DebtConsolidationProps> = ({
                     <div className="text-sm text-muted-foreground">Current Monthly</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-beneficial">
                       ${scenarios.consolidated.monthlyPayment.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                     </div>
                     <div className="text-sm text-muted-foreground">Consolidated Monthly</div>
@@ -270,11 +270,11 @@ export const DebtConsolidation: React.FC<DebtConsolidationProps> = ({
                     <span className="text-sm">Payment Difference</span>
                     <div className="flex items-center gap-2">
                       {scenarios.savings.paymentDifference > 0 ? (
-                        <TrendingDown className="h-4 w-4 text-green-500" />
+                        <TrendingDown className="h-4 w-4 text-beneficial" />
                       ) : (
-                        <TrendingUp className="h-4 w-4 text-red-500" />
+                        <TrendingUp className="h-4 w-4 text-destructive" />
                       )}
-                      <span className={`font-medium ${scenarios.savings.paymentDifference > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <span className={`font-medium ${scenarios.savings.paymentDifference > 0 ? 'text-beneficial' : 'text-destructive'}`}>
                         ${Math.abs(scenarios.savings.paymentDifference).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                       </span>
                     </div>
@@ -283,7 +283,7 @@ export const DebtConsolidation: React.FC<DebtConsolidationProps> = ({
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Interest Savings</span>
                     <div className="text-right">
-                      <div className={`font-medium ${scenarios.savings.interestSavings > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <div className={`font-medium ${scenarios.savings.interestSavings > 0 ? 'text-beneficial' : 'text-destructive'}`}>
                         ${Math.abs(scenarios.savings.interestSavings).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                       </div>
                       <Badge variant="outline" className="text-xs">

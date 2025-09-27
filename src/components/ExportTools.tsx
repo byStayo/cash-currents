@@ -2,21 +2,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, FileText, Image, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useMemo, useCallback } from "react";
 
 interface ExportToolsProps {
-  data?: any;
-  scenarios?: any[];
+  data?: Array<{
+    year: number;
+    inflation?: number;
+    interestRate?: number;
+    beneficial: boolean;
+  }>;
+  scenarios?: Array<{
+    id: string;
+    name: string;
+    purpose: string;
+    loanAmount: number;
+    interestRate: number;
+    termYears: number;
+    monthlyPayment?: number;
+    beneficial: boolean;
+  }>;
 }
 
 const ExportTools = ({ data, scenarios }: ExportToolsProps) => {
   const { toast } = useToast();
 
-  const exportToCSV = () => {
+  const exportToCSV = useCallback(() => {
     if (!data) return;
     
     const csvContent = [
       ['Year', 'Inflation Rate (%)', 'Interest Rate (%)', 'Beneficial to Borrow'],
-      ...data.map((row: any) => [
+      ...data.map((row) => [
         row.year,
         row.inflation?.toFixed(2) || '',
         row.interestRate?.toFixed(2) || '',
@@ -38,14 +53,14 @@ const ExportTools = ({ data, scenarios }: ExportToolsProps) => {
       title: "Export Complete",
       description: "Historical data exported to CSV file",
     });
-  };
+  }, [data, toast]);
 
-  const exportScenariosToCSV = () => {
+  const exportScenariosToCSV = useCallback(() => {
     if (!scenarios || scenarios.length === 0) return;
     
     const csvContent = [
       ['Scenario Name', 'Purpose', 'Loan Amount ($)', 'Interest Rate (%)', 'Term (Years)', 'Monthly Payment ($)', 'Status'],
-      ...scenarios.map((scenario: any) => [
+      ...scenarios.map((scenario) => [
         scenario.name,
         scenario.purpose,
         scenario.loanAmount,
@@ -70,9 +85,9 @@ const ExportTools = ({ data, scenarios }: ExportToolsProps) => {
       title: "Export Complete", 
       description: "Scenarios exported to CSV file",
     });
-  };
+  }, [scenarios, toast]);
 
-  const generateReport = () => {
+  const generateReport = useCallback(() => {
     const reportContent = `
 # Borrowing Intelligence Report
 Generated: ${new Date().toLocaleDateString()}
@@ -109,9 +124,9 @@ When inflation exceeds your borrowing rate, the purchasing power of your debt pa
       title: "Report Generated",
       description: "Analysis report exported as markdown file",
     });
-  };
+  }, [toast]);
 
-  const shareAnalysis = async () => {
+  const shareAnalysis = useCallback(async () => {
     const shareData = {
       title: 'Borrowing Intelligence Analysis',
       text: 'Check out this financial analysis tool that shows when borrowing money makes mathematical sense based on inflation vs interest rates.',
@@ -136,16 +151,16 @@ When inflation exceeds your borrowing rate, the purchasing power of your debt pa
         description: "Analysis URL copied to clipboard",
       });
     }
-  };
+  }, [toast]);
 
-  const captureChart = () => {
+  const captureChart = useCallback(() => {
     // This would typically use html2canvas or similar library
     // For now, we'll show a placeholder message
     toast({
       title: "Feature Coming Soon",
       description: "Chart capture functionality will be available in the next update",
     });
-  };
+  }, [toast]);
 
   return (
     <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass animate-fade-in">

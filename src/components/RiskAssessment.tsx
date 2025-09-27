@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -14,12 +14,31 @@ interface RiskAssessmentProps {
   currentInterest?: number;
 }
 
+interface AnswerOption {
+  value: string;
+  label: string;
+  score: number;
+}
+
+interface Question {
+  id: string;
+  title: string;
+  type: 'radio' | 'slider';
+  options?: AnswerOption[];
+  min?: number;
+  max?: number;
+}
+
+interface RiskAnswers {
+  [key: string]: string | number;
+}
+
 export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
   currentInflation = 3.2,
   currentInterest = 7.5
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<RiskAnswers>({});
 
   const questions = [
     {
@@ -107,7 +126,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
     setAnswers({ ...answers, [questionId]: value });
   };
 
-  const calculateRiskProfile = () => {
+  const calculateRiskProfile = useCallback(() => {
     let totalScore = 0;
     let maxScore = 0;
 
@@ -120,8 +139,8 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
         }
       } else if (question.type === 'slider' && answers[question.id] !== undefined) {
         // Debt ratio scoring (inverse - lower debt is better)
-        const debtRatio = answers[question.id];
-        const score = Math.max(1, 5 - Math.floor(debtRatio / 20));
+        const debtRatio = typeof answers[question.id] === 'number' ? answers[question.id] : 0;
+        const score = Math.max(1, 5 - Math.floor((debtRatio as number) / 20));
         totalScore += score;
         maxScore += 5;
       }
@@ -159,20 +178,20 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
       recommendation,
       borrowingAdvice
     };
-  };
+  }, [answers, questions]);
 
-  const riskProfile = calculateRiskProfile();
+  const riskProfile = useMemo(() => calculateRiskProfile(), [calculateRiskProfile]);
   const isComplete = Object.keys(answers).length === questions.length;
 
   // Risk factors visualization
-  const riskFactors = [
+  const riskFactors = useMemo(() => [
     { subject: 'Age', A: Math.min(5, (answers.age ? questions[0].options?.find(o => o.value === answers.age)?.score || 1 : 1)) },
     { subject: 'Income', A: Math.min(5, (answers.income ? questions[1].options?.find(o => o.value === answers.income)?.score || 1 : 1)) },
     { subject: 'Stability', A: Math.min(5, (answers.stability ? questions[2].options?.find(o => o.value === answers.stability)?.score || 1 : 1)) },
     { subject: 'Emergency Fund', A: Math.min(5, (answers.emergency_fund ? questions[3].options?.find(o => o.value === answers.emergency_fund)?.score || 1 : 1)) },
-    { subject: 'Debt Level', A: Math.min(5, answers.debt_ratio !== undefined ? Math.max(1, 5 - Math.floor(answers.debt_ratio / 20)) : 1) },
+    { subject: 'Debt Level', A: Math.min(5, answers.debt_ratio !== undefined ? Math.max(1, 5 - Math.floor((typeof answers.debt_ratio === 'number' ? answers.debt_ratio : 0) / 20)) : 1) },
     { subject: 'Experience', A: Math.min(5, (answers.investment_experience ? questions[6].options?.find(o => o.value === answers.investment_experience)?.score || 1 : 1)) }
-  ];
+  ], [answers, questions]);
 
   const borrowingGuidelines = {
     'Very Conservative': {
@@ -228,7 +247,7 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
                 <CardContent className="space-y-4">
                   {question.type === 'radio' && (
                     <RadioGroup
-                      value={answers[question.id] || ''}
+                      value={String(answers[question.id] || '')}
                       onValueChange={(value) => handleAnswer(question.id, value)}
                     >
                       {question.options?.map((option) => (
@@ -244,12 +263,12 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = ({
                   
                   {question.type === 'slider' && (
                     <div className="space-y-4">
-                      <Label>{(answers[question.id] || 0)}{question.suffix}</Label>
+                      <Label>{(typeof answers[question.id] === 'number' ? answers[question.id] : 0)}{question.suffix}</Label>
                       <Slider
                         min={question.min}
                         max={question.max}
                         step={question.step}
-                        value={[answers[question.id] || 0]}
+                        value={[typeof answers[question.id] === 'number' ? answers[question.id] as number : 0]}
                         onValueChange={([value]) => handleAnswer(question.id, value)}
                       />
                     </div>

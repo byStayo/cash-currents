@@ -201,7 +201,7 @@ const AssetOverlay = ({ selectedYear, onYearChange }: AssetOverlayProps) => {
                       <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
                         <p className="font-semibold mb-2">{label}</p>
                         {payload.map((item, index) => (
-                          <p key={index} className="text-sm" style={{ color: item.color }}>
+                          <p key={`tooltip-${item.dataKey}-${index}`} className="text-sm" style={{ color: item.color }}>
                             {item.name}: {formatPrice(item.value as number, item.dataKey as string)}
                           </p>
                         ))}
