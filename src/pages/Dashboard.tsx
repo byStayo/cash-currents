@@ -71,14 +71,14 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 pb-8 md:pb-12">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-8">
         {/* Skip link for accessibility */}
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
 
         {/* Clean Header */}
-        <header className="text-center space-y-6 px-4 py-8 md:py-12">
+        <header className="text-center space-y-6">
           <div className="space-y-4">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
               Should I Borrow Money?
@@ -89,7 +89,7 @@ const Dashboard = () => {
           </div>
           
           {/* Feature indicators */}
-          <div className="flex items-center justify-center gap-6 md:gap-8 text-sm">
+          <div className="flex items-center justify-center gap-4 md:gap-6 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-beneficial"></div>
               <span className="font-medium text-muted-foreground">Real-time</span>
@@ -106,7 +106,7 @@ const Dashboard = () => {
         </header>
 
         {/* Main Answer Card */}
-        <main id="main-content">
+        <main id="main-content" className="space-y-6">
           <AnswerCard 
             beneficial={currentData.beneficial}
             inflationRate={customInflation[0]}
@@ -115,19 +115,17 @@ const Dashboard = () => {
           />
 
           {/* Interactive Controls */}
-          <div className="mt-8 px-4">
-            <InteractiveControls
-              customInflation={customInflation}
-              setCustomInflation={setCustomInflation}
-              customInterest={customInterest}
-              setCustomInterest={setCustomInterest}
-              differenceValue={differenceValue}
-            />
-          </div>
+          <InteractiveControls
+            customInflation={customInflation}
+            setCustomInflation={setCustomInflation}
+            customInterest={customInterest}
+            setCustomInterest={setCustomInterest}
+            differenceValue={differenceValue}
+          />
         </main>
 
         {/* Information Architecture */}
-        <aside className="space-y-6 px-4">
+        <aside className="space-y-6">
           {/* Level 1: Understanding */}
           <div className="text-center">
             <Button
@@ -294,8 +292,8 @@ const Dashboard = () => {
               </div>
 
               <Tabs defaultValue="scenarios" className="w-full">
-                <div className="overflow-x-auto">
-                  <TabsList className="grid w-max grid-cols-15 gap-1 mx-auto min-w-full">
+                <div className="overflow-x-auto pb-2">
+                  <TabsList className="flex w-max gap-1 mx-auto">
                     <TabsTrigger value="scenarios">Scenarios</TabsTrigger>
                     <TabsTrigger value="assets">Assets</TabsTrigger>
                     <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
