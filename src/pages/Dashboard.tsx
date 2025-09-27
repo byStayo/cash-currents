@@ -77,29 +77,29 @@ const Dashboard = () => {
           Skip to main content
         </a>
 
-        {/* Apple-inspired Header */}
-        <header className="text-center space-y-6 mobile-header-padding md:py-8">
-          <div className="space-y-3">
-            <h1 className="mobile-hero-title md:text-4xl lg:text-5xl text-foreground tracking-tight">
+        {/* Clean Header */}
+        <header className="text-center space-y-6 px-4 py-8 md:py-12">
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
               Should I Borrow Money?
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Smart borrowing decisions made simple
             </p>
           </div>
           
-          {/* Clean feature indicators - Apple style */}
-          <div className="flex items-center justify-center gap-8 text-sm">
+          {/* Feature indicators */}
+          <div className="flex items-center justify-center gap-6 md:gap-8 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-beneficial" aria-hidden="true"></div>
+              <div className="w-2 h-2 rounded-full bg-beneficial"></div>
               <span className="font-medium text-muted-foreground">Real-time</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></div>
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
               <span className="font-medium text-muted-foreground">Historical</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-accent-foreground" aria-hidden="true"></div>
+              <div className="w-2 h-2 rounded-full bg-accent-foreground"></div>
               <span className="font-medium text-muted-foreground">Professional</span>
             </div>
           </div>
@@ -114,8 +114,8 @@ const Dashboard = () => {
             difference={differenceValue}
           />
 
-          {/* Interactive Controls - Apple style */}
-          <div className="mt-8 mobile-section md:px-0">
+          {/* Interactive Controls */}
+          <div className="mt-8 px-4">
             <InteractiveControls
               customInflation={customInflation}
               setCustomInflation={setCustomInflation}
@@ -126,20 +126,21 @@ const Dashboard = () => {
           </div>
         </main>
 
-        {/* Clean Information Architecture - Apple style */}
-        <aside className="space-y-6 mobile-section md:px-0">
+        {/* Information Architecture */}
+        <aside className="space-y-6 px-4">
           {/* Level 1: Understanding */}
           <div className="text-center">
-            <button
+            <Button
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="mobile-button gap-3 focus-ring"
+              variant="outline"
+              className="gap-2 h-12 px-6"
               aria-expanded={showAdvanced}
               aria-controls="advanced-content"
             >
-              <Info className="h-4 w-4" aria-hidden="true" />
+              <Info className="h-4 w-4" />
               {showAdvanced ? 'Hide Details' : 'Learn How This Works'}
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showAdvanced ? 'rotate-180' : ''}`} aria-hidden="true" />
-            </button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showAdvanced ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
 
           <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
@@ -183,16 +184,17 @@ const Dashboard = () => {
 
           {/* Level 2: Historical Data */}
           <div className="text-center">
-            <button
+            <Button
               onClick={() => setShowHistory(!showHistory)}
-              className="mobile-button gap-3 focus-ring"
+              variant="outline"
+              className="gap-2 h-12 px-6"
               aria-expanded={showHistory}
               aria-controls="history-content"
             >
-              <BarChart3 className="h-4 w-4" aria-hidden="true" />
+              <BarChart3 className="h-4 w-4" />
               {showHistory ? 'Hide History' : 'Historical Trends'}
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showHistory ? 'rotate-180' : ''}`} aria-hidden="true" />
-            </button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showHistory ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
 
           <Collapsible open={showHistory} onOpenChange={setShowHistory}>
@@ -268,16 +270,16 @@ const Dashboard = () => {
 
           {/* Level 3: Professional Analysis */}
           <div className="text-center">
-            <button
+            <Button
               onClick={() => setShowProfessional(!showProfessional)}
-              className="mobile-button-primary gap-3 focus-ring"
+              className="gap-2 h-12 px-6"
               aria-expanded={showProfessional}
               aria-controls="professional-content"
             >
-              <BarChart3 className="h-4 w-4" aria-hidden="true" />
+              <BarChart3 className="h-4 w-4" />
               {showProfessional ? 'Hide Tools' : 'Professional Analysis'}
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showProfessional ? 'rotate-180' : ''}`} aria-hidden="true" />
-            </button>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showProfessional ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
 
           <Collapsible open={showProfessional} onOpenChange={setShowProfessional}>
@@ -292,59 +294,7 @@ const Dashboard = () => {
               </div>
 
               <Tabs defaultValue="scenarios" className="w-full">
-                {/* Apple-inspired mobile tab navigation */}
-                <div className="mobile-tabs md:overflow-visible">
-                  <div className="mobile-tab-list md:grid md:grid-cols-8 md:gap-2 md:w-full">
-                    <button className="mobile-tab-trigger" data-state={showProfessional && 'scenarios' === 'scenarios' ? 'active' : 'inactive'} onClick={() => {}}>
-                      Scenarios
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Monte Carlo
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Sectors
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Currency
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Indicators
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Loan Calc
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Credit
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Risk
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Tax
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Debt
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Invest
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Portfolio
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Assets
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Predictor
-                    </button>
-                    <button className="mobile-tab-trigger" data-state="inactive">
-                      Export
-                    </button>
-                  </div>
-                </div>
-                
-                {/* Fallback to original tabs for proper functionality */}
-                <div className="hidden">
+                <div className="overflow-x-auto">
                   <TabsList className="grid w-max grid-cols-15 gap-1 mx-auto min-w-full">
                     <TabsTrigger value="scenarios">Scenarios</TabsTrigger>
                     <TabsTrigger value="assets">Assets</TabsTrigger>
@@ -355,12 +305,12 @@ const Dashboard = () => {
                     <TabsTrigger value="indicators">Indicators</TabsTrigger>
                     <TabsTrigger value="loan-calc">Loan Calc</TabsTrigger>
                     <TabsTrigger value="credit">Credit</TabsTrigger>
+                    <TabsTrigger value="risk">Risk</TabsTrigger>
                     <TabsTrigger value="tax">Tax</TabsTrigger>
                     <TabsTrigger value="debt">Debt</TabsTrigger>
                     <TabsTrigger value="invest">Invest</TabsTrigger>
-                    <TabsTrigger value="risk">Risk</TabsTrigger>
                     <TabsTrigger value="predictor">Predictor</TabsTrigger>
-                    <TabsTrigger value="tools">Export</TabsTrigger>
+                    <TabsTrigger value="export">Export</TabsTrigger>
                   </TabsList>
                 </div>
                 
