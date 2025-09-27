@@ -109,44 +109,75 @@ const CurrencyExchange: React.FC<CurrencyExchangeProps> = ({
   const baseCurrencyData = currencies.find(c => c.code === baseCurrency) || currencies[0];
   const targetCurrencyData = currencies.find(c => c.code === targetCurrency) || currencies[1];
 
-  // Calculate borrowing advantage considering currency factors
+  // Cross-currency analysis with proper volatility modeling and correlation
   const crossCurrencyAnalysis = useMemo(() => {
     const baseAdvantage = baseCurrencyData.inflationRate - baseCurrencyData.interestRate;
     const targetAdvantage = targetCurrencyData.inflationRate - targetCurrencyData.interestRate;
     
-    // Consider exchange rate risk
-    const exchangeRateRisk = Math.abs(targetCurrencyData.volatility - baseCurrencyData.volatility);
-    const adjustedTargetAdvantage = targetAdvantage - (exchangeRateRisk * 0.5);
+    // Calculate correlation-adjusted exchange rate risk
+    const volatilityDifference = Math.abs(targetCurrencyData.volatility - baseCurrencyData.volatility);
+    const correlationFactor = 0.7; // Assume 70% correlation between currencies
+    const adjustedVolatility = volatilityDifference * (1 - correlationFactor);
     
-    const convertedAmount = loanAmount * targetCurrencyData.exchangeRate;
+    // Risk premium for currency conversion (includes transaction costs)
+    const currencyRiskPremium = adjustedVolatility * 0.3 + 0.25; // 0.25% base cost
+    const adjustedTargetAdvantage = targetAdvantage - currencyRiskPremium;
+    
+    // Currency conversion with realistic spread
+    const exchangeSpread = 0.005; // 0.5% spread typical for currency conversion
+    const effectiveExchangeRate = targetCurrencyData.exchangeRate * (1 + exchangeSpread);
+    const convertedAmount = loanAmount * effectiveExchangeRate;
+    
+    // Calculate expected future exchange rate using purchasing power parity
+    const inflationDifferential = targetCurrencyData.inflationRate - baseCurrencyData.inflationRate;
+    const expectedRateChange = inflationDifferential * 0.7; // PPP adjustment factor
+    const futureExchangeRate = targetCurrencyData.exchangeRate * (1 + expectedRateChange / 100);
     
     return {
       baseAdvantage,
       targetAdvantage,
       adjustedTargetAdvantage,
-      exchangeRateRisk,
+      exchangeRateRisk: adjustedVolatility,
       convertedAmount,
+      currencyRiskPremium,
+      futureExchangeRate,
+      expectedRateChange,
       recommendation: adjustedTargetAdvantage > baseAdvantage ? targetCurrency : baseCurrency
     };
   }, [baseCurrencyData, targetCurrencyData, loanAmount, baseCurrency, targetCurrency]);
 
-  // Generate historical exchange rate data
+  // Generate historical exchange rate data with proper correlation modeling
   const historicalData = useMemo(() => {
     const data = [];
     for (let i = 0; i < 24; i++) {
       const month = new Date();
       month.setMonth(month.getMonth() - i);
       
-      // Simulate exchange rate fluctuation
+      // More realistic exchange rate modeling
       const baseRate = targetCurrencyData.exchangeRate;
-      const volatilityFactor = (Math.random() - 0.5) * targetCurrencyData.volatility * 0.1;
-      const rate = baseRate * (1 + volatilityFactor);
+      const timeWeight = Math.exp(-i * 0.05); // Exponential decay for older data relevance
+      
+      // Use Box-Muller for normal distribution
+      const u1 = Math.random();
+      const u2 = Math.random();
+      const normalRandom = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      
+      const volatilityFactor = normalRandom * (targetCurrencyData.volatility / 100) * timeWeight;
+      const trendFactor = (targetCurrencyData.inflationRate - baseCurrencyData.inflationRate) * 0.001 * i;
+      const seasonalFactor = Math.sin((i / 12) * 2 * Math.PI) * 0.02;
+      
+      const rate = baseRate * (1 + volatilityFactor + trendFactor + seasonalFactor);
+      
+      // Interest rate modeling with economic correlation
+      const economicCorrelation = 0.6; // Correlation between exchange rates and interest rates
+      const baseInterestShock = normalRandom * 0.3 * timeWeight;
+      const targetInterestShock = normalRandom * economicCorrelation * 0.3 * timeWeight;
       
       data.unshift({
         month: month.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
-        rate: rate,
-        baseInterest: baseCurrencyData.interestRate + (Math.random() - 0.5) * 0.5,
-        targetInterest: targetCurrencyData.interestRate + (Math.random() - 0.5) * 0.5
+        rate: Math.max(0.1, rate),
+        baseInterest: Math.max(0.1, baseCurrencyData.interestRate + baseInterestShock),
+        targetInterest: Math.max(0.1, targetCurrencyData.interestRate + targetInterestShock)
       });
     }
     return data;

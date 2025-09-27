@@ -183,39 +183,70 @@ export const RiskAssessment: React.FC<RiskAssessmentProps> = memo(({
   const riskProfile = useMemo(() => calculateRiskProfile(), [calculateRiskProfile]);
   const isComplete = Object.keys(answers).length === questions.length;
 
-  // Risk factors visualization
-  const riskFactors = useMemo(() => [
-    { subject: 'Age', A: Math.min(5, (answers.age ? questions[0].options?.find(o => o.value === answers.age)?.score || 1 : 1)) },
-    { subject: 'Income', A: Math.min(5, (answers.income ? questions[1].options?.find(o => o.value === answers.income)?.score || 1 : 1)) },
-    { subject: 'Stability', A: Math.min(5, (answers.stability ? questions[2].options?.find(o => o.value === answers.stability)?.score || 1 : 1)) },
-    { subject: 'Emergency Fund', A: Math.min(5, (answers.emergency_fund ? questions[3].options?.find(o => o.value === answers.emergency_fund)?.score || 1 : 1)) },
-    { subject: 'Debt Level', A: Math.min(5, answers.debt_ratio !== undefined ? Math.max(1, 5 - Math.floor((typeof answers.debt_ratio === 'number' ? answers.debt_ratio : 0) / 20)) : 1) },
-    { subject: 'Experience', A: Math.min(5, (answers.investment_experience ? questions[6].options?.find(o => o.value === answers.investment_experience)?.score || 1 : 1)) }
-  ], [answers, questions]);
+  // Risk factors visualization with proper error handling
+  const riskFactors = useMemo(() => {
+    try {
+      const getQuestionScore = (questionId: string, optionIndex: number) => {
+        const answer = answers[questionId];
+        if (!answer && answer !== 0) return 1;
+        
+        const question = questions.find(q => q.id === questionId);
+        if (!question) return 1;
+        
+        if (question.type === 'radio') {
+          const option = question.options?.find(o => o.value === answer);
+          return Math.min(5, Math.max(1, option?.score || 1));
+        } else if (question.type === 'slider' && typeof answer === 'number') {
+          // Debt ratio scoring (inverse - lower debt is better)
+          return Math.max(1, 5 - Math.floor(answer / 20));
+        }
+        return 1;
+      };
+
+      return [
+        { subject: 'Age', A: getQuestionScore('age', 0) },
+        { subject: 'Income', A: getQuestionScore('income', 1) },
+        { subject: 'Stability', A: getQuestionScore('stability', 2) },
+        { subject: 'Emergency Fund', A: getQuestionScore('emergency_fund', 3) },
+        { subject: 'Debt Level', A: getQuestionScore('debt_ratio', 4) },
+        { subject: 'Experience', A: getQuestionScore('investment_experience', 6) }
+      ];
+    } catch (error) {
+      console.warn('Error calculating risk factors:', error);
+      return [
+        { subject: 'Age', A: 1 },
+        { subject: 'Income', A: 1 },
+        { subject: 'Stability', A: 1 },
+        { subject: 'Emergency Fund', A: 1 },
+        { subject: 'Debt Level', A: 1 },
+        { subject: 'Experience', A: 1 }
+      ];
+    }
+  }, [answers, questions]);
 
   const borrowingGuidelines = {
     'Very Conservative': {
-      maxDebtRatio: 20,
-      recommendedTypes: ['Essential housing', 'Emergency medical'],
-      avoidTypes: ['Luxury items', 'Investments', 'Vacations'],
+      maxDebtRatio: 15, // More conservative for 2024 conditions
+      recommendedTypes: ['Essential housing (primary residence)', 'Emergency medical expenses', 'Critical home repairs'],
+      avoidTypes: ['Luxury items', 'Investment properties', 'Vacations', 'Non-essential consumer goods'],
       color: 'text-risk'
     },
     'Conservative': {
-      maxDebtRatio: 30,
-      recommendedTypes: ['Mortgage', 'Education', 'Reliable vehicle'],
-      avoidTypes: ['High-interest debt', 'Speculative investments'],
+      maxDebtRatio: 25, // Adjusted for current economic conditions
+      recommendedTypes: ['Primary residence mortgage', 'Essential education', 'Reliable transportation', 'Home improvements (value-adding)'],
+      avoidTypes: ['High-interest consumer debt', 'Speculative investments', 'Luxury vehicles', 'Crypto loans'],
       color: 'text-warning'
     },
     'Moderate': {
-      maxDebtRatio: 40,
-      recommendedTypes: ['Real estate', 'Business investment', 'Quality education'],
-      avoidTypes: ['Consumer debt', 'Volatile investments'],
+      maxDebtRatio: 35, // Slightly more conservative than traditional 36%
+      recommendedTypes: ['Real estate (primary + rental)', 'Business investment', 'Quality education/training', 'Value-appreciating assets'],
+      avoidTypes: ['Payday loans', 'High-risk investments', 'Unnecessary consumer debt', 'Variable rate speculation'],
       color: 'text-primary'
     },
     'Aggressive': {
-      maxDebtRatio: 50,
-      recommendedTypes: ['Strategic leverage', 'Investment properties', 'Business expansion'],
-      avoidTypes: ['Unnecessary luxury debt'],
+      maxDebtRatio: 45, // More aggressive but still prudent
+      recommendedTypes: ['Strategic leverage opportunities', 'Investment properties', 'Business expansion', 'Income-producing assets'],
+      avoidTypes: ['Emotional purchases', 'Trend-based investments', 'Unhedged currency exposure'],
       color: 'text-beneficial'
     }
   };

@@ -24,9 +24,24 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
     const predictions = [];
 
     const scenarios = {
-      optimistic: { inflationTrend: -0.1, rateTrend: -0.15, volatility: 0.3 },
-      base: { inflationTrend: 0.05, rateTrend: 0.1, volatility: 0.5 },
-      pessimistic: { inflationTrend: 0.15, rateTrend: 0.2, volatility: 0.7 }
+      optimistic: { 
+        inflationTrend: -0.05, // Monthly decline
+        rateTrend: -0.08, // Monthly decline  
+        volatility: 0.15,
+        cyclicalAmplitude: 0.2 
+      },
+      base: { 
+        inflationTrend: 0.01, // Slight monthly increase
+        rateTrend: 0.02, // Slight monthly increase
+        volatility: 0.25,
+        cyclicalAmplitude: 0.3 
+      },
+      pessimistic: { 
+        inflationTrend: 0.08, // Monthly increase
+        rateTrend: 0.12, // Monthly increase
+        volatility: 0.4,
+        cyclicalAmplitude: 0.5 
+      }
     };
 
     const currentScenario = scenarios[scenario as keyof typeof scenarios];
@@ -35,20 +50,40 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
       const months = i;
       const years = i / 12;
       
-      // Base trends
-      const inflationBase = currentInflation + (currentScenario.inflationTrend * years);
-      const interestBase = currentInterest + (currentScenario.rateTrend * years);
+      // Base trends with proper mathematical modeling
+      const inflationTrend = currentScenario.inflationTrend * months;
+      const rateTrend = currentScenario.rateTrend * months;
       
-      // Add cyclical components and randomness
-      const cyclical = Math.sin((months / 12) * 2 * Math.PI) * 0.3;
-      const randomFactor = (Math.random() - 0.5) * currentScenario.volatility;
+      // Economic cycles (business cycle is roughly 7-10 years)
+      const businessCycle = Math.sin((months / 84) * 2 * Math.PI) * currentScenario.cyclicalAmplitude;
+      const shortTermCycle = Math.sin((months / 12) * 2 * Math.PI) * (currentScenario.cyclicalAmplitude * 0.3);
       
-      const predictedInflation = Math.max(0, inflationBase + cyclical + randomFactor);
-      const predictedInterest = Math.max(0.25, interestBase + cyclical * 0.8 + randomFactor * 0.8);
+      // Box-Muller for normal distribution randomness
+      const u1 = Math.random();
+      const u2 = Math.random();
+      const normalRandom = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      const randomShock = normalRandom * currentScenario.volatility;
+      
+      // Mean reversion component (rates tend to revert to long term averages)
+      const longTermInflation = 2.5; // Historical average
+      const longTermRate = 4.5; // Historical average
+      const meanReversionInflation = (longTermInflation - currentInflation) * 0.02 * months;
+      const meanReversionRate = (longTermRate - currentInterest) * 0.02 * months;
+      
+      const predictedInflation = Math.max(0.1, 
+        currentInflation + inflationTrend + businessCycle + shortTermCycle + randomShock + meanReversionInflation
+      );
+      
+      const predictedInterest = Math.max(0.25, 
+        currentInterest + rateTrend + businessCycle * 1.2 + shortTermCycle * 0.8 + randomShock * 0.9 + meanReversionRate
+      );
       
       predictions.push({
         month: i,
-        date: new Date(Date.now() + i * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
+        date: new Date(Date.now() + i * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 
+          month: 'short', 
+          year: i < 24 ? '2-digit' : 'numeric' 
+        }),
         inflation: Number(predictedInflation.toFixed(2)),
         interestRate: Number(predictedInterest.toFixed(2)),
         realRate: Number((predictedInterest - predictedInflation).toFixed(2)),
@@ -105,19 +140,31 @@ export const RatePredictor: React.FC<RatePredictorProps> = ({
     {
       name: 'GDP Growth',
       current: 2.1,
-      predicted: scenario === 'optimistic' ? 3.2 : scenario === 'base' ? 2.4 : 1.1,
+      predicted: scenario === 'optimistic' ? 
+        2.1 + (Math.random() * 1.5 + 0.5) : // 2.6-4.1%
+        scenario === 'base' ? 
+        2.1 + (Math.random() * 0.8 - 0.2) : // 1.9-2.7%
+        2.1 + (Math.random() * 1.0 - 1.5), // 0.6-1.6%
       unit: '%'
     },
     {
       name: 'Unemployment',
       current: 3.8,
-      predicted: scenario === 'optimistic' ? 3.5 : scenario === 'base' ? 4.1 : 5.2,
+      predicted: scenario === 'optimistic' ? 
+        Math.max(3.0, 3.8 - (Math.random() * 0.5 + 0.2)) : // 3.0-3.6%
+        scenario === 'base' ? 
+        3.8 + (Math.random() * 0.8 - 0.3) : // 3.5-4.3%
+        3.8 + (Math.random() * 2.0 + 0.5), // 4.3-6.3%
       unit: '%'
     },
     {
       name: 'Consumer Confidence',
       current: 102,
-      predicted: scenario === 'optimistic' ? 115 : scenario === 'base' ? 105 : 85,
+      predicted: scenario === 'optimistic' ? 
+        102 + (Math.random() * 20 + 8) : // 110-130
+        scenario === 'base' ? 
+        102 + (Math.random() * 12 - 4) : // 98-110
+        102 - (Math.random() * 25 + 5), // 72-97
       unit: ''
     }
   ];

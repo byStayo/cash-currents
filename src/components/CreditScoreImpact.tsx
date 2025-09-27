@@ -29,25 +29,45 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
   };
 
   const calculateScoreImpact = () => {
-    const totalDebt = currentDebt[0] + newLoanAmount[0];
-    const newUtilization = creditUtilization[0] + (newLoanAmount[0] / 1000); // Simplified calculation
+    const currentDebtValue = currentDebt[0];
+    const newLoanValue = newLoanAmount[0];
+    const totalNewDebt = currentDebtValue + newLoanValue;
+    
+    // Estimate credit limit based on current utilization
+    const estimatedCreditLimit = currentDebtValue / (creditUtilization[0] / 100) || 10000;
+    const newUtilization = Math.min(100, (totalNewDebt / estimatedCreditLimit) * 100);
     
     let scoreChange = 0;
     
-    // Hard inquiry impact
-    scoreChange -= 5;
+    // Hard inquiry impact (temporary, 1-2 years)
+    scoreChange -= Math.min(10, Math.max(3, newLoanValue / 10000)); // 3-10 points based on loan size
     
-    // Credit utilization impact
-    if (newUtilization > 30) scoreChange -= 15;
-    else if (newUtilization > 10) scoreChange -= 5;
+    // Credit utilization impact (most important factor - 30% of score)
+    const utilizationImpact = newUtilization - creditUtilization[0];
+    if (newUtilization > 80) scoreChange -= 50;
+    else if (newUtilization > 50) scoreChange -= 30;
+    else if (newUtilization > 30) scoreChange -= 15;
+    else if (utilizationImpact > 10) scoreChange -= 8;
+    else if (utilizationImpact > 5) scoreChange -= 3;
     
-    // Debt-to-income considerations
-    if (newLoanAmount[0] > 50000) scoreChange -= 10;
+    // Credit mix improvement (if it's an installment loan and user has only credit cards)
+    if (newLoanValue > 5000 && currentDebtValue < 5000) {
+      scoreChange += 5; // Credit mix diversification bonus
+    }
     
-    // Age of accounts (new account)
-    scoreChange -= 3;
+    // Account age impact (new account lowers average age)
+    const accountAgeImpact = Math.min(15, currentScore[0] > 700 ? 8 : 5);
+    scoreChange -= accountAgeImpact;
     
-    return Math.max(scoreChange, -50); // Cap maximum decrease
+    // Debt-to-income considerations (estimated)
+    const estimatedIncome = 60000; // Default assumption
+    const debtToIncomeRatio = (totalNewDebt * 12) / estimatedIncome; // Assuming monthly payments are 1/12 of balance
+    if (debtToIncomeRatio > 0.5) scoreChange -= 25;
+    else if (debtToIncomeRatio > 0.36) scoreChange -= 15;
+    else if (debtToIncomeRatio > 0.28) scoreChange -= 8;
+    
+    // Cap the maximum negative impact
+    return Math.max(scoreChange, -100);
   };
 
   const scoreImpact = calculateScoreImpact();
@@ -56,11 +76,15 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
   const projectedRange = getCreditScoreRange(projectedScore);
 
   const getInterestRateByScore = (score: number) => {
-    if (score >= 800) return currentInterest - 2;
-    if (score >= 740) return currentInterest - 1;
-    if (score >= 670) return currentInterest;
-    if (score >= 580) return currentInterest + 2;
-    return currentInterest + 5;
+    // More realistic rate spreads based on 2024 market data
+    const baseRate = currentInterest;
+    
+    if (score >= 800) return Math.max(3.5, baseRate - 2.5); // Excellent credit
+    if (score >= 740) return Math.max(4.0, baseRate - 1.5); // Very good credit
+    if (score >= 670) return Math.max(4.5, baseRate - 0.5); // Good credit
+    if (score >= 580) return baseRate + 1.5; // Fair credit
+    if (score >= 500) return baseRate + 3.5; // Poor credit
+    return baseRate + 6.0; // Very poor credit
   };
 
   const currentRate = getInterestRateByScore(currentScore[0]);
