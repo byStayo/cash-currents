@@ -313,7 +313,8 @@
     border-radius: 12px;
     font-weight: 500;
     font-size: 16px;
-    padding: 0 20px;
+    padding: 0 24px;
+    margin: 8px 4px;
     transition: all 0.2s ease;
     background: rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -892,5 +893,35 @@
   /* Selection colors */
   ::selection {
     @apply bg-primary/20 text-primary-foreground;
+  }
+  
+  /* Enhanced button spacing and interactions */
+  .btn-spacing {
+    @apply px-6 py-3 mx-2 my-1;
+  }
+  
+  .btn-group {
+    @apply flex flex-wrap gap-3 items-center justify-center;
+  }
+  
+  .btn-group > * {
+    @apply flex-shrink-0;
+  }
+  
+  /* Professional tool card layout */
+  .tool-card {
+    @apply bg-card border border-border rounded-2xl p-6 space-y-4 transition-all duration-300 cursor-pointer hover:shadow-lg hover:border-primary/30 hover:bg-card-elevated focus-ring;
+  }
+  
+  .tool-card:hover {
+    @apply transform translate-y-[-2px];
+  }
+  
+  .tool-card:active {
+    @apply transform translate-y-0 scale-[0.98];
+  }
+  
+  .tool-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
   }
 }

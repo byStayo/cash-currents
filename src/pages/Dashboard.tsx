@@ -1,9 +1,8 @@
 import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
-import { TrendingUp, TrendingDown, BarChart3, ChevronDown, Info } from "lucide-react";
+import { TrendingUp, TrendingDown, BarChart3, ChevronDown, Info, Calculator, CreditCard, TrendingUp as Investment, Users, DollarSign, PieChart, Globe, Activity, Home, Shield, Receipt, Coins, Target, FileText } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import ScenarioComparison from "@/components/ScenarioComparison";
 import AssetOverlay from "@/components/AssetOverlay";
@@ -55,6 +54,7 @@ const Dashboard = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showProfessional, setShowProfessional] = useState(false);
+  const [selectedTool, setSelectedTool] = useState<string | null>(null);
   
   const historicalData = useMemo(() => generateHistoricalData(), []);
   
@@ -136,7 +136,7 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowAdvanced(!showAdvanced)}
               variant="outline"
-              className="gap-2 h-12 px-6 smooth-transition hover-scale focus-ring touch-feedback"
+              className="gap-2 h-12 px-8 btn-spacing smooth-transition hover-scale focus-ring touch-feedback"
               aria-expanded={showAdvanced}
               aria-controls="advanced-content"
             >
@@ -190,7 +190,7 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowHistory(!showHistory)}
               variant="outline"
-              className="gap-2 h-12 px-6 smooth-transition hover-scale focus-ring touch-feedback"
+              className="gap-2 h-12 px-8 btn-spacing smooth-transition hover-scale focus-ring touch-feedback"
               aria-expanded={showHistory}
               aria-controls="history-content"
             >
@@ -275,7 +275,7 @@ const Dashboard = () => {
           <div className="text-center">
             <Button
               onClick={() => setShowProfessional(!showProfessional)}
-              className="gap-2 h-12 px-6 smooth-transition hover-scale focus-ring touch-feedback premium-hover"
+              className="gap-2 h-12 px-8 btn-spacing smooth-transition hover-scale focus-ring touch-feedback premium-hover"
               aria-expanded={showProfessional}
               aria-controls="professional-content"
             >
@@ -296,148 +296,175 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <Tabs defaultValue="scenarios" className="w-full">
-                <div className="overflow-x-auto pb-2">
-                  <TabsList className="flex w-max gap-1 mx-auto focus-ring min-w-full md:min-w-max">
-                    <TabsTrigger value="scenarios" className="focus-ring flex-shrink-0">Scenarios</TabsTrigger>
-                    <TabsTrigger value="assets" className="focus-ring flex-shrink-0">Assets</TabsTrigger>
-                    <TabsTrigger value="portfolio" className="focus-ring flex-shrink-0">Portfolio</TabsTrigger>
-                    <TabsTrigger value="monte-carlo" className="focus-ring flex-shrink-0">Monte Carlo</TabsTrigger>
-                    <TabsTrigger value="sectors" className="focus-ring flex-shrink-0">Sectors</TabsTrigger>
-                    <TabsTrigger value="currency" className="focus-ring flex-shrink-0">Currency</TabsTrigger>
-                    <TabsTrigger value="indicators" className="focus-ring flex-shrink-0">Indicators</TabsTrigger>
-                    <TabsTrigger value="loan-calc" className="focus-ring flex-shrink-0">Loan Calc</TabsTrigger>
-                    <TabsTrigger value="approval" className="focus-ring flex-shrink-0">Approval</TabsTrigger>
-                    <TabsTrigger value="credit" className="focus-ring flex-shrink-0">Credit</TabsTrigger>
-                    <TabsTrigger value="risk" className="focus-ring flex-shrink-0">Risk</TabsTrigger>
-                    <TabsTrigger value="tax" className="focus-ring flex-shrink-0">Tax</TabsTrigger>
-                    <TabsTrigger value="debt" className="focus-ring flex-shrink-0">Debt</TabsTrigger>
-                    <TabsTrigger value="invest" className="focus-ring flex-shrink-0">Investment</TabsTrigger>
-                    <TabsTrigger value="predictor" className="focus-ring flex-shrink-0">Rate Predictor</TabsTrigger>
-                    <TabsTrigger value="export" className="focus-ring flex-shrink-0">Export</TabsTrigger>
-                  </TabsList>
+              {/* Tool Selection Grid */}
+              <div className="tool-grid">
+                {[
+                  { id: 'scenarios', name: 'Scenario Analysis', icon: BarChart3, description: 'Compare different financial scenarios' },
+                  { id: 'assets', name: 'Asset Overlay', icon: PieChart, description: 'Asset performance analysis' },
+                  { id: 'portfolio', name: 'Portfolio Integration', icon: Target, description: 'Portfolio optimization tools' },
+                  { id: 'monte-carlo', name: 'Monte Carlo', icon: Activity, description: 'Risk simulation modeling' },
+                  { id: 'sectors', name: 'Sector Analysis', icon: Users, description: 'Industry sector insights' },
+                  { id: 'currency', name: 'Currency Exchange', icon: Globe, description: 'Multi-currency analysis' },
+                  { id: 'indicators', name: 'Market Indicators', icon: TrendingUp, description: 'Advanced market signals' },
+                  { id: 'loan-calc', name: 'Loan Calculator', icon: Calculator, description: 'Comprehensive loan calculations' },
+                  { id: 'approval', name: 'Loan Approval', icon: Shield, description: 'Credit approval assessment' },
+                  { id: 'credit', name: 'Credit Impact', icon: CreditCard, description: 'Credit score analysis' },
+                  { id: 'risk', name: 'Risk Assessment', icon: Shield, description: 'Personal risk evaluation' },
+                  { id: 'tax', name: 'Tax Implications', icon: Receipt, description: 'Tax impact analysis' },
+                  { id: 'debt', name: 'Debt Consolidation', icon: Coins, description: 'Debt optimization strategies' },
+                  { id: 'invest', name: 'Investment Comparison', icon: Investment, description: 'Investment option analysis' },
+                  { id: 'predictor', name: 'Rate Predictor', icon: TrendingUp, description: 'Interest rate forecasting' },
+                  { id: 'export', name: 'Export Tools', icon: FileText, description: 'Data export and reporting' }
+                ].map((tool) => (
+                  <div
+                    key={tool.id}
+                    className={`tool-card ${selectedTool === tool.id ? 'border-primary bg-primary/5' : ''}`}
+                    onClick={() => setSelectedTool(selectedTool === tool.id ? null : tool.id)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedTool(selectedTool === tool.id ? null : tool.id);
+                      }
+                    }}
+                    aria-pressed={selectedTool === tool.id}
+                  >
+                    <div className="flex items-center gap-3">
+                      <tool.icon className="h-6 w-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <h4 className="font-semibold text-foreground truncate">{tool.name}</h4>
+                        <p className="text-sm text-muted-foreground line-clamp-2">{tool.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Selected Tool Display */}
+              {selectedTool && (
+                <div className="mt-8 animate-fade-in">
+                  {selectedTool === 'scenarios' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
+                      <ScenarioComparison currentInflation={currentData.inflation} />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'assets' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <AssetOverlay selectedYear={selectedYear} onYearChange={setSelectedYear} />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'portfolio' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
+                      <PortfolioIntegration 
+                        currentInflation={currentData.inflation}
+                        loanImpact={undefined}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'monte-carlo' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <MonteCarloSimulation 
+                        currentInflation={customInflation[0]}
+                        customInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'sectors' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
+                      <SectorAnalysis 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'currency' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <CurrencyExchange 
+                        baseInflation={customInflation[0]}
+                        baseInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'indicators' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <AdvancedMarketIndicators />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'loan-calc' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
+                      <LoanCalculator />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'approval' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                      <LoanApprovalTool />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'credit' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                      <CreditScoreImpact 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'tax' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <TaxImplications 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'debt' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
+                      <DebtConsolidation />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'invest' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <InvestmentComparison 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'risk' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                      <RiskAssessment />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'predictor' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                      <RatePredictor 
+                        currentInflation={customInflation[0]}
+                        currentInterest={customInterest[0]}
+                      />
+                    </ErrorBoundary>
+                  )}
+                  
+                  {selectedTool === 'export' && (
+                    <ErrorBoundary fallback={<SkeletonLoader type="list" />}>
+                      <ExportTools data={historicalData} scenarios={[]} />
+                    </ErrorBoundary>
+                  )}
                 </div>
-                
-                <TabsContent value="scenarios" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
-                    <ScenarioComparison currentInflation={currentData.inflation} />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="assets" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <AssetOverlay selectedYear={selectedYear} onYearChange={setSelectedYear} />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="portfolio" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
-                    <PortfolioIntegration 
-                      currentInflation={currentData.inflation}
-                      loanImpact={undefined}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="monte-carlo" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <MonteCarloSimulation 
-                      currentInflation={customInflation[0]}
-                      customInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="sectors" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="professional" />}>
-                    <SectorAnalysis 
-                      currentInflation={customInflation[0]}
-                      currentInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="currency" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <CurrencyExchange 
-                      baseInflation={customInflation[0]}
-                      baseInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="indicators" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <AdvancedMarketIndicators />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="loan-calc" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
-                    <LoanCalculator />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="approval" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
-                    <LoanApprovalTool />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="credit" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
-                    <CreditScoreImpact 
-                      currentInflation={customInflation[0]}
-                      currentInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="tax" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <TaxImplications 
-                      currentInflation={customInflation[0]}
-                      currentInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="debt" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
-                    <DebtConsolidation />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="invest" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <InvestmentComparison 
-                      currentInflation={customInflation[0]}
-                      currentInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="risk" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
-                    <RiskAssessment />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="predictor" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
-                    <RatePredictor 
-                      currentInflation={customInflation[0]}
-                      currentInterest={customInterest[0]}
-                    />
-                  </ErrorBoundary>
-                </TabsContent>
-                
-                <TabsContent value="tools" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="list" />}>
-                    <ExportTools data={historicalData} scenarios={[]} />
-                  </ErrorBoundary>
-                </TabsContent>
-              </Tabs>
+              )}
             </CollapsibleContent>
           </Collapsible>
         </aside>
