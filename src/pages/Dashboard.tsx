@@ -20,6 +20,7 @@ import { DebtConsolidation } from "@/components/DebtConsolidation";
 import { InvestmentComparison } from "@/components/InvestmentComparison";
 import { RiskAssessment } from "@/components/RiskAssessment";
 import { RatePredictor } from "@/components/RatePredictor";
+import { LoanApprovalTool } from "@/components/LoanApprovalTool";
 import { AnswerCard } from "@/components/shared/AnswerCard";
 import { InteractiveControls } from "@/components/shared/InteractiveControls";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
@@ -306,6 +307,7 @@ const Dashboard = () => {
                     <TabsTrigger value="currency" className="focus-ring flex-shrink-0">Currency</TabsTrigger>
                     <TabsTrigger value="indicators" className="focus-ring flex-shrink-0">Indicators</TabsTrigger>
                     <TabsTrigger value="loan-calc" className="focus-ring flex-shrink-0">Loan Calc</TabsTrigger>
+                    <TabsTrigger value="approval" className="focus-ring flex-shrink-0">Approval</TabsTrigger>
                     <TabsTrigger value="credit" className="focus-ring flex-shrink-0">Credit</TabsTrigger>
                     <TabsTrigger value="risk" className="focus-ring flex-shrink-0">Risk</TabsTrigger>
                     <TabsTrigger value="tax" className="focus-ring flex-shrink-0">Tax</TabsTrigger>
@@ -373,6 +375,12 @@ const Dashboard = () => {
                 <TabsContent value="loan-calc" className="mt-6">
                   <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
                     <LoanCalculator />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="approval" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="metrics" />}>
+                    <LoanApprovalTool />
                   </ErrorBoundary>
                 </TabsContent>
                 
