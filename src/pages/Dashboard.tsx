@@ -284,12 +284,15 @@ const Dashboard = () => {
               </div>
 
               <Tabs defaultValue="scenarios" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
-                  <TabsTrigger value="scenarios">Scenarios</TabsTrigger>
-                  <TabsTrigger value="assets">Assets</TabsTrigger>
-                  <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-                  <TabsTrigger value="simulation">Simulation</TabsTrigger>
-                  <TabsTrigger value="tools">Export</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 lg:grid-cols-8 gap-1">
+                  <TabsTrigger value="scenarios" className="text-xs">Scenarios</TabsTrigger>
+                  <TabsTrigger value="assets" className="text-xs">Assets</TabsTrigger>
+                  <TabsTrigger value="portfolio" className="text-xs">Portfolio</TabsTrigger>
+                  <TabsTrigger value="monte-carlo" className="text-xs">Monte Carlo</TabsTrigger>
+                  <TabsTrigger value="sectors" className="text-xs">Sectors</TabsTrigger>
+                  <TabsTrigger value="currency" className="text-xs">Currency</TabsTrigger>
+                  <TabsTrigger value="indicators" className="text-xs">Indicators</TabsTrigger>
+                  <TabsTrigger value="tools" className="text-xs">Export</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="scenarios" className="mt-6">
@@ -313,25 +316,36 @@ const Dashboard = () => {
                   </ErrorBoundary>
                 </TabsContent>
                 
-                <TabsContent value="simulation" className="mt-6">
-                  <ErrorBoundary fallback={<SkeletonLoader type="chart" count={2} />}>
-                    <div className="space-y-6">
-                      <div className="grid lg:grid-cols-2 gap-6">
-                        <MonteCarloSimulation 
-                          currentInflation={customInflation[0]}
-                          customInterest={customInterest[0]}
-                        />
-                        <SectorAnalysis 
-                          currentInflation={customInflation[0]}
-                          currentInterest={customInterest[0]}
-                        />
-                      </div>
-                      <CurrencyExchange 
-                        baseInflation={customInflation[0]}
-                        baseInterest={customInterest[0]}
-                      />
-                      <AdvancedMarketIndicators />
-                    </div>
+                <TabsContent value="monte-carlo" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <MonteCarloSimulation 
+                      currentInflation={customInflation[0]}
+                      customInterest={customInterest[0]}
+                    />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="sectors" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <SectorAnalysis 
+                      currentInflation={customInflation[0]}
+                      currentInterest={customInterest[0]}
+                    />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="currency" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <CurrencyExchange 
+                      baseInflation={customInflation[0]}
+                      baseInterest={customInterest[0]}
+                    />
+                  </ErrorBoundary>
+                </TabsContent>
+                
+                <TabsContent value="indicators" className="mt-6">
+                  <ErrorBoundary fallback={<SkeletonLoader type="chart" />}>
+                    <AdvancedMarketIndicators />
                   </ErrorBoundary>
                 </TabsContent>
                 
