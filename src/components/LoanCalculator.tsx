@@ -36,7 +36,18 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({
   const monthlyPayment = calculateMonthlyPayment();
   const totalPayment = monthlyPayment * loanTerm[0] * 12;
   const totalInterest = totalPayment - (loanAmount[0] - downPayment[0]);
-  const realCostWithInflation = monthlyPayment * Math.pow(1 + currentInflation / 100, loanTerm[0]);
+  
+  // Calculate inflation-adjusted real cost properly
+  const realInterestRate = ((1 + (interestRate[0] / 100)) / (1 + (currentInflation / 100))) - 1;
+  const realMonthlyRate = realInterestRate / 12;
+  const principal = loanAmount[0] - downPayment[0];
+  const numPayments = loanTerm[0] * 12;
+  
+  // Real monthly payment in today's purchasing power
+  const realMonthlyPayment = realMonthlyRate === 0 
+    ? principal / numPayments 
+    : principal * (realMonthlyRate * Math.pow(1 + realMonthlyRate, numPayments)) / 
+      (Math.pow(1 + realMonthlyRate, numPayments) - 1);
 
   return (
     <Card className="w-full">
@@ -140,10 +151,13 @@ export const LoanCalculator: React.FC<LoanCalculatorProps> = ({
 
                 <div className="pt-4 border-t">
                   <div className="text-xs text-muted-foreground mb-1">
-                    Inflation-Adjusted Real Cost*
+                    Real Monthly Payment (Today's Purchasing Power)*
                   </div>
                   <div className="text-sm font-medium">
-                    ${realCostWithInflation.toLocaleString('en-US', { maximumFractionDigits: 0 })}/month in today's dollars
+                    ${Math.abs(realMonthlyPayment).toLocaleString('en-US', { maximumFractionDigits: 0 })}/month
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {realInterestRate < 0 ? 'Inflation benefit: ' + Math.abs(realInterestRate * 100).toFixed(2) + '%' : 'Real cost: ' + (realInterestRate * 100).toFixed(2) + '%'}
                   </div>
                 </div>
               </CardContent>

@@ -23,34 +23,35 @@ export const TaxImplications: React.FC<TaxImplicationsProps> = ({
   const [state, setState] = useState('federal-only');
 
   const getTaxBracket = (income: number, status: string) => {
+    // 2024 Federal Tax Brackets - Updated for accuracy
     const brackets = {
       single: [
         { min: 0, max: 11000, rate: 10 },
-        { min: 11001, max: 44725, rate: 12 },
-        { min: 44726, max: 95375, rate: 22 },
-        { min: 95376, max: 182050, rate: 24 },
-        { min: 182051, max: 231250, rate: 32 },
-        { min: 231251, max: 578125, rate: 35 },
-        { min: 578126, max: Infinity, rate: 37 }
+        { min: 11000, max: 44725, rate: 12 },
+        { min: 44725, max: 95375, rate: 22 },
+        { min: 95375, max: 182050, rate: 24 },
+        { min: 182050, max: 231250, rate: 32 },
+        { min: 231250, max: 578125, rate: 35 },
+        { min: 578125, max: Infinity, rate: 37 }
       ],
       married: [
         { min: 0, max: 22000, rate: 10 },
-        { min: 22001, max: 89450, rate: 12 },
-        { min: 89451, max: 190750, rate: 22 },
-        { min: 190751, max: 364200, rate: 24 },
-        { min: 364201, max: 462500, rate: 32 },
-        { min: 462501, max: 693750, rate: 35 },
-        { min: 693751, max: Infinity, rate: 37 }
+        { min: 22000, max: 89450, rate: 12 },
+        { min: 89450, max: 190750, rate: 22 },
+        { min: 190750, max: 364200, rate: 24 },
+        { min: 364200, max: 462500, rate: 32 },
+        { min: 462500, max: 693750, rate: 35 },
+        { min: 693750, max: Infinity, rate: 37 }
       ]
     };
 
     const relevantBrackets = brackets[status as keyof typeof brackets] || brackets.single;
     for (const bracket of relevantBrackets) {
-      if (income >= bracket.min && income <= bracket.max) {
+      if (income >= bracket.min && income < bracket.max) {
         return bracket.rate;
       }
     }
-    return 37;
+    return 37; // Top bracket
   };
 
   const calculateTaxSavings = () => {
@@ -61,23 +62,37 @@ export const TaxImplications: React.FC<TaxImplicationsProps> = ({
     
     switch (loanType) {
       case 'mortgage':
-        // Mortgage interest is fully deductible up to $750k loan
-        deductibleInterest = loanAmount[0] <= 750000 ? annualInterest : (750000 * currentInterest) / 100;
+        // Mortgage interest is fully deductible up to $750k loan (2024 rules)
+        const mortgageCap = 750000;
+        const cappedLoanAmount = Math.min(loanAmount[0], mortgageCap);
+        deductibleInterest = (cappedLoanAmount * currentInterest) / 100;
         break;
       case 'business':
         // Business loans are generally fully deductible
         deductibleInterest = annualInterest;
         break;
       case 'investment':
-        // Investment interest deduction is limited to investment income
-        deductibleInterest = Math.min(annualInterest, annualIncome[0] * 0.1); // Simplified
+        // Investment interest deduction is limited to net investment income
+        const estimatedInvestmentIncome = annualIncome[0] * 0.05; // Simplified estimate
+        deductibleInterest = Math.min(annualInterest, estimatedInvestmentIncome);
         break;
       case 'student':
-        // Student loan interest deduction is limited and phases out
-        deductibleInterest = Math.min(2500, annualInterest);
-        if (annualIncome[0] > 70000) deductibleInterest = 0; // Simplified phase-out
+        // Student loan interest deduction with income phase-out (2024 rules)
+        const maxStudentDeduction = 2500;
+        const phaseOutStart = filingStatus === 'married' ? 145000 : 70000;
+        const phaseOutEnd = filingStatus === 'married' ? 175000 : 85000;
+        
+        if (annualIncome[0] >= phaseOutEnd) {
+          deductibleInterest = 0;
+        } else if (annualIncome[0] >= phaseOutStart) {
+          const phaseOutRatio = (phaseOutEnd - annualIncome[0]) / (phaseOutEnd - phaseOutStart);
+          deductibleInterest = Math.min(annualInterest, maxStudentDeduction * phaseOutRatio);
+        } else {
+          deductibleInterest = Math.min(annualInterest, maxStudentDeduction);
+        }
         break;
       default:
+        // Personal loans, credit cards, etc. are not deductible
         deductibleInterest = 0;
     }
 

@@ -59,18 +59,36 @@ export const DebtConsolidation: React.FC<DebtConsolidationProps> = ({
     const totalMinPayments = debts.reduce((sum, debt) => sum + debt.minPayment, 0);
     const weightedAvgRate = debts.reduce((sum, debt) => sum + (debt.rate * debt.balance), 0) / totalBalance;
 
-    // Current scenario (minimum payments)
+    // Current scenario (minimum payments) - handle edge cases
     const currentTotalInterest = debts.reduce((sum, debt) => {
       const monthlyRate = debt.rate / 100 / 12;
+      
+      // Handle edge cases where payment might be too low or rate is zero
+      if (monthlyRate === 0) {
+        return sum + 0; // No interest if rate is 0
+      }
+      
+      const monthlyInterest = debt.balance * monthlyRate;
+      if (debt.minPayment <= monthlyInterest) {
+        // Payment doesn't cover interest - use approximation for very long payoff
+        const estimatedMonths = Math.min(600, debt.balance / (debt.minPayment * 0.1)); // Cap at 50 years
+        return sum + (debt.minPayment * estimatedMonths - debt.balance);
+      }
+      
       const months = Math.log(1 + (debt.balance * monthlyRate) / debt.minPayment) / Math.log(1 + monthlyRate);
-      return sum + (debt.minPayment * months - debt.balance);
+      const validMonths = Math.min(Math.max(months, 1), 600); // Between 1 month and 50 years
+      return sum + (debt.minPayment * validMonths - debt.balance);
     }, 0);
 
-    // Consolidation scenario
+    // Consolidation scenario - handle zero rate case
     const consolidationMonthlyRate = consolidationRate / 100 / 12;
     const consolidationMonths = consolidationTerm * 12;
-    const consolidationPayment = totalBalance * (consolidationMonthlyRate * Math.pow(1 + consolidationMonthlyRate, consolidationMonths)) / 
-                                (Math.pow(1 + consolidationMonthlyRate, consolidationMonths) - 1);
+    
+    const consolidationPayment = consolidationMonthlyRate === 0 
+      ? totalBalance / consolidationMonths
+      : totalBalance * (consolidationMonthlyRate * Math.pow(1 + consolidationMonthlyRate, consolidationMonths)) / 
+        (Math.pow(1 + consolidationMonthlyRate, consolidationMonths) - 1);
+    
     const consolidationTotalInterest = (consolidationPayment * consolidationMonths) - totalBalance;
 
     // Savings calculation
@@ -117,18 +135,46 @@ export const DebtConsolidation: React.FC<DebtConsolidationProps> = ({
   const payoffTimeline = () => {
     const timeline = [];
     for (let year = 1; year <= 10; year++) {
+      // Calculate remaining balance for current strategy (individual debts)
       const currentRemaining = debts.reduce((sum, debt) => {
         const monthlyRate = debt.rate / 100 / 12;
         const months = year * 12;
-        const remaining = Math.max(0, debt.balance * Math.pow(1 + monthlyRate, months) - 
-                         debt.minPayment * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate));
+        
+        if (monthlyRate === 0) {
+          // No interest case
+          const remaining = Math.max(0, debt.balance - (debt.minPayment * months));
+          return sum + remaining;
+        }
+        
+        // Standard amortization formula for remaining balance
+        const monthlyInterest = debt.balance * monthlyRate;
+        if (debt.minPayment <= monthlyInterest) {
+          // Payment barely covers interest - balance grows
+          const remaining = debt.balance * Math.pow(1 + monthlyRate, months);
+          return sum + remaining;
+        }
+        
+        // Calculate remaining balance after payments
+        const futureValue = debt.minPayment * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+        const compoundedBalance = debt.balance * Math.pow(1 + monthlyRate, months);
+        const remaining = Math.max(0, compoundedBalance - futureValue);
         return sum + remaining;
       }, 0);
 
-      const consolidatedRemaining = Math.max(0, 
-        scenarios.current.totalBalance * Math.pow(1 + consolidationRate/100/12, year * 12) -
-        scenarios.consolidated.monthlyPayment * ((Math.pow(1 + consolidationRate/100/12, year * 12) - 1) / (consolidationRate/100/12))
-      );
+      // Calculate remaining balance for consolidated loan
+      const consolidationMonthlyRate = consolidationRate / 100 / 12;
+      const months = year * 12;
+      
+      let consolidatedRemaining = 0;
+      if (consolidationMonthlyRate === 0) {
+        // No interest case
+        consolidatedRemaining = Math.max(0, scenarios.current.totalBalance - (scenarios.consolidated.monthlyPayment * months));
+      } else {
+        // Standard amortization for remaining balance
+        const futureValue = scenarios.consolidated.monthlyPayment * ((Math.pow(1 + consolidationMonthlyRate, months) - 1) / consolidationMonthlyRate);
+        const compoundedBalance = scenarios.current.totalBalance * Math.pow(1 + consolidationMonthlyRate, months);
+        consolidatedRemaining = Math.max(0, compoundedBalance - futureValue);
+      }
 
       timeline.push({
         year,

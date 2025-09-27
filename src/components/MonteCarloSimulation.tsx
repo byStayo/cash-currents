@@ -31,13 +31,19 @@ const MonteCarloSimulation: React.FC<MonteCarloProps> = ({
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<SimulationResult[]>([]);
 
-  // Generate random walk for economic variables
+  // Generate random walk for economic variables with proper statistical properties
   const generateRandomWalk = (initial: number, years: number, volatility: number) => {
     const path = [initial];
     for (let i = 1; i < years; i++) {
-      const shock = (Math.random() - 0.5) * 2 * volatility;
-      const meanReversion = (initial - path[i-1]) * 0.1; // Slight mean reversion
-      const nextValue = Math.max(0, path[i-1] + shock + meanReversion);
+      // Use Box-Muller for better normal distribution
+      const u1 = Math.random();
+      const u2 = Math.random();
+      const normalRandom = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      
+      const shock = normalRandom * volatility;
+      const meanReversion = (initial - path[i-1]) * 0.15; // Stronger mean reversion
+      const drift = initial * 0.02; // Small drift towards long-term average
+      const nextValue = Math.max(0.1, path[i-1] + shock + meanReversion + drift);
       path.push(nextValue);
     }
     return path;
@@ -54,19 +60,23 @@ const MonteCarloSimulation: React.FC<MonteCarloProps> = ({
       
       for (let sim = batch * batchSize; sim < Math.min((batch + 1) * batchSize, simulations); sim++) {
         const inflationPath = generateRandomWalk(currentInflation, years, volatility);
-        const interestPath = generateRandomWalk(customInterest, years, volatility * 0.8);
+        const interestPath = generateRandomWalk(customInterest, years, volatility * 0.9); // Interest rates slightly less volatile
         
         let cumulativeBenefit = 0;
         for (let year = 0; year < years; year++) {
-          const netBenefit = inflationPath[year] - interestPath[year];
-          cumulativeBenefit += netBenefit;
+          // Calculate net benefit with proper discounting
+          const annualBenefit = inflationPath[year] - interestPath[year];
+          const discountFactor = Math.pow(1.03, -(year + 1)); // 3% discount rate
+          const presentValueBenefit = annualBenefit * discountFactor;
+          
+          cumulativeBenefit += presentValueBenefit;
           
           batchResults.push({
             scenario: sim,
             year,
             inflationRate: inflationPath[year],
             interestRate: interestPath[year],
-            netBenefit,
+            netBenefit: annualBenefit,
             cumulativeBenefit
           });
         }

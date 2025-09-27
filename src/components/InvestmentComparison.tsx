@@ -41,30 +41,51 @@ export const InvestmentComparison: React.FC<InvestmentComparisonProps> = ({
     const years = timeHorizon[0];
     const variability = getInvestmentVariability(investmentType);
 
-    // Scenario 1: Pay down debt
-    const debtPaydownValue = amount; // Immediate guaranteed return
-    const debtPaydownBenefit = amount * rate * years; // Interest saved over time
+    // Scenario 1: Pay down debt (compound interest saved)
+    const debtPaydownValue = amount * Math.pow(1 + rate, years); // Future value of debt avoided
+    const debtPaydownBenefit = debtPaydownValue - amount; // Interest saved over time
 
-    // Scenario 2: Invest the money
+    // Scenario 2: Invest the money (compound growth)
     const investmentValue = amount * Math.pow(1 + expectedReturn, years);
     const investmentGain = investmentValue - amount;
 
-    // Risk scenarios for investment
+    // Risk scenarios for investment (compound growth)
     const conservativeReturn = amount * Math.pow(1 + (variability.min / 100), years);
     const optimisticReturn = amount * Math.pow(1 + (variability.max / 100), years);
 
-    // Net comparison (investment return minus loan cost)
-    const netReturn = investmentGain - (amount * rate * years);
+    // Net present value comparison with proper discounting
+    const discountRate = 0.03; // 3% discount rate
+    const npvDebtPaydown = debtPaydownBenefit / Math.pow(1 + discountRate, years);
+    const npvInvestment = investmentGain / Math.pow(1 + discountRate, years);
+    const netReturn = npvInvestment - npvDebtPaydown;
+    
     const breakEvenReturn = rate * 100; // Required return to break even
 
-    // Risk-adjusted analysis
-    const probabilityOfSuccess = expectedReturn > rate ? 0.65 : 0.35; // Simplified probability
+    // Monte Carlo simulation for success probability  
+    const numSimulations = 1000;
+    let successfulOutcomes = 0;
+    
+    for (let i = 0; i < numSimulations; i++) {
+      // Generate random return based on investment type variability
+      const randomMultiplier = 0.5 + Math.random(); // 0.5 to 1.5 range
+      const simulatedReturn = (variability.min + Math.random() * (variability.max - variability.min)) / 100 * randomMultiplier;
+      
+      // Calculate compound value over time horizon
+      const finalValue = amount * Math.pow(1 + simulatedReturn, years);
+      const loanCost = amount * Math.pow(1 + rate, years);
+      
+      if (finalValue > loanCost) {
+        successfulOutcomes++;
+      }
+    }
+    
+    const probabilityOfSuccess = successfulOutcomes / numSimulations;
 
     return {
       debtPaydown: {
-        value: debtPaydownValue,
+        value: amount,
         benefit: debtPaydownBenefit,
-        totalValue: amount + debtPaydownBenefit,
+        totalValue: debtPaydownValue,
         guaranteedReturn: rate * 100
       },
       investment: {
@@ -84,20 +105,21 @@ export const InvestmentComparison: React.FC<InvestmentComparisonProps> = ({
   const scenarios = calculateScenarios();
   const variability = getInvestmentVariability(investmentType);
 
-  // Generate timeline data
+  // Generate timeline data with proper compound calculations
   const timelineData = [];
   for (let year = 1; year <= timeHorizon[0]; year++) {
-    const debtValue = availableAmount[0] + (availableAmount[0] * (loanRate[0] / 100) * year);
-    const investmentExpected = availableAmount[0] * Math.pow(1 + (investmentReturn[0] / 100), year);
-    const investmentConservative = availableAmount[0] * Math.pow(1 + (variability.min / 100), year);
-    const investmentOptimistic = availableAmount[0] * Math.pow(1 + (variability.max / 100), year);
+    // Compound growth for debt paydown (interest savings)
+    const debtPaydownValue = availableAmount[0] * Math.pow(1 + loanRate[0] / 100, year);
+    const conservativeValue = availableAmount[0] * Math.pow(1 + variability.min / 100, year);
+    const expectedValue = availableAmount[0] * Math.pow(1 + investmentReturn[0] / 100, year);
+    const optimisticValue = availableAmount[0] * Math.pow(1 + variability.max / 100, year);
 
     timelineData.push({
       year,
-      'Debt Paydown': debtValue,
-      'Expected Investment': investmentExpected,
-      'Conservative Case': investmentConservative,
-      'Optimistic Case': investmentOptimistic
+      'Debt Paydown': debtPaydownValue,
+      'Expected Investment': expectedValue,
+      'Conservative Case': conservativeValue,
+      'Optimistic Case': optimisticValue
     });
   }
 
