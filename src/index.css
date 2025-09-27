@@ -162,153 +162,233 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Mobile optimization variables */
-    --mobile-nav-height: 60px;
-    --mobile-padding: 16px;
-    --mobile-card-spacing: 12px;
-    --mobile-text-scale: 0.9;
+    /* Apple-inspired Mobile optimization variables */
+    --mobile-nav-height: 44px;
+    --mobile-padding: 20px;
+    --mobile-card-spacing: 16px;
+    --mobile-text-scale: 1;
+    --mobile-touch-target: 44px;
+    --mobile-border-radius: 16px;
+    --mobile-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08);
   }
 }
 
-/* Enhanced Mobile Optimization */
+/* Apple-inspired Mobile Optimization - Premium mobile experience */
 @media (max-width: 768px) {
+  /* Apple-style mobile containers */
   .glass-card {
-    padding: var(--mobile-card-spacing);
+    padding: var(--mobile-padding);
     margin: var(--mobile-card-spacing) 0;
+    border-radius: var(--mobile-border-radius);
+    box-shadow: var(--mobile-shadow);
   }
   
-  /* Better grid responsiveness */
-  .grid-cols-5 {
+  /* Perfect grid responsiveness - Apple style */
+  .grid-cols-15 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.25rem;
+  }
+  
+  .grid-cols-8 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
   }
   
-  .grid-cols-4 {
+  .grid-cols-5, .grid-cols-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
   }
   
-  .grid-cols-3 {
+  .grid-cols-3, .grid-cols-2 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0.75rem;
   }
   
-  .grid-cols-2 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+  /* Apple Typography - Perfect mobile scaling */
+  .text-5xl, .text-4xl {
+    font-size: 2.25rem;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
   
-  /* Typography scaling */
-  .text-5xl {
-    font-size: 2.5rem;
-  }
-  
-  .text-4xl {
-    font-size: 2rem;
+  .text-3xl {
+    font-size: 1.875rem;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   
   .text-2xl {
     font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 600;
   }
   
-  /* Button adjustments */
-  .h-12 {
-    height: 2.5rem;
+  .text-xl {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    font-weight: 500;
   }
   
-  /* Chart container adjustments */
+  .text-lg {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  
+  /* Apple-style buttons - Perfect touch targets */
+  .h-12, .h-11 {
+    height: var(--mobile-touch-target);
+    min-height: var(--mobile-touch-target);
+  }
+  
+  /* Enhanced mobile padding */
+  .p-6 {
+    padding: var(--mobile-padding);
+  }
+  
+  .p-4 {
+    padding: calc(var(--mobile-padding) * 0.75);
+  }
+  
+  .px-6, .px-8 {
+    padding-left: var(--mobile-padding);
+    padding-right: var(--mobile-padding);
+  }
+  
+  .py-8 {
+    padding-top: calc(var(--mobile-padding) * 1.5);
+    padding-bottom: calc(var(--mobile-padding) * 1.5);
+  }
+  
+  /* Chart optimizations */
   .recharts-wrapper {
-    font-size: calc(var(--mobile-text-scale) * 12px);
+    font-size: 13px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
   
-  /* Chart text consistency - standardized typography */
   .recharts-cartesian-axis-tick-value {
     font-size: 12px;
     fill: hsl(var(--muted-foreground));
-    font-family: inherit;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
   }
   
   .recharts-tooltip-wrapper {
     font-size: 14px;
-    font-family: inherit;
+    font-family: 'Inter', sans-serif;
+    border-radius: 12px;
   }
   
   .recharts-legend-item-text {
     font-size: 13px !important;
     fill: hsl(var(--foreground)) !important;
-    font-family: inherit;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
   }
   
-  .recharts-label {
-    font-size: 12px;
-    fill: hsl(var(--muted-foreground));
-    font-family: inherit;
-  }
-  
-  /* Tab adjustments */
+  /* Mobile tabs - Apple style */
   [data-state="active"] {
-    font-size: calc(var(--mobile-text-scale) * 14px);
+    font-size: 14px;
+    font-weight: 600;
   }
   
-  /* Slider adjustments for mobile */
-  .slider-container {
-    padding: var(--mobile-padding);
-  }
-  
-  /* Reduce padding on cards for mobile */
-  .backdrop-blur-md {
-    padding: calc(var(--mobile-card-spacing) * 1.5);
-  }
-  
-  /* Mobile-specific spacing */
+  /* Mobile-specific spacing - Apple rhythm */
   .space-y-8 > * + * {
-    margin-top: 1.5rem;
+    margin-top: calc(var(--mobile-padding) * 1.25);
   }
   
   .space-y-6 > * + * {
-    margin-top: 1rem;
+    margin-top: var(--mobile-padding);
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: calc(var(--mobile-padding) * 0.75);
+  }
+  
+  /* Apple-style mobile interactions */
+  .interactive-element:active {
+    transform: scale(0.96);
+    transition: transform 0.1s ease-out;
+  }
+  
+  /* Enhanced mobile cards */
+  .card-hover:hover {
+    transform: none; /* Disable hover effects on mobile */
+  }
+  
+  .card-hover:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
   }
 }
 
 @media (max-width: 640px) {
-  /* Further optimize for smaller tablets */
+  /* Apple-style small screen optimizations */
+  .grid-cols-15, .grid-cols-8 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  
   .grid-cols-2 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   
-  .px-8 {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  /* Enhanced mobile spacing */
+  .gap-8, .gap-6 {
+    gap: calc(var(--mobile-padding) * 0.75);
   }
   
-  .gap-8 {
-    gap: 1rem;
+  /* Mobile header adjustments */
+  .py-8 {
+    padding-top: calc(var(--mobile-padding) * 1.25);
+    padding-bottom: calc(var(--mobile-padding) * 1.25);
   }
 }
 
 @media (max-width: 480px) {
+  /* Ultra-mobile Apple experience */
   .glass-card {
-    padding: calc(var(--mobile-card-spacing) * 0.75);
+    padding: calc(var(--mobile-padding) * 0.85);
+    margin: calc(var(--mobile-card-spacing) * 0.75) 0;
   }
   
-  /* Further reduce text sizes on very small screens */
+  /* Perfect typography for small screens */
+  .text-5xl, .text-4xl {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  
+  .text-3xl {
+    font-size: 1.75rem;
+    line-height: 1.15;
+  }
+  
   .text-lg {
-    font-size: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.4;
   }
   
   .text-xl {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
   }
   
-  /* Make charts more mobile friendly */
+  /* Ultra-mobile charts */
   .recharts-wrapper {
-    font-size: 10px;
+    font-size: 12px;
   }
   
-  /* Optimize button sizes */
-  .h-11 {
-    height: 2.25rem;
+  /* Maintain touch targets */
+  .h-11, .h-12 {
+    height: var(--mobile-touch-target);
   }
   
-  .px-8 {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+  /* Ultra-mobile padding */
+  .px-8, .px-6 {
+    padding-left: calc(var(--mobile-padding) * 0.75);
+    padding-right: calc(var(--mobile-padding) * 0.75);
   }
 }
 
@@ -471,6 +551,16 @@
   .error-shake {
     animation: shake 0.5s ease-in-out;
   }
+  
+  /* Mobile scrollbar hide */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer base {
@@ -479,9 +569,13 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-image: var(--background-gradient);
     background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   
   /* Typography enhancements */

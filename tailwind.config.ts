@@ -89,6 +89,12 @@ export default {
         },
       },
       
+      fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['SF Pro Display', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['JetBrains Mono', 'SF Mono', 'Monaco', 'monospace'],
+      },
+      
       backgroundImage: {
         "glass-gradient": "var(--glass-gradient)",
         "card-gradient": "var(--card-gradient)",

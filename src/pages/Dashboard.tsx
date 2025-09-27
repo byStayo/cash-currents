@@ -70,35 +70,35 @@ const Dashboard = () => {
   const impactLevel = Math.abs(differenceValue);
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 pb-8 md:pb-12">
         {/* Skip link for accessibility */}
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
 
         {/* Header with Dual Appeal */}
-        <header className="text-center space-y-6 py-8">
-          <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
+        <header className="text-center space-y-4 md:space-y-6 py-6 md:py-8 px-4">
+          <div className="space-y-3 md:space-y-2">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-foreground tracking-tight leading-tight">
               Should I Borrow Money?
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
               Smart borrowing decisions made simple
             </p>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm text-muted-foreground px-4">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-beneficial" aria-hidden="true"></div>
-              <span>Real-time analysis</span>
+              <div className="w-2 h-2 rounded-full bg-beneficial animate-pulse" aria-hidden="true"></div>
+              <span className="font-medium">Real-time analysis</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></div>
-              <span>Historical data</span>
+              <span className="font-medium">Historical data</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-accent-foreground" aria-hidden="true"></div>
-              <span>Professional tools</span>
+              <span className="font-medium">Professional tools</span>
             </div>
           </div>
         </header>
@@ -113,7 +113,7 @@ const Dashboard = () => {
           />
 
           {/* Interactive Controls */}
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8 px-4 md:px-0">
             <InteractiveControls
               customInflation={customInflation}
               setCustomInflation={setCustomInflation}
@@ -125,52 +125,54 @@ const Dashboard = () => {
         </main>
 
         {/* Tiered Information Architecture */}
-        <aside className="space-y-6">
+        <aside className="space-y-4 md:space-y-6 px-4 md:px-0">
           {/* Level 1: Basic Understanding */}
           <div className="text-center">
             <Button 
               variant="outline" 
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="gap-2 button-hover focus-ring"
+              className="gap-2 button-hover focus-ring h-12 md:h-11 px-6 md:px-4 text-sm md:text-base font-medium"
               aria-expanded={showAdvanced}
               aria-controls="advanced-content"
             >
               <Info className="h-4 w-4" aria-hidden="true" />
               {showAdvanced ? 'Hide Details' : 'Learn How This Works'}
-              <ChevronDown className={`h-4 w-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} aria-hidden="true" />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showAdvanced ? 'rotate-180' : ''}`} aria-hidden="true" />
             </Button>
           </div>
 
           <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
-            <CollapsibleContent className="space-y-6" id="advanced-content">
-              <Card className="p-6 card-hover state-transition">
-                <h3 className="text-lg font-semibold mb-4 text-center">Understanding the Basics</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3 p-4 bg-beneficial/5 rounded-lg border border-beneficial/20">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-beneficial" aria-hidden="true" />
-                      <h4 className="font-semibold text-beneficial">Good Time to Borrow</h4>
+            <CollapsibleContent className="space-y-4 md:space-y-6 animate-fade-in-up" id="advanced-content">
+              <Card className="glass-card card-hover state-transition">
+                <div className="p-4 md:p-6">
+                  <h3 className="text-lg font-semibold mb-4 text-center font-display">Understanding the Basics</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="space-y-3 p-4 bg-beneficial/5 rounded-2xl border border-beneficial/20 interactive-element">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-beneficial" aria-hidden="true" />
+                        <h4 className="font-semibold text-beneficial">Good Time to Borrow</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        When inflation is higher than your loan rate, inflation essentially helps pay off your debt. 
+                        Each dollar you owe becomes worth less over time.
+                      </p>
+                      <div className="text-xs text-beneficial font-medium bg-beneficial/10 px-3 py-2 rounded-lg">
+                        Example: 6% inflation, 4% loan rate = 2% benefit per year
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      When inflation is higher than your loan rate, inflation essentially helps pay off your debt. 
-                      Each dollar you owe becomes worth less over time.
-                    </p>
-                    <div className="text-xs text-beneficial font-medium">
-                      Example: 6% inflation, 4% loan rate = 2% benefit per year
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3 p-4 bg-risk/5 rounded-lg border border-risk/20">
-                    <div className="flex items-center gap-2">
-                      <TrendingDown className="h-5 w-5 text-risk" aria-hidden="true" />
-                      <h4 className="font-semibold text-risk">Wait for Better Rates</h4>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      When loan rates exceed inflation, you're paying a real cost. 
-                      Your payments hurt more than inflation helps.
-                    </p>
-                    <div className="text-xs text-risk font-medium">
-                      Example: 3% inflation, 7% loan rate = 4% real cost per year
+                    
+                    <div className="space-y-3 p-4 bg-risk/5 rounded-2xl border border-risk/20 interactive-element">
+                      <div className="flex items-center gap-2">
+                        <TrendingDown className="h-5 w-5 text-risk" aria-hidden="true" />
+                        <h4 className="font-semibold text-risk">Wait for Better Rates</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        When loan rates exceed inflation, you're paying a real cost. 
+                        Your payments hurt more than inflation helps.
+                      </p>
+                      <div className="text-xs text-risk font-medium bg-risk/10 px-3 py-2 rounded-lg">
+                        Example: 3% inflation, 7% loan rate = 4% real cost per year
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -183,13 +185,13 @@ const Dashboard = () => {
             <Button 
               variant="outline" 
               onClick={() => setShowHistory(!showHistory)}
-              className="gap-2 button-hover focus-ring"
+              className="gap-2 button-hover focus-ring h-12 md:h-11 px-6 md:px-4 text-sm md:text-base font-medium"
               aria-expanded={showHistory}
               aria-controls="history-content"
             >
               <BarChart3 className="h-4 w-4" aria-hidden="true" />
               {showHistory ? 'Hide History' : 'See Historical Trends'}
-              <ChevronDown className={`h-4 w-4 transition-transform ${showHistory ? 'rotate-180' : ''}`} aria-hidden="true" />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showHistory ? 'rotate-180' : ''}`} aria-hidden="true" />
             </Button>
           </div>
 
@@ -269,45 +271,47 @@ const Dashboard = () => {
             <Button 
               variant="outline" 
               onClick={() => setShowProfessional(!showProfessional)}
-              className="gap-2 button-hover focus-ring"
+              className="gap-2 button-hover focus-ring h-12 md:h-11 px-6 md:px-4 text-sm md:text-base font-medium"
               aria-expanded={showProfessional}
               aria-controls="professional-content"
             >
               <BarChart3 className="h-4 w-4" aria-hidden="true" />
               {showProfessional ? 'Hide Professional Tools' : 'Advanced Analysis & Simulations'}
-              <ChevronDown className={`h-4 w-4 transition-transform ${showProfessional ? 'rotate-180' : ''}`} aria-hidden="true" />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showProfessional ? 'rotate-180' : ''}`} aria-hidden="true" />
             </Button>
           </div>
 
           <Collapsible open={showProfessional} onOpenChange={setShowProfessional}>
-            <CollapsibleContent className="space-y-6" id="professional-content">
-              <div className="bg-gradient-to-r from-primary/5 to-beneficial/5 p-4 rounded-lg border border-primary/20">
+            <CollapsibleContent className="space-y-4 md:space-y-6 animate-fade-in-up" id="professional-content">
+              <div className="bg-gradient-to-r from-primary/5 to-beneficial/5 p-4 md:p-6 rounded-2xl border border-primary/10">
                 <div className="text-center space-y-2">
-                  <h3 className="text-lg font-semibold">Professional Financial Analysis</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="text-lg md:text-xl font-semibold font-display">Professional Financial Analysis</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">
                     Advanced tools for financial advisors, investors, and detailed personal analysis
                   </p>
                 </div>
               </div>
 
               <Tabs defaultValue="scenarios" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 xl:grid-cols-15 gap-1">
-                  <TabsTrigger value="scenarios" className="text-xs">Scenarios</TabsTrigger>
-                  <TabsTrigger value="assets" className="text-xs">Assets</TabsTrigger>
-                  <TabsTrigger value="portfolio" className="text-xs">Portfolio</TabsTrigger>
-                  <TabsTrigger value="monte-carlo" className="text-xs">Monte Carlo</TabsTrigger>
-                  <TabsTrigger value="sectors" className="text-xs">Sectors</TabsTrigger>
-                  <TabsTrigger value="currency" className="text-xs">Currency</TabsTrigger>
-                  <TabsTrigger value="indicators" className="text-xs">Indicators</TabsTrigger>
-                  <TabsTrigger value="loan-calc" className="text-xs">Loan Calc</TabsTrigger>
-                  <TabsTrigger value="credit" className="text-xs">Credit</TabsTrigger>
-                  <TabsTrigger value="tax" className="text-xs">Tax</TabsTrigger>
-                  <TabsTrigger value="debt" className="text-xs">Debt</TabsTrigger>
-                  <TabsTrigger value="invest" className="text-xs">Invest</TabsTrigger>
-                  <TabsTrigger value="risk" className="text-xs">Risk</TabsTrigger>
-                  <TabsTrigger value="predictor" className="text-xs">Predictor</TabsTrigger>
-                  <TabsTrigger value="tools" className="text-xs">Export</TabsTrigger>
-                </TabsList>
+                <div className="overflow-x-auto scrollbar-hide pb-2">
+                  <TabsList className="grid w-max grid-cols-15 gap-1 mx-auto min-w-full">
+                    <TabsTrigger value="scenarios" className="text-xs whitespace-nowrap px-3">Scenarios</TabsTrigger>
+                    <TabsTrigger value="assets" className="text-xs whitespace-nowrap px-3">Assets</TabsTrigger>
+                    <TabsTrigger value="portfolio" className="text-xs whitespace-nowrap px-3">Portfolio</TabsTrigger>
+                    <TabsTrigger value="monte-carlo" className="text-xs whitespace-nowrap px-3">Monte Carlo</TabsTrigger>
+                    <TabsTrigger value="sectors" className="text-xs whitespace-nowrap px-3">Sectors</TabsTrigger>
+                    <TabsTrigger value="currency" className="text-xs whitespace-nowrap px-3">Currency</TabsTrigger>
+                    <TabsTrigger value="indicators" className="text-xs whitespace-nowrap px-3">Indicators</TabsTrigger>
+                    <TabsTrigger value="loan-calc" className="text-xs whitespace-nowrap px-3">Loan Calc</TabsTrigger>
+                    <TabsTrigger value="credit" className="text-xs whitespace-nowrap px-3">Credit</TabsTrigger>
+                    <TabsTrigger value="tax" className="text-xs whitespace-nowrap px-3">Tax</TabsTrigger>
+                    <TabsTrigger value="debt" className="text-xs whitespace-nowrap px-3">Debt</TabsTrigger>
+                    <TabsTrigger value="invest" className="text-xs whitespace-nowrap px-3">Invest</TabsTrigger>
+                    <TabsTrigger value="risk" className="text-xs whitespace-nowrap px-3">Risk</TabsTrigger>
+                    <TabsTrigger value="predictor" className="text-xs whitespace-nowrap px-3">Predictor</TabsTrigger>
+                    <TabsTrigger value="tools" className="text-xs whitespace-nowrap px-3">Export</TabsTrigger>
+                  </TabsList>
+                </div>
                 
                 <TabsContent value="scenarios" className="mt-6">
                   <ErrorBoundary fallback={<SkeletonLoader type="card" />}>
