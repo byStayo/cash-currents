@@ -13,6 +13,7 @@ interface MarketIndicator {
   change: number;
   status: 'bullish' | 'bearish' | 'neutral';
   description: string;
+  confidence?: number;
 }
 
 interface YieldCurvePoint {

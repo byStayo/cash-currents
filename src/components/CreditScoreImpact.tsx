@@ -192,145 +192,145 @@ export const CreditScoreImpact: React.FC<CreditScoreImpactProps> = ({
           <TabsContent value="impact" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="current-score">Current Credit Score: {currentScore[0]}</Label>
-              <Slider
-                id="current-score"
-                min={300}
-                max={850}
-                step={5}
-                value={currentScore}
-                onValueChange={setCurrentScore}
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="credit-utilization">Credit Utilization: {creditUtilization[0]}%</Label>
-              <Slider
-                id="credit-utilization"
-                min={0}
-                max={100}
-                step={1}
-                value={creditUtilization}
-                onValueChange={setCreditUtilization}
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="new-loan">New Loan Amount: ${newLoanAmount[0].toLocaleString()}</Label>
-              <Slider
-                id="new-loan"
-                min={5000}
-                max={100000}
-                step={1000}
-                value={newLoanAmount}
-                onValueChange={setNewLoanAmount}
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="current-debt">Current Debt: ${currentDebt[0].toLocaleString()}</Label>
-              <Slider
-                id="current-debt"
-                min={0}
-                max={50000}
-                step={1000}
-                value={currentDebt}
-                onValueChange={setCurrentDebt}
-                className="mt-2"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-sm text-muted-foreground">Current Score</div>
-                      <div className="text-2xl font-bold">{currentScore[0]}</div>
-                      <Badge variant="outline" className={currentRange.textColor}>
-                        {currentRange.range}
-                      </Badge>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-muted-foreground">Projected Score</div>
-                      <div className="text-2xl font-bold flex items-center gap-2">
-                        {projectedScore}
-                        {scoreImpact < 0 ? (
-                          <TrendingDown className="h-5 w-5 text-destructive" />
-                        ) : scoreImpact > 0 ? (
-                          <TrendingUp className="h-5 w-5 text-beneficial" />
-                        ) : null}
-                      </div>
-                      <Badge variant="outline" className={projectedRange.textColor}>
-                        {projectedRange.range}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Score Change</span>
-                      <span className={scoreImpact < 0 ? 'text-destructive font-semibold' : 'text-beneficial font-semibold'}>
-                        {scoreImpact > 0 ? '+' : ''}{scoreImpact} points
-                      </span>
-                    </div>
-                    <Progress value={Math.max(0, 100 + (scoreImpact / 50) * 100)} className="h-2" />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                    <div>
-                      <div className="text-xs text-muted-foreground">Current Rate</div>
-                      <div className="text-lg font-semibold">{currentRate.toFixed(2)}%</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground">Projected Rate</div>
-                      <div className="text-lg font-semibold">{projectedRate.toFixed(2)}%</div>
-                    </div>
-                  </div>
+                <div>
+                  <Label htmlFor="current-score">Current Credit Score: {currentScore[0]}</Label>
+                  <Slider
+                    id="current-score"
+                    min={300}
+                    max={850}
+                    step={5}
+                    value={currentScore}
+                    onValueChange={setCurrentScore}
+                    className="mt-2"
+                  />
                 </div>
-              </CardContent>
-            </Card>
 
-              <div className="bg-accent/50 p-4 rounded-lg">
-                <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4" />
-                  Advanced Impact Factors
-                </h4>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-risk rounded-full"></div>
-                      <span>Hard inquiry:</span>
+                <div>
+                  <Label htmlFor="credit-utilization">Credit Utilization: {creditUtilization[0]}%</Label>
+                  <Slider
+                    id="credit-utilization"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={creditUtilization}
+                    onValueChange={setCreditUtilization}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="new-loan">New Loan Amount: ${newLoanAmount[0].toLocaleString()}</Label>
+                  <Slider
+                    id="new-loan"
+                    min={5000}
+                    max={100000}
+                    step={1000}
+                    value={newLoanAmount}
+                    onValueChange={setNewLoanAmount}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="current-debt">Current Debt: ${currentDebt[0].toLocaleString()}</Label>
+                  <Slider
+                    id="current-debt"
+                    min={0}
+                    max={50000}
+                    step={1000}
+                    value={currentDebt}
+                    onValueChange={setCurrentDebt}
+                    className="mt-2"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="text-sm text-muted-foreground">Current Score</div>
+                          <div className="text-2xl font-bold">{currentScore[0]}</div>
+                          <Badge variant="outline" className={currentRange.textColor}>
+                            {currentRange.range}
+                          </Badge>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-muted-foreground">Projected Score</div>
+                          <div className="text-2xl font-bold flex items-center gap-2">
+                            {projectedScore}
+                            {scoreImpact < 0 ? (
+                              <TrendingDown className="h-5 w-5 text-destructive" />
+                            ) : scoreImpact > 0 ? (
+                              <TrendingUp className="h-5 w-5 text-beneficial" />
+                            ) : null}
+                          </div>
+                          <Badge variant="outline" className={projectedRange.textColor}>
+                            {projectedRange.range}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Score Change</span>
+                          <span className={scoreImpact < 0 ? 'text-destructive font-semibold' : 'text-beneficial font-semibold'}>
+                            {scoreImpact > 0 ? '+' : ''}{scoreImpact} points
+                          </span>
+                        </div>
+                        <Progress value={Math.max(0, 100 + (scoreImpact / 50) * 100)} className="h-2" />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+                        <div>
+                          <div className="text-xs text-muted-foreground">Current Rate</div>
+                          <div className="text-lg font-semibold">{currentRate.toFixed(2)}%</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground">Projected Rate</div>
+                          <div className="text-lg font-semibold">{projectedRate.toFixed(2)}%</div>
+                        </div>
+                      </div>
                     </div>
-                    <span className="font-medium">{advancedAnalysis.breakdown.hardInquiry} points</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-warning rounded-full"></div>
-                      <span>Credit utilization:</span>
+                  </CardContent>
+                </Card>
+
+                <div className="bg-accent/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4" />
+                    Advanced Impact Factors
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-risk rounded-full"></div>
+                        <span>Hard inquiry:</span>
+                      </div>
+                      <span className="font-medium">{advancedAnalysis.breakdown.hardInquiry} points</span>
                     </div>
-                    <span className="font-medium">{advancedAnalysis.breakdown.utilization} points</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-beneficial rounded-full"></div>
-                      <span>Credit mix improvement:</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-warning rounded-full"></div>
+                        <span>Credit utilization:</span>
+                      </div>
+                      <span className="font-medium">{advancedAnalysis.breakdown.utilization} points</span>
                     </div>
-                    <span className="font-medium">+{advancedAnalysis.breakdown.creditMix} points</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span>Account age impact:</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-beneficial rounded-full"></div>
+                        <span>Credit mix improvement:</span>
+                      </div>
+                      <span className="font-medium">+{advancedAnalysis.breakdown.creditMix} points</span>
                     </div>
-                    <span className="font-medium">{advancedAnalysis.breakdown.accountAge} points</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <span>Account age impact:</span>
+                      </div>
+                      <span className="font-medium">{advancedAnalysis.breakdown.accountAge} points</span>
+                    </div>
                   </div>
                 </div>
               </div>
