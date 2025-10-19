@@ -14,7 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      economic_indicators: {
+        Row: {
+          country_code: string
+          created_at: string
+          date: string
+          id: string
+          indicator_type: string
+          source: string | null
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          country_code: string
+          created_at?: string
+          date: string
+          id?: string
+          indicator_type: string
+          source?: string | null
+          updated_at?: string
+          value: number
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          date?: string
+          id?: string
+          indicator_type?: string
+          source?: string | null
+          updated_at?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      exchange_rates: {
+        Row: {
+          base_currency: string
+          created_at: string
+          date: string
+          id: string
+          rate: number
+          target_currency: string
+        }
+        Insert: {
+          base_currency: string
+          created_at?: string
+          date: string
+          id?: string
+          rate: number
+          target_currency: string
+        }
+        Update: {
+          base_currency?: string
+          created_at?: string
+          date?: string
+          id?: string
+          rate?: number
+          target_currency?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

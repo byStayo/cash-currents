@@ -54,8 +54,8 @@ const Dashboard = () => {
   const { data: economicData, isLoading, refetch } = useEconomicData();
   const { toast } = useToast();
   const [selectedYear, setSelectedYear] = useState(2024);
-  const [customInflation, setCustomInflation] = useState([3.2]);
-  const [customInterest, setCustomInterest] = useState([5.8]);
+  const [customInflation, setCustomInflation] = useState<number[]>([]);
+  const [customInterest, setCustomInterest] = useState<number[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showProfessional, setShowProfessional] = useState(false);
@@ -65,11 +65,18 @@ const Dashboard = () => {
   // Enhanced historical data generation with more realistic patterns
   const historicalData = useMemo(() => generateHistoricalData(), []);
   
-  // Current economic conditions with proper mathematical calculation
+  // Current economic conditions - use live data when available, custom values when user adjusts sliders
   const currentData = useMemo(() => {
     const yearData = historicalData.find(d => d.year === selectedYear);
-    const inflationRate = economicData?.inflation || yearData?.inflation || customInflation[0];
-    const interestRate = economicData?.interestRate || yearData?.interestRate || customInterest[0];
+    
+    // Priority: custom values (if set by user) > live data > historical data > defaults
+    const inflationRate = customInflation.length > 0 
+      ? customInflation[0] 
+      : economicData?.inflation ?? yearData?.inflation ?? 3.2;
+    
+    const interestRate = customInterest.length > 0 
+      ? customInterest[0] 
+      : economicData?.interestRate ?? yearData?.interestRate ?? 7.5;
     
     // Core mathematical logic: borrowing is beneficial when inflation > interest rate
     const beneficial = inflationRate > interestRate;
@@ -83,10 +90,8 @@ const Dashboard = () => {
 
   // Real-time calculation of interest rate differential with proper reactivity
   const differenceValue = useMemo(() => {
-    const interest = economicData?.interestRate || customInterest[0];
-    const inflation = economicData?.inflation || customInflation[0];
-    return interest - inflation;
-  }, [customInterest, customInflation, economicData]);
+    return currentData.interestRate - currentData.inflation;
+  }, [currentData]);
   
   const impactLevel = useMemo(() => {
     return Math.abs(differenceValue);
@@ -113,10 +118,11 @@ const Dashboard = () => {
   };
 
   console.log('Dashboard calculations:', {
-    inflation: customInflation[0],
-    interestRate: customInterest[0],
+    inflation: currentData.inflation,
+    interestRate: currentData.interestRate,
     beneficial: currentData.beneficial,
-    difference: differenceValue
+    difference: differenceValue,
+    usingLiveData: !customInflation.length && !customInterest.length && !!economicData
   });
 
   return (
@@ -171,9 +177,9 @@ const Dashboard = () => {
         <main id="main-content" className="space-y-6">
           <div className="animate-scale-in">
             <AnswerCard 
-              beneficial={customInflation[0] > customInterest[0]}
-              inflationRate={customInflation[0]}
-              interestRate={customInterest[0]}
+              beneficial={currentData.beneficial}
+              inflationRate={currentData.inflation}
+              interestRate={currentData.interestRate}
               difference={differenceValue}
             />
           </div>
@@ -181,9 +187,9 @@ const Dashboard = () => {
           {/* Interactive Controls */}
           <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <InteractiveControls
-              customInflation={customInflation}
+              customInflation={customInflation.length > 0 ? customInflation : [currentData.inflation]}
               setCustomInflation={setCustomInflation}
-              customInterest={customInterest}
+              customInterest={customInterest.length > 0 ? customInterest : [currentData.interestRate]}
               setCustomInterest={setCustomInterest}
               differenceValue={differenceValue}
             />
