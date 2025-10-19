@@ -1,1 +1,4 @@
 project_id = "eganxvnmgmvedrpnswuh"
+
+[functions.fetch-economic-data]
+verify_jwt = false
