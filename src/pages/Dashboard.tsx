@@ -2,8 +2,10 @@ import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
-import { TrendingUp, TrendingDown, BarChart3, ChevronDown, Info, Calculator, CreditCard, TrendingUp as Investment, Users, DollarSign, PieChart, Globe, Activity, Home, Shield, Receipt, Coins, Target, FileText } from "lucide-react";
+import { TrendingUp, TrendingDown, BarChart3, ChevronDown, Info, Calculator, CreditCard, TrendingUp as Investment, Users, DollarSign, PieChart, Globe, Activity, Home, Shield, Receipt, Coins, Target, FileText, RefreshCw } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useEconomicData, fetchLiveEconomicData } from "@/hooks/useEconomicData";
+import { useToast } from "@/hooks/use-toast";
 import ScenarioComparison from "@/components/ScenarioComparison";
 import AssetOverlay from "@/components/AssetOverlay";
 import ExportTools from "@/components/ExportTools";
@@ -49,6 +51,8 @@ const generateHistoricalData = () => {
 };
 
 const Dashboard = () => {
+  const { data: economicData, isLoading, refetch } = useEconomicData();
+  const { toast } = useToast();
   const [selectedYear, setSelectedYear] = useState(2024);
   const [customInflation, setCustomInflation] = useState([3.2]);
   const [customInterest, setCustomInterest] = useState([5.8]);
@@ -56,6 +60,7 @@ const Dashboard = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showProfessional, setShowProfessional] = useState(false);
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   
   // Enhanced historical data generation with more realistic patterns
   const historicalData = useMemo(() => generateHistoricalData(), []);
@@ -63,8 +68,8 @@ const Dashboard = () => {
   // Current economic conditions with proper mathematical calculation
   const currentData = useMemo(() => {
     const yearData = historicalData.find(d => d.year === selectedYear);
-    const inflationRate = yearData?.inflation || customInflation[0];
-    const interestRate = yearData?.interestRate || customInterest[0];
+    const inflationRate = economicData?.inflation || yearData?.inflation || customInflation[0];
+    const interestRate = economicData?.interestRate || yearData?.interestRate || customInterest[0];
     
     // Core mathematical logic: borrowing is beneficial when inflation > interest rate
     const beneficial = inflationRate > interestRate;
@@ -74,16 +79,38 @@ const Dashboard = () => {
       interestRate: interestRate,
       beneficial,
     };
-  }, [selectedYear, customInflation, customInterest, historicalData]);
+  }, [selectedYear, customInflation, customInterest, historicalData, economicData]);
 
   // Real-time calculation of interest rate differential with proper reactivity
   const differenceValue = useMemo(() => {
-    return customInterest[0] - customInflation[0];
-  }, [customInterest, customInflation]);
+    const interest = economicData?.interestRate || customInterest[0];
+    const inflation = economicData?.inflation || customInflation[0];
+    return interest - inflation;
+  }, [customInterest, customInflation, economicData]);
   
   const impactLevel = useMemo(() => {
     return Math.abs(differenceValue);
   }, [differenceValue]);
+
+  const handleRefreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      await fetchLiveEconomicData();
+      await refetch();
+      toast({
+        title: "Data Updated",
+        description: "Economic data has been refreshed successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Update Failed",
+        description: "Could not fetch latest economic data. Using cached data.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   console.log('Dashboard calculations:', {
     inflation: customInflation[0],
@@ -115,8 +142,20 @@ const Dashboard = () => {
           <div className="flex items-center justify-center gap-4 md:gap-6 text-sm">
             <div className="flex items-center gap-2 smooth-transition hover:scale-105">
               <div className="w-2 h-2 rounded-full bg-beneficial animate-pulse"></div>
-              <span className="font-medium text-muted-foreground">Real-time</span>
+              <span className="font-medium text-muted-foreground">
+                {economicData ? `Live • ${new Date(economicData.lastUpdated).toLocaleTimeString()}` : 'Real-time'}
+              </span>
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleRefreshData}
+              disabled={isRefreshing || isLoading}
+              className="gap-2 h-8"
+            >
+              <RefreshCw className={`h-3 w-3 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
             <div className="flex items-center gap-2 smooth-transition hover:scale-105">
               <div className="w-2 h-2 rounded-full bg-primary"></div>
               <span className="font-medium text-muted-foreground">Historical</span>
