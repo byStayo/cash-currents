@@ -101,15 +101,17 @@ const Dashboard = () => {
     setIsRefreshing(true);
     try {
       await fetchLiveEconomicData();
-      await refetch();
+      const result = await refetch();
+      const data = result.data;
       toast({
         title: "Data Updated",
-        description: "Economic data has been refreshed successfully.",
+        description: `Latest: Inflation ${data?.inflation.toFixed(2)}%, Interest ${data?.interestRate.toFixed(2)}%`,
       });
     } catch (error) {
+      console.error('Refresh error:', error);
       toast({
         title: "Update Failed",
-        description: "Could not fetch latest economic data. Using cached data.",
+        description: "Could not fetch latest data. Using cached values.",
         variant: "destructive",
       });
     } finally {
