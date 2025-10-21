@@ -77,6 +77,21 @@ const AdvancedMarketIndicators = () => {
     { grade: 'B', spread: 4.95, change: 0.25 }
   ], []);
 
+  // Helper function for indicator descriptions
+  const getIndicatorDescription = (name: string): string => {
+    const descriptions: Record<string, string> = {
+      'Fed Funds Rate': 'Federal Reserve benchmark interest rate',
+      'VIX': 'CBOE Volatility Index - "Fear Gauge"',
+      'Term Spread (10Y-2Y)': 'Yield curve slope indicator',
+      'DXY': 'US Dollar Index vs basket of currencies',
+      'MOVE Index': 'Bond market volatility index',
+      'Real Yield (10Y TIPS)': 'Inflation-protected Treasury yield',
+      'Credit Spread (HYG)': 'High-yield bond spread over Treasuries',
+      'Implied Forward Rate': 'Market-implied future interest rates'
+    };
+    return descriptions[name] || 'Economic indicator';
+  };
+
   // Advanced economic indicators with AI-driven analysis
   const economicIndicators: MarketIndicator[] = useMemo(() => {
     const baseIndicators = [
@@ -116,20 +131,6 @@ const AdvancedMarketIndicators = () => {
       };
     });
   }, [realTimeData, marketRegime]);
-
-  const getIndicatorDescription = (name: string): string => {
-    const descriptions: Record<string, string> = {
-      'Fed Funds Rate': 'Federal Reserve benchmark interest rate',
-      'VIX': 'CBOE Volatility Index - "Fear Gauge"',
-      'Term Spread (10Y-2Y)': 'Yield curve slope indicator',
-      'DXY': 'US Dollar Index vs basket of currencies',
-      'MOVE Index': 'Bond market volatility index',
-      'Real Yield (10Y TIPS)': 'Inflation-protected Treasury yield',
-      'Credit Spread (HYG)': 'High-yield bond spread over Treasuries',
-      'Implied Forward Rate': 'Market-implied future interest rates'
-    };
-    return descriptions[name] || 'Economic indicator';
-  };
 
   // Advanced market regime analysis
   const marketAnalysis = useMemo(() => {
