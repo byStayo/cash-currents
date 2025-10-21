@@ -223,8 +223,8 @@ const Dashboard = () => {
         {/* AI Advisor Card */}
         <div className="animate-fade-in">
           <AIAdvisor 
-            inflation={currentData.inflation} 
-            interestRate={currentData.interestRate} 
+            currentInflation={currentData.inflation} 
+            currentInterest={currentData.interestRate} 
           />
         </div>
 

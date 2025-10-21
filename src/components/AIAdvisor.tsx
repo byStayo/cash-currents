@@ -7,11 +7,11 @@ import { Brain, Loader2, Sparkles } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface AIAdvisorProps {
-  inflation: number;
-  interestRate: number;
+  currentInflation?: number;
+  currentInterest?: number;
 }
 
-const AIAdvisor = ({ inflation, interestRate }: AIAdvisorProps) => {
+const AIAdvisor = ({ currentInflation = 3.2, currentInterest = 7.5 }: AIAdvisorProps) => {
   const [advice, setAdvice] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -21,8 +21,8 @@ const AIAdvisor = ({ inflation, interestRate }: AIAdvisorProps) => {
     try {
       const { data, error } = await supabase.functions.invoke('ai-financial-advisor', {
         body: {
-          inflation,
-          interestRate,
+          inflation: currentInflation,
+          interestRate: currentInterest,
           userContext: "General financial planning and investment advice"
         }
       });
@@ -97,7 +97,7 @@ const AIAdvisor = ({ inflation, interestRate }: AIAdvisorProps) => {
         </Button>
 
         <div className="text-xs text-muted-foreground text-center">
-          Powered by Lovable AI • Current Inflation: {inflation}% • Interest Rate: {interestRate}%
+          Powered by Lovable AI • Current Inflation: {currentInflation}% • Interest Rate: {currentInterest}%
         </div>
       </CardContent>
     </Card>

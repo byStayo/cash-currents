@@ -151,12 +151,8 @@ const ToolPage = () => {
 
       <div className="max-w-5xl">
         <ToolComponent
-          inflation={economicData?.inflation || 3.2}
-          interestRate={economicData?.interestRate || 7.5}
           currentInflation={economicData?.inflation || 3.2}
           currentInterest={economicData?.interestRate || 7.5}
-          baseInflation={economicData?.inflation || 3.2}
-          baseInterest={economicData?.interestRate || 7.5}
         />
       </div>
     </div>

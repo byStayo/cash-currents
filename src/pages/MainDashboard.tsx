@@ -161,8 +161,6 @@ const MainDashboard = () => {
                   <X className="h-4 w-4" />
                 </Button>
                 <WidgetComponent
-                  inflation={economicData?.inflation || 3.2}
-                  interestRate={economicData?.interestRate || 7.5}
                   currentInflation={economicData?.inflation || 3.2}
                   currentInterest={economicData?.interestRate || 7.5}
                 />
