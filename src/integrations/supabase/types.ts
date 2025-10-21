@@ -139,6 +139,44 @@ export type Database = {
           },
         ]
       }
+      user_widgets: {
+        Row: {
+          created_at: string
+          id: string
+          is_visible: boolean
+          position: number
+          updated_at: string
+          user_id: string
+          widget_key: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          position?: number
+          updated_at?: string
+          user_id: string
+          widget_key: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          position?: number
+          updated_at?: string
+          user_id?: string
+          widget_key?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_widgets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
