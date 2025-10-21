@@ -25,8 +25,9 @@ serve(async (req) => {
     let currentInterestRate = 7.5; // Default fallback for mortgage rates
     
     try {
-      // Try to fetch from Federal Reserve Economic Data API (free, no key needed for basic access)
-      const fredResponse = await fetch('https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&api_key=demo&file_type=json&sort_order=desc&limit=1')
+      // Fetch from Federal Reserve Economic Data API using your API key
+      const fredApiKey = Deno.env.get('FRED_API_KEY');
+      const fredResponse = await fetch(`https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&api_key=${fredApiKey}&file_type=json&sort_order=desc&limit=1`)
         .catch(() => null);
       
       if (fredResponse?.ok) {
