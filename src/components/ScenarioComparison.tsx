@@ -119,22 +119,6 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
     setScenarios(scenarios.filter(s => s.id !== id));
   };
 
-  // Enhanced comparison data with more metrics
-  const comparisonData = scenarios.map(scenario => {
-    const metrics = calculateScenarioMetrics(scenario);
-    return {
-      name: scenario.name,
-      realCost: metrics.realCostAdjustment,
-      monthlyPayment: metrics.monthlyPayment,
-      totalCost: metrics.totalCost,
-      netBenefit: metrics.netRealCost,
-      taxSavings: metrics.taxSavings,
-      effectiveRate: metrics.effectiveInterestRate,
-      beneficial: metrics.inflationBenefit,
-      riskScore: calculateRiskScore(scenario, metrics)
-    };
-  });
-
   // Risk scoring function
   const calculateRiskScore = (scenario: Scenario, metrics: ReturnType<typeof calculateScenarioMetrics>) => {
     let score = 50; // Base score
@@ -161,6 +145,22 @@ const ScenarioComparison = ({ currentInflation }: ScenarioComparisonProps) => {
     
     return Math.max(0, Math.min(100, score));
   };
+
+  // Enhanced comparison data with more metrics
+  const comparisonData = scenarios.map(scenario => {
+    const metrics = calculateScenarioMetrics(scenario);
+    return {
+      name: scenario.name,
+      realCost: metrics.realCostAdjustment,
+      monthlyPayment: metrics.monthlyPayment,
+      totalCost: metrics.totalCost,
+      netBenefit: metrics.netRealCost,
+      taxSavings: metrics.taxSavings,
+      effectiveRate: metrics.effectiveInterestRate,
+      beneficial: metrics.inflationBenefit,
+      riskScore: calculateRiskScore(scenario, metrics)
+    };
+  });
 
   return (
     <Card className="backdrop-blur-md bg-card-gradient border-glass-border shadow-glass animate-fade-in">
