@@ -2,3 +2,6 @@ project_id = "eganxvnmgmvedrpnswuh"
 
 [functions.fetch-economic-data]
 verify_jwt = false
+
+[functions.ai-financial-advisor]
+verify_jwt = false

@@ -1,11 +1,15 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { TrendingUp, TrendingDown, BarChart3, ChevronDown, Info, Calculator, CreditCard, TrendingUp as Investment, Users, DollarSign, PieChart, Globe, Activity, Home, Shield, Receipt, Coins, Target, FileText, RefreshCw } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useEconomicData, fetchLiveEconomicData } from "@/hooks/useEconomicData";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import Header from "@/components/Header";
+import AIAdvisor from "@/components/AIAdvisor";
 import ScenarioComparison from "@/components/ScenarioComparison";
 import AssetOverlay from "@/components/AssetOverlay";
 import ExportTools from "@/components/ExportTools";
@@ -51,6 +55,7 @@ const generateHistoricalData = () => {
 };
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const { data: economicData, isLoading, refetch } = useEconomicData();
   const { toast } = useToast();
   const [selectedYear, setSelectedYear] = useState(2024);
@@ -61,6 +66,30 @@ const Dashboard = () => {
   const [showProfessional, setShowProfessional] = useState(false);
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Check authentication
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setIsAuthenticated(true);
+      } else {
+        navigate("/auth");
+      }
+      setIsCheckingAuth(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setIsAuthenticated(true);
+      } else {
+        navigate("/auth");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
   
   // Enhanced historical data generation with more realistic patterns
   const historicalData = useMemo(() => generateHistoricalData(), []);
@@ -127,8 +156,24 @@ const Dashboard = () => {
     usingLiveData: !customInflation.length && !customInterest.length && !!economicData
   });
 
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-8">
         {/* Skip link for accessibility */}
         <a href="#main-content" className="skip-link">
@@ -175,10 +220,18 @@ const Dashboard = () => {
           </div>
         </header>
 
+        {/* AI Advisor Card */}
+        <div className="animate-fade-in">
+          <AIAdvisor 
+            inflation={currentData.inflation} 
+            interestRate={currentData.interestRate} 
+          />
+        </div>
+
         {/* Main Answer Card */}
         <main id="main-content" className="space-y-6">
           <div className="animate-scale-in">
-            <AnswerCard 
+            <AnswerCard
               beneficial={currentData.beneficial}
               inflationRate={currentData.inflation}
               interestRate={currentData.interestRate}
