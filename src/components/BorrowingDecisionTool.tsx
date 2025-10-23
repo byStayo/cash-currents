@@ -54,62 +54,62 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
   const RecommendationIcon = recommendation.icon;
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 animate-fade-in">
+    <div className="w-full max-w-6xl mx-auto space-y-12 animate-fade-in">
       {/* Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-6xl font-bold">
+      <div className="text-center space-y-6 pt-8">
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]">
           Should I Borrow Money?
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground">
+        <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-normal">
           Smart borrowing decisions made simple
         </p>
-        <div className="flex flex-wrap justify-center gap-4 text-sm">
-          <Badge variant="outline" className="gap-1.5">
+        <div className="flex flex-wrap justify-center gap-3 pt-2">
+          <Badge variant="outline" className="gap-2 px-4 py-2 text-sm font-medium border-border/50">
             <div className="h-2 w-2 rounded-full bg-beneficial animate-pulse" />
-            Real-time
+            Real-time Data
           </Badge>
-          <Badge variant="outline" className="gap-1.5">
+          <Badge variant="outline" className="gap-2 px-4 py-2 text-sm font-medium border-border/50">
             <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-            Historical
+            Historical Trends
           </Badge>
-          <Badge variant="outline" className="gap-1.5">
+          <Badge variant="outline" className="gap-2 px-4 py-2 text-sm font-medium border-border/50">
             <div className="h-2 w-2 rounded-full bg-foreground animate-pulse" />
-            Professional
+            Professional Analysis
           </Badge>
         </div>
       </div>
 
       {/* Main Decision Card */}
-      <Card className={`p-8 md:p-12 ${recommendation.bg} ${recommendation.border} border-2 transition-all duration-500`}>
-        <div className="text-center space-y-6">
-          <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full ${recommendation.bg} border-2 ${recommendation.border}`}>
-            <RecommendationIcon className={`h-6 w-6 ${recommendation.color}`} />
-            <span className={`text-xl md:text-2xl font-bold ${recommendation.color}`}>
+      <Card className={`p-10 md:p-16 ${recommendation.bg} ${recommendation.border} border transition-all duration-700 shadow-elevated hover:shadow-dramatic`}>
+        <div className="text-center space-y-8">
+          <div className={`inline-flex items-center gap-3 px-8 py-4 rounded-full ${recommendation.bg} border ${recommendation.border} shadow-moderate`}>
+            <RecommendationIcon className={`h-7 w-7 ${recommendation.color}`} />
+            <span className={`text-2xl md:text-3xl font-semibold tracking-tight ${recommendation.color}`}>
               {recommendation.text}
             </span>
           </div>
 
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-normal">
             {recommendation.explanation}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-1">Inflation:</p>
-              <p className="text-2xl md:text-3xl font-bold text-beneficial">
-                {inflationRate.toFixed(2)}%
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
+            <div className="text-center space-y-2">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Inflation</p>
+              <p className="text-4xl md:text-5xl font-semibold text-beneficial tracking-tight">
+                {inflationRate.toFixed(1)}%
               </p>
             </div>
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-1">Your Rate:</p>
-              <p className="text-2xl md:text-3xl font-bold text-primary">
-                {loanRate.toFixed(2)}%
+            <div className="text-center space-y-2">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Your Rate</p>
+              <p className="text-4xl md:text-5xl font-semibold text-primary tracking-tight">
+                {loanRate.toFixed(1)}%
               </p>
             </div>
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-1">Difference:</p>
-              <p className={`text-2xl md:text-3xl font-bold ${difference > 0 ? 'text-risk' : 'text-beneficial'}`}>
-                {difference > 0 ? '+' : ''}{difference.toFixed(2)}%
+            <div className="text-center space-y-2">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Difference</p>
+              <p className={`text-4xl md:text-5xl font-semibold tracking-tight ${difference > 0 ? 'text-risk' : 'text-beneficial'}`}>
+                {difference > 0 ? '+' : ''}{difference.toFixed(1)}%
               </p>
             </div>
           </div>
@@ -117,24 +117,24 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
       </Card>
 
       {/* Interactive Sliders */}
-      <Card className="p-8 md:p-12">
-        <div className="space-y-8">
-          <div className="text-center space-y-2">
-            <h3 className="text-xl md:text-2xl font-bold">Try Different Scenarios</h3>
-            <p className="text-muted-foreground">
+      <Card className="p-10 md:p-16 shadow-subtle border">
+        <div className="space-y-12">
+          <div className="text-center space-y-3">
+            <h3 className="text-3xl md:text-4xl font-semibold tracking-tight">Try Different Scenarios</h3>
+            <p className="text-lg text-muted-foreground font-normal">
               Adjust the rates to see when borrowing makes sense
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16">
             {/* Inflation Rate Slider */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <TrendingUp className="h-5 w-5 text-beneficial" />
-                  <span className="font-semibold">Inflation Rate</span>
+                  <span className="font-medium text-lg">Inflation Rate</span>
                 </div>
-                <span className="text-2xl font-bold text-beneficial">
+                <span className="text-3xl font-semibold text-beneficial tracking-tight">
                   {inflationRate.toFixed(1)}%
                 </span>
               </div>
@@ -144,22 +144,22 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
                 min={0}
                 max={10}
                 step={0.1}
-                className="w-full"
+                className="w-full py-2"
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>No inflation</span>
-                <span>High inflation</span>
+              <div className="flex justify-between text-sm text-muted-foreground font-medium">
+                <span>0% No inflation</span>
+                <span>10% High inflation</span>
               </div>
             </div>
 
             {/* Loan Rate Slider */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <AlertCircle className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">Loan Interest Rate</span>
+                  <span className="font-medium text-lg">Loan Interest Rate</span>
                 </div>
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-3xl font-semibold text-primary tracking-tight">
                   {loanRate.toFixed(1)}%
                 </span>
               </div>
@@ -169,19 +169,19 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
                 min={0}
                 max={15}
                 step={0.1}
-                className="w-full"
+                className="w-full py-2"
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Free money</span>
-                <span>Expensive loans</span>
+              <div className="flex justify-between text-sm text-muted-foreground font-medium">
+                <span>0% Free money</span>
+                <span>15% Expensive</span>
               </div>
             </div>
           </div>
 
           {/* Real-time Impact */}
-          <div className="text-center p-6 bg-muted/50 rounded-lg border">
-            <p className="text-sm text-muted-foreground mb-2">Real-time impact:</p>
-            <p className="text-xl md:text-2xl font-bold">
+          <div className="text-center p-8 bg-muted/30 rounded-2xl border">
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Real-time Impact</p>
+            <p className="text-2xl md:text-3xl font-semibold leading-tight">
               Borrowing costs you an {difference > 0 ? 'extra' : ''}{' '}
               <span className={difference > 0 ? 'text-risk' : 'text-beneficial'}>
                 {Math.abs(difference).toFixed(1)}%
@@ -194,29 +194,29 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
       </Card>
 
       {/* Collapsible Sections */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <Collapsible open={showHowItWorks} onOpenChange={setShowHowItWorks}>
           <CollapsibleTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-between text-lg py-6"
+              className="w-full justify-between text-lg py-7 px-8 hover:bg-muted/50 transition-all duration-200"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5" />
-                Learn How This Works
+                <span className="font-medium">Learn How This Works</span>
               </div>
-              <ChevronDown className={`h-5 w-5 transition-transform ${showHowItWorks ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${showHowItWorks ? 'rotate-180' : ''}`} />
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent>
-            <Card className="p-6 mt-2">
-              <div className="space-y-4 text-muted-foreground">
+          <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <Card className="p-8 mt-3 shadow-subtle border">
+              <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
                 <p>
                   When you borrow money, you pay interest. But inflation erodes the value of money over time.
                   If inflation is higher than your loan rate, the money you pay back is worth less than what you borrowed.
                 </p>
                 <p>
-                  <strong className="text-foreground">Example:</strong> If you borrow $10,000 at 3% interest when inflation is 5%,
+                  <strong className="text-foreground font-semibold">Example:</strong> If you borrow $10,000 at 3% interest when inflation is 5%,
                   you're effectively paying back money that's worth 2% less than what you borrowed. This is called "real" borrowing cost.
                 </p>
                 <p>
@@ -232,25 +232,25 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
           <CollapsibleTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-between text-lg py-6"
+              className="w-full justify-between text-lg py-7 px-8 hover:bg-muted/50 transition-all duration-200"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <TrendingUp className="h-5 w-5" />
-                Historical Trends
+                <span className="font-medium">Historical Trends</span>
               </div>
-              <ChevronDown className={`h-5 w-5 transition-transform ${showHistorical ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${showHistorical ? 'rotate-180' : ''}`} />
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent>
-            <Card className="p-6 mt-2">
-              <div className="space-y-4 text-muted-foreground">
+          <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <Card className="p-8 mt-3 shadow-subtle border">
+              <div className="space-y-5 text-base leading-relaxed text-muted-foreground">
                 <p>
                   Historical data shows that there have been periods where inflation exceeded loan rates,
                   making borrowing mathematically advantageous. The 1970s and early 1980s saw high inflation
                   periods where real interest rates were negative.
                 </p>
                 <p>
-                  Current inflation rate: <strong className="text-beneficial">{realInflationRate.toFixed(2)}%</strong> (updated daily from Federal Reserve data)
+                  Current inflation rate: <strong className="text-beneficial font-semibold">{realInflationRate.toFixed(2)}%</strong> (updated daily from Federal Reserve data)
                 </p>
                 <p>
                   Average mortgage rate range: 6-8% | Average auto loan: 5-7% | Average personal loan: 10-12%
@@ -264,36 +264,36 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
           <CollapsibleTrigger asChild>
             <Button
               variant="default"
-              className="w-full justify-between text-lg py-6"
+              className="w-full justify-between text-lg py-7 px-8 transition-all duration-200"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <TrendingUp className="h-5 w-5" />
-                Professional Analysis
+                <span className="font-medium">Professional Analysis</span>
               </div>
-              <ChevronDown className={`h-5 w-5 transition-transform ${showProfessional ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${showProfessional ? 'rotate-180' : ''}`} />
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent>
-            <Card className="p-6 mt-2 bg-primary/5 border-primary/20">
-              <div className="space-y-4">
-                <p className="font-semibold text-foreground">
+          <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+            <Card className="p-8 mt-3 bg-primary/5 border-primary/20 shadow-subtle">
+              <div className="space-y-5">
+                <p className="font-semibold text-foreground text-lg">
                   Current Market Analysis (Based on Real Data):
                 </p>
-                <div className="space-y-3 text-muted-foreground">
+                <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
                   <p>
-                    • <strong className="text-foreground">Current Inflation:</strong> {realInflationRate.toFixed(2)}%
+                    • <strong className="text-foreground font-semibold">Current Inflation:</strong> {realInflationRate.toFixed(2)}%
                     {realInflationRate > 3 && " (Above Federal Reserve target of 2-3%)"}
                   </p>
                   <p>
-                    • <strong className="text-foreground">Mortgage Rates:</strong> Currently averaging 6.5-7.5%, meaning 
+                    • <strong className="text-foreground font-semibold">Mortgage Rates:</strong> Currently averaging 6.5-7.5%, meaning 
                     borrowers pay {((6.5 + 7.5) / 2 - realInflationRate).toFixed(1)}% above inflation
                   </p>
                   <p>
-                    • <strong className="text-foreground">Recommendation:</strong> {shouldBorrow 
+                    • <strong className="text-foreground font-semibold">Recommendation:</strong> {shouldBorrow 
                       ? "With rates near or below inflation, strategic borrowing for appreciating assets may be advantageous."
                       : "Current rates exceed inflation. Consider waiting for rate decreases or focus on high-return investments."}
                   </p>
-                  <p className="text-sm italic">
+                  <p className="text-sm italic pt-2">
                     Note: This analysis is for educational purposes. Always consult with a financial advisor
                     for personalized advice considering your complete financial situation.
                   </p>

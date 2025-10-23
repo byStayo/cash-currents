@@ -8,25 +8,25 @@ const Index = () => {
   const { data: economicData, isLoading } = useEconomicData();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary-subtle to-background">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="container mx-auto px-6 py-6">
+      <nav className="container mx-auto px-6 py-5 border-b border-border/50">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-hover bg-clip-text text-transparent">
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+            <TrendingUp className="h-7 w-7 text-primary" strokeWidth={2.5} />
+            <span className="text-2xl font-semibold tracking-tight">
               Cash Currents
             </span>
-          </div>
-          <div className="flex gap-3">
+          </Link>
+          <div className="flex items-center gap-2">
             <Link to="/auth">
-              <Button variant="ghost" className="gap-2">
+              <Button variant="ghost" size="lg" className="font-medium">
                 Sign In
               </Button>
             </Link>
             <Link to="/dashboard">
-              <Button variant="outline" className="gap-2">
-                Launch Dashboard
+              <Button size="lg" className="gap-2 font-medium">
+                Dashboard
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -35,11 +35,11 @@ const Index = () => {
       </nav>
 
       {/* Main Borrowing Decision Tool */}
-      <section className="container mx-auto px-6 py-12 md:py-20">
+      <section className="container mx-auto px-6 py-16 md:py-24">
         {isLoading ? (
-          <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-            <p className="mt-4 text-muted-foreground">Loading real-time economic data...</p>
+          <div className="text-center py-20">
+            <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
           </div>
         ) : (
           <BorrowingDecisionTool realInflationRate={economicData?.inflation || 2.94} />
@@ -47,45 +47,45 @@ const Index = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="container mx-auto px-6 py-20 border-t">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Advanced Financial Tools & Analysis
+      <section className="container mx-auto px-6 py-24 border-t border-border/50">
+        <div className="text-center mb-20 space-y-4">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
+            Advanced Financial Tools
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Access our complete suite of professional-grade financial tools
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-normal">
+            Professional-grade analysis at your fingertips
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="glass-card p-8 space-y-4 card-hover animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="p-8 space-y-4 bg-card hover:bg-muted/30 border border-border/50 rounded-2xl transition-all duration-300 hover:shadow-moderate animate-fade-in-up"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                <feature.icon className="h-6 w-6 text-primary" />
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <feature.icon className="h-6 w-6 text-primary" strokeWidth={2} />
               </div>
               <h3 className="text-xl font-semibold">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
+              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-6 py-20">
-        <div className="glass-card p-12 md:p-16 text-center space-y-6 bg-gradient-to-br from-primary/5 via-beneficial/5 to-primary/5 animate-scale-in">
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Ready to Transform Your Financial Strategy?
+      <section className="container mx-auto px-6 py-24">
+        <div className="p-16 md:p-20 text-center space-y-8 bg-muted/30 border border-border/50 rounded-3xl animate-scale-in">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+            Ready to Transform Your<br/>Financial Strategy?
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of users making smarter financial decisions with AI-powered insights
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-normal leading-relaxed">
+            Join thousands making smarter decisions with AI-powered insights
           </p>
           <Link to="/dashboard">
-            <Button size="lg" className="gap-2 text-lg px-8 py-6 animate-glow">
-              Start Your Journey
+            <Button size="lg" className="gap-2 text-lg px-10 py-7 font-medium shadow-lg hover:shadow-xl transition-shadow">
+              Get Started Free
               <ArrowRight className="h-5 w-5" />
             </Button>
           </Link>
@@ -93,11 +93,11 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="container mx-auto px-6 py-12 border-t border-border">
+      <footer className="container mx-auto px-6 py-12 border-t border-border/50">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-primary" />
-            <span className="font-semibold">Cash Currents</span>
+          <div className="flex items-center gap-2.5">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            <span className="font-medium">Cash Currents</span>
           </div>
           <p className="text-sm text-muted-foreground">
             © 2025 Cash Currents. Empowering financial intelligence.
