@@ -80,35 +80,48 @@ const BorrowingDecisionTool = ({ realInflationRate = 2.94 }: BorrowingDecisionTo
       </div>
 
       {/* Main Decision Card */}
-      <Card className={`p-10 md:p-16 ${recommendation.bg} ${recommendation.border} border transition-all duration-700 shadow-elevated hover:shadow-dramatic`}>
-        <div className="text-center space-y-8">
-          <div className={`inline-flex items-center gap-3 px-8 py-4 rounded-full ${recommendation.bg} border ${recommendation.border} shadow-moderate`}>
-            <RecommendationIcon className={`h-7 w-7 ${recommendation.color}`} />
-            <span className={`text-2xl md:text-3xl font-semibold tracking-tight ${recommendation.color}`}>
+      <Card className={`
+        p-10 md:p-14 text-center space-y-8 border transition-all duration-700 animate-scale-in
+        ${shouldBorrow 
+          ? 'bg-[hsl(var(--beneficial-light))] border-[hsl(var(--beneficial-border))]' 
+          : 'bg-[hsl(var(--risk-light))] border-[hsl(var(--risk-border))]'
+        }
+      `}>
+        <div className="space-y-8">
+          <div className={`
+            inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-xl
+            transition-all duration-500
+            ${shouldBorrow 
+              ? 'bg-beneficial/10 text-beneficial border border-beneficial/20' 
+              : 'bg-risk/10 text-risk border border-risk/20'
+            }
+          `}>
+            <RecommendationIcon className="h-6 w-6" />
+            <span className="text-xl md:text-2xl tracking-tight">
               {recommendation.text}
             </span>
           </div>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {recommendation.explanation}
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
-            <div className="text-center space-y-2">
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Inflation</p>
-              <p className="text-4xl md:text-5xl font-semibold text-beneficial tracking-tight">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+            <div className="text-center space-y-1">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Inflation</p>
+              <p className="text-3xl md:text-4xl font-semibold text-beneficial">
                 {inflationRate.toFixed(1)}%
               </p>
             </div>
-            <div className="text-center space-y-2">
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Your Rate</p>
-              <p className="text-4xl md:text-5xl font-semibold text-primary tracking-tight">
+            <div className="text-center space-y-1">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Your Rate</p>
+              <p className="text-3xl md:text-4xl font-semibold text-primary">
                 {loanRate.toFixed(1)}%
               </p>
             </div>
-            <div className="text-center space-y-2">
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Difference</p>
-              <p className={`text-4xl md:text-5xl font-semibold tracking-tight ${difference > 0 ? 'text-risk' : 'text-beneficial'}`}>
+            <div className="text-center space-y-1">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Difference</p>
+              <p className={`text-3xl md:text-4xl font-semibold ${difference > 0 ? 'text-risk' : 'text-beneficial'}`}>
                 {difference > 0 ? '+' : ''}{difference.toFixed(1)}%
               </p>
             </div>

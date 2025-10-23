@@ -47,27 +47,27 @@ const Index = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="container mx-auto px-6 py-24 border-t border-border/50">
-        <div className="text-center mb-20 space-y-4">
+      <section className="container mx-auto px-6 py-32 border-t border-border/50">
+        <div className="text-center mb-24 space-y-5">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Advanced Financial Tools
+            Professional-Grade Tools
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-normal">
-            Professional-grade analysis at your fingertips
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Everything you need for intelligent financial decisions
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="p-8 space-y-4 bg-card hover:bg-muted/30 border border-border/50 rounded-2xl transition-all duration-300 hover:shadow-moderate animate-fade-in-up"
+              className="group p-10 space-y-5 bg-card border border-border/50 rounded-3xl transition-all duration-300 hover:border-border hover:shadow-lg animate-fade-in-up"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <feature.icon className="h-6 w-6 text-primary" strokeWidth={2} />
+              <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                <feature.icon className="h-7 w-7 text-primary" strokeWidth={2} />
               </div>
-              <h3 className="text-xl font-semibold">{feature.title}</h3>
+              <h3 className="text-xl font-semibold tracking-tight">{feature.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
             </div>
           ))}
@@ -75,20 +75,25 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-6 py-24">
-        <div className="p-16 md:p-20 text-center space-y-8 bg-muted/30 border border-border/50 rounded-3xl animate-scale-in">
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
-            Ready to Transform Your<br/>Financial Strategy?
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-normal leading-relaxed">
-            Join thousands making smarter decisions with AI-powered insights
-          </p>
-          <Link to="/dashboard">
-            <Button size="lg" className="gap-2 text-lg px-10 py-7 font-medium shadow-lg hover:shadow-xl transition-shadow">
-              Get Started Free
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-          </Link>
+      <section className="container mx-auto px-6 py-32">
+        <div className="relative p-20 md:p-24 text-center space-y-8 bg-muted/20 border border-border/50 rounded-[2rem] overflow-hidden animate-scale-in">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />
+          
+          <div className="relative z-10 space-y-8">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
+              Ready to Make Smarter<br/>Financial Decisions?
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Join thousands using real-time data and AI-powered insights
+            </p>
+            <Link to="/dashboard">
+              <Button size="lg" className="gap-2 text-lg px-12 py-8 font-medium h-auto rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                Get Started Free
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 

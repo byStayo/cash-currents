@@ -6,106 +6,56 @@
 
 @layer base {
   :root {
-    /* Pure, Clean Color System - Apple-inspired */
+    /* Backgrounds */
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    
-    /* Refined gradient system */
-    --background-gradient: linear-gradient(180deg, 
-      hsl(0, 0%, 100%) 0%, 
-      hsl(220, 40%, 99%) 50%,
-      hsl(0, 0%, 100%) 100%);
-    
-    /* Glass morphism - ultra subtle */
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --card-elevated: 0 0% 100%;
-    --card-premium: linear-gradient(135deg, 
-      hsla(0, 0%, 100%, 0.98) 0%, 
-      hsla(220, 40%, 99%, 0.99) 100%);
-    
-    /* Refined Primary - Apple Blue */
-    --primary: 211 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --primary-subtle: 211 100% 98%;
-    --primary-hover: 211 100% 45%;
-    --primary-glow: 211 100% 60%;
-    --primary-gradient: linear-gradient(135deg, 
-      hsl(211, 100%, 50%) 0%, 
-      hsl(211, 100%, 45%) 100%);
-
-    /* Success - Natural Green */
-    --beneficial: 142 76% 36%;
-    --beneficial-foreground: 0 0% 100%;
-    --beneficial-subtle: 142 76% 98%;
-    --beneficial-glow: 142 76% 46%;
-    
-    /* Warning - Warm Orange */
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-    --warning-subtle: 38 92% 98%;
-    
-    /* Risk - Clean Red */
-    --risk: 0 84% 60%;
-    --risk-foreground: 0 0% 100%;
-    --risk-subtle: 0 84% 98%;
-
-    /* Neutral System - Ultra refined */
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
-
-    /* Interactive Elements */
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 211 100% 50%;
-
-    /* Refined Shadows - Apple-style */
-    --shadow-minimal: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-moderate: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.12);
-    --shadow-dramatic: 0 16px 48px rgba(0, 0, 0, 0.16);
+    --popover-foreground: 240 10% 3.9%;
     
-    /* Subtle Glow Effects */
-    --glow-primary: 0 0 32px hsl(var(--primary) / 0.15);
-    --glow-beneficial: 0 0 32px hsl(var(--beneficial) / 0.15);
-    --glow-warning: 0 0 32px hsl(var(--warning) / 0.15);
-
-    /* Premium Typography - SF Pro inspired */
-    --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-    --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-    --font-mono: 'SF Mono', 'Menlo', 'Monaco', monospace;
-
-    /* Perfect Spacing Scale */
-    --space-xs: 0.5rem;
-    --space-sm: 0.75rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
-    --space-3xl: 4.5rem;
-    --space-4xl: 6rem;
-
-    /* Apple-style Border Radius */
-    --radius-sm: 10px;
-    --radius-md: 14px;
-    --radius-lg: 18px;
-    --radius-xl: 24px;
-    --radius-2xl: 32px;
-
-    /* Premium Animation Curves - Apple-inspired */
-    --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-
-    --radius: var(--radius-lg);
+    /* Primary - Refined Blue */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary - Soft Gray */
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    
+    /* Muted - Lighter Gray */
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    /* Accent - Very Subtle */
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Borders */
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221 83% 53%;
+    
+    /* Radius */
+    --radius: 0.75rem;
+    
+    /* Charts */
+    --chart-1: 221 83% 53%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 262 83% 58%;
+    --chart-4: 32 95% 44%;
+    --chart-5: 340 82% 52%;
+    
+    /* Decision States - Refined */
+    --beneficial: 142 71% 45%;
+    --beneficial-light: 142 50% 96%;
+    --beneficial-border: 142 40% 88%;
+    --risk: 0 72% 51%;
+    --risk-light: 0 50% 97%;
+    --risk-border: 0 40% 92%;
 
     /* Sidebar Variables */
     --sidebar-background: 240 15% 99%;
@@ -119,25 +69,54 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Backgrounds */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    
+    /* Primary */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary */
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    
+    /* Muted */
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    /* Accent */
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    
+    /* Destructive */
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Borders */
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 221 83% 53%;
+    
+    /* Charts */
+    --chart-1: 221 83% 53%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 262 83% 58%;
+    --chart-4: 32 95% 44%;
+    --chart-5: 340 82% 52%;
+    
+    /* Decision States */
+    --beneficial: 142 71% 45%;
+    --beneficial-light: 142 50% 12%;
+    --beneficial-border: 142 40% 20%;
+    --risk: 0 72% 51%;
+    --risk-light: 0 50% 12%;
+    --risk-border: 0 40% 20%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
