@@ -27,14 +27,19 @@ serve(async (req) => {
     try {
       // Fetch from Federal Reserve Economic Data API using your API key
       const fredApiKey = Deno.env.get('FRED_API_KEY');
-      const fredResponse = await fetch(`https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&api_key=${fredApiKey}&file_type=json&sort_order=desc&limit=1`)
+      // Get last 13 months of CPI data to calculate year-over-year inflation
+      const fredResponse = await fetch(`https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&api_key=${fredApiKey}&file_type=json&sort_order=desc&limit=13`)
         .catch(() => null);
       
       if (fredResponse?.ok) {
         const fredData = await fredResponse.json();
-        if (fredData.observations?.[0]?.value) {
-          console.log('Successfully fetched inflation from FRED');
-          currentInflation = parseFloat(fredData.observations[0].value);
+        if (fredData.observations?.length >= 13) {
+          const currentCPI = parseFloat(fredData.observations[0].value);
+          const yearAgoCPI = parseFloat(fredData.observations[12].value);
+          
+          // Calculate year-over-year inflation rate
+          currentInflation = ((currentCPI - yearAgoCPI) / yearAgoCPI) * 100;
+          console.log('Successfully calculated inflation from FRED:', currentInflation.toFixed(2) + '%');
         }
       }
     } catch (error) {
