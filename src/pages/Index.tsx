@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Calculator, Brain, Shield, BarChart3, Zap } from "lucide-react";
+import BorrowingDecisionTool from "@/components/BorrowingDecisionTool";
+import { useEconomicData } from "@/hooks/useEconomicData";
 
 const Index = () => {
+  const { data: economicData, isLoading } = useEconomicData();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary-subtle to-background">
       {/* Navigation */}
@@ -14,58 +18,42 @@ const Index = () => {
               Cash Currents
             </span>
           </div>
-          <Link to="/dashboard">
-            <Button variant="outline" className="gap-2">
-              Launch Dashboard
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 py-20 md:py-32">
-        <div className="text-center space-y-8 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary mb-4 animate-fade-in">
-            <Zap className="h-4 w-4" />
-            Real-time Economic Intelligence
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight animate-fade-in-up">
-            Master Your Financial{" "}
-            <span className="bg-gradient-to-r from-primary via-primary-hover to-beneficial bg-clip-text text-transparent">
-              Intelligence
-            </span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            Advanced financial analysis powered by AI, real-time economic data, and sophisticated modeling tools.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            <Link to="/dashboard">
-              <Button size="lg" className="gap-2 text-lg px-8 py-6 animate-glow">
-                Get Started Free
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </Link>
+          <div className="flex gap-3">
             <Link to="/auth">
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+              <Button variant="ghost" className="gap-2">
                 Sign In
               </Button>
             </Link>
+            <Link to="/dashboard">
+              <Button variant="outline" className="gap-2">
+                Launch Dashboard
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
+      </nav>
+
+      {/* Main Borrowing Decision Tool */}
+      <section className="container mx-auto px-6 py-12 md:py-20">
+        {isLoading ? (
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="mt-4 text-muted-foreground">Loading real-time economic data...</p>
+          </div>
+        ) : (
+          <BorrowingDecisionTool realInflationRate={economicData?.inflation || 2.94} />
+        )}
       </section>
 
       {/* Features Grid */}
-      <section className="container mx-auto px-6 py-20">
+      <section className="container mx-auto px-6 py-20 border-t">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Powerful Financial Tools
+            Advanced Financial Tools & Analysis
           </h2>
           <p className="text-lg text-muted-foreground">
-            Everything you need for intelligent financial decision-making
+            Access our complete suite of professional-grade financial tools
           </p>
         </div>
 
