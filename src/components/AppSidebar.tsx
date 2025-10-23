@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const tools = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard, category: "Main" },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard, category: "Main" },
   { title: "AI Advisor", url: "/tools/ai-advisor", icon: Brain, category: "Main" },
   { title: "Loan Calculator", url: "/tools/loan-calculator", icon: Calculator, category: "Calculators" },
   { title: "Investment Comparison", url: "/tools/investment-comparison", icon: TrendingUp, category: "Calculators" },
