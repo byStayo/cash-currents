@@ -101,15 +101,15 @@ const Index = () => {
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />
           
-          <div className="relative z-10 space-y-8">
+          <div className="relative z-10 space-y-8 py-px">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
               Ready to Make Smarter<br />Financial Decisions?
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Join thousands using real-time data and AI-powered insights
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed py-[10px]">Join thousands using real-time data and AI-powered insights
 
           </p>
-            <Link to="/dashboard">
-              <Button size="lg" className="gap-2 text-lg px-12 py-8 font-medium h-auto rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+            <Link to="/dashboard" className="py-[12px]">
+              <Button size="lg" className="gap-2 text-lg px-12 font-medium h-auto rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 py-[38px] mx-px my-[27px]">
                 Get Started Free
                 <ArrowRight className="h-5 w-5" />
               </Button>
