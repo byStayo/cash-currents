@@ -28,8 +28,8 @@ const Index = () => {
       </nav>
 
       {/* Economic Indicators Banner */}
-      {!isLoading && economicData && <section className="container mx-auto px-6 md:py-12 py-0">
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 py-[15px]">
+      {!isLoading && economicData && <section className="container mx-auto px-6 py-8 md:py-12">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
             <div className="text-center">
               <p className="text-sm font-medium text-muted-foreground mb-2">Current Inflation Rate</p>
               <div className="flex items-baseline gap-2 justify-center">
@@ -64,12 +64,12 @@ const Index = () => {
         </section>}
 
       {/* CTA After Economic Indicators */}
-      <section className="container mx-auto px-6 py-[24px]">
-        <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in py-[42px]">
+      <section className="container mx-auto py-12 px-[34px]">
+        <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in py-[31px] px-0">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
             Ready to Explore More Tools?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto my-[21px]">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto my-[20px] py-[21px]">
             Access advanced calculators, AI advisors, and comprehensive market analysis
           </p>
           <Link to="/dashboard">
@@ -82,11 +82,11 @@ const Index = () => {
       </section>
 
       {/* Main Borrowing Decision Tool */}
-      <section className="container mx-auto px-6 md:py-24 py-[60px]">
+      <section className="container mx-auto px-6 py-16 md:py-24">
         {isLoading ? <div className="text-center py-20">
             <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
             <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
-          </div> : <BorrowingDecisionTool realInflationRate={economicData?.inflation} realMortgageRate={economicData?.mortgageRate} realAutoRate={economicData?.autoRate} realPersonalRate={economicData?.personalRate} className="py-0" />}
+          </div> : <BorrowingDecisionTool realInflationRate={economicData?.inflation} realMortgageRate={economicData?.mortgageRate} realAutoRate={economicData?.autoRate} realPersonalRate={economicData?.personalRate} />}
       </section>
 
       {/* Features Grid */}
