@@ -109,7 +109,7 @@ const Index = () => {
 
           </p>
             <Link to="/dashboard" className="py-[12px]">
-              <Button size="lg" className="gap-2 text-lg px-12 font-medium h-auto rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 py-[38px] mx-px my-[27px]">
+              <Button size="lg" className="gap-2 text-lg px-12 font-medium h-auto rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 py-[38px] mx-px my-[34px]">
                 Get Started Free
                 <ArrowRight className="h-5 w-5" />
               </Button>
