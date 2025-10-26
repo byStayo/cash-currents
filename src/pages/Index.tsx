@@ -18,19 +18,12 @@ const Index = () => {
               Cash Currents
             </span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Link to="/auth">
-              <Button variant="ghost" size="lg" className="font-medium">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/dashboard">
-              <Button size="lg" className="gap-2 font-medium">
-                Dashboard
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
+          <Link to="/dashboard">
+            <Button size="lg" className="gap-2 font-medium">
+              Launch App
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </nav>
 

@@ -1,58 +1,8 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, TrendingUp, Home } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { TrendingUp, Home } from "lucide-react";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [userEmail, setUserEmail] = useState<string>("");
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user?.email) {
-        setUserEmail(session.user.email);
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user?.email) {
-        setUserEmail(session.user.email);
-      } else {
-        setUserEmail("");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSignOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
-      });
-      navigate("/auth");
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign out",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -61,33 +11,12 @@ const Header = () => {
           <h1 className="text-xl font-bold">Financial Intelligence Hub</h1>
         </Link>
 
-        <div className="flex items-center gap-3">
-          <Link to="/">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Home className="h-4 w-4" />
-              <span className="hidden sm:inline">Home</span>
-            </Button>
-          </Link>
-          
-          {userEmail && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">{userEmail}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="gap-2 cursor-pointer">
-                  <LogOut className="h-4 w-4" />
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
+        <Link to="/">
+          <Button variant="ghost" size="sm" className="gap-2">
+            <Home className="h-4 w-4" />
+            <span className="hidden sm:inline">Home</span>
+          </Button>
+        </Link>
       </div>
     </header>
   );

@@ -7,7 +7,6 @@ import Index from "./pages/Index";
 import DashboardLayout from "./pages/DashboardLayout";
 import MainDashboard from "./pages/MainDashboard";
 import ToolPage from "./pages/ToolPage";
-import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,7 +19,6 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<MainDashboard />} />
             <Route path="/tools/:toolName" element={<ToolPage />} />
