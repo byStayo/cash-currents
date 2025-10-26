@@ -63,7 +63,15 @@ const Index = () => {
           </div>
         </section>}
 
-      {/* CTA After Economic Indicators */}
+      {/* Main Borrowing Decision Tool */}
+      <section className="container mx-auto px-6 py-16 md:py-24">
+        {isLoading ? <div className="text-center py-20">
+            <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
+          </div> : <BorrowingDecisionTool realInflationRate={economicData?.inflation} realMortgageRate={economicData?.mortgageRate} realAutoRate={economicData?.autoRate} realPersonalRate={economicData?.personalRate} />}
+      </section>
+
+      {/* CTA After Tool Interaction */}
       <section className="container mx-auto px-6 py-12">
         <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
@@ -79,14 +87,6 @@ const Index = () => {
             </Button>
           </Link>
         </div>
-      </section>
-
-      {/* Main Borrowing Decision Tool */}
-      <section className="container mx-auto px-6 py-16 md:py-24">
-        {isLoading ? <div className="text-center py-20">
-            <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-            <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
-          </div> : <BorrowingDecisionTool realInflationRate={economicData?.inflation} realMortgageRate={economicData?.mortgageRate} realAutoRate={economicData?.autoRate} realPersonalRate={economicData?.personalRate} />}
       </section>
 
       {/* Features Grid */}
