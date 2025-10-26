@@ -77,7 +77,7 @@ const Index = () => {
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
             Ready to Explore More Tools?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto my-[20px]">
             Access advanced calculators, AI advisors, and comprehensive market analysis
           </p>
           <Link to="/dashboard">
