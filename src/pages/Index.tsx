@@ -71,6 +71,24 @@ const Index = () => {
           </div> : <BorrowingDecisionTool realInflationRate={economicData?.inflation} realMortgageRate={economicData?.mortgageRate} realAutoRate={economicData?.autoRate} realPersonalRate={economicData?.personalRate} />}
       </section>
 
+      {/* CTA After Tool Interaction */}
+      <section className="container mx-auto px-6 py-16">
+        <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
+            Ready to Explore More Tools?
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Access advanced calculators, AI advisors, and comprehensive market analysis
+          </p>
+          <Link to="/dashboard">
+            <Button size="lg" className="gap-2 text-lg px-10 font-medium shadow-lg hover:shadow-xl transition-all">
+              Launch Full Dashboard
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
       {/* Features Grid */}
       <section className="container mx-auto px-6 py-32 border-t border-border/50">
         <div className="text-center mb-24 space-y-5">
