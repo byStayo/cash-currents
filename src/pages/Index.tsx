@@ -72,7 +72,7 @@ const Index = () => {
       </section>
 
       {/* CTA After Tool Interaction */}
-      <section className="container mx-auto px-6 py-12">
+      <section className="container mx-auto px-6 py-16">
         <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
             Ready to Explore More Tools?
