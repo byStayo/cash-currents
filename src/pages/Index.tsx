@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Calculator, Brain, Shield, BarChart3, Zap } from "lucide-react";
 import BorrowingDecisionTool from "@/components/BorrowingDecisionTool";
 import { useEconomicData } from "@/hooks/useEconomicData";
-
 const Index = () => {
-  const { data: economicData, isLoading } = useEconomicData();
-
-  return (
-    <div className="min-h-screen bg-background">
+  const {
+    data: economicData,
+    isLoading
+  } = useEconomicData();
+  return <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="container mx-auto px-6 py-5 border-b border-border/50">
         <div className="flex items-center justify-between">
@@ -28,8 +28,7 @@ const Index = () => {
       </nav>
 
       {/* Economic Indicators Banner */}
-      {!isLoading && economicData && (
-        <section className="container mx-auto px-6 py-8 md:py-12">
+      {!isLoading && economicData && <section className="container mx-auto px-6 py-8 md:py-12">
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
             <div className="text-center">
               <p className="text-sm font-medium text-muted-foreground mb-2">Current Inflation Rate</p>
@@ -62,24 +61,14 @@ const Index = () => {
               </div>
             </div>
           </div>
-        </section>
-      )}
+        </section>}
 
       {/* Main Borrowing Decision Tool */}
       <section className="container mx-auto px-6 py-16 md:py-24">
-        {isLoading ? (
-          <div className="text-center py-20">
+        {isLoading ? <div className="text-center py-20">
             <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
             <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
-          </div>
-        ) : (
-        <BorrowingDecisionTool 
-          realInflationRate={economicData?.inflation}
-          realMortgageRate={economicData?.mortgageRate}
-          realAutoRate={economicData?.autoRate}
-          realPersonalRate={economicData?.personalRate}
-        />
-        )}
+          </div> : <BorrowingDecisionTool realInflationRate={economicData?.inflation} realMortgageRate={economicData?.mortgageRate} realAutoRate={economicData?.autoRate} realPersonalRate={economicData?.personalRate} />}
       </section>
 
       {/* Features Grid */}
@@ -94,19 +83,15 @@ const Index = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={feature.title}
-              className="group p-10 space-y-5 bg-card border border-border/50 rounded-3xl transition-all duration-300 hover:border-border hover:shadow-lg animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
+          {features.map((feature, index) => <div key={feature.title} className="group p-10 space-y-5 bg-card border border-border/50 rounded-3xl transition-all duration-300 hover:border-border hover:shadow-lg animate-fade-in-up" style={{
+          animationDelay: `${index * 0.05}s`
+        }}>
               <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <feature.icon className="h-7 w-7 text-primary" strokeWidth={2} />
               </div>
               <h3 className="text-xl font-semibold tracking-tight">{feature.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-            </div>
-          ))}
+            </div>)}
         </div>
       </section>
 
@@ -118,11 +103,11 @@ const Index = () => {
           
           <div className="relative z-10 space-y-8">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
-              Ready to Make Smarter<br/>Financial Decisions?
+              Ready to Make Smarter<br />Financial Decisions?
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Join thousands using real-time data and AI-powered insights
-            </p>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Join thousands using real-time data and AI-powered insights
+
+          </p>
             <Link to="/dashboard">
               <Button size="lg" className="gap-2 text-lg px-12 py-8 font-medium h-auto rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
                 Get Started Free
@@ -145,41 +130,31 @@ const Index = () => {
           </p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
-const features = [
-  {
-    icon: Calculator,
-    title: "Advanced Calculators",
-    description: "Sophisticated loan, investment, and debt consolidation calculators with real-time scenarios"
-  },
-  {
-    icon: Brain,
-    title: "AI Financial Advisor",
-    description: "Get personalized financial advice powered by advanced AI models and real economic data"
-  },
-  {
-    icon: TrendingUp,
-    title: "Market Analysis",
-    description: "Real-time economic indicators, sector analysis, and market predictions"
-  },
-  {
-    icon: BarChart3,
-    title: "Monte Carlo Simulation",
-    description: "Run thousands of scenarios to understand potential investment outcomes"
-  },
-  {
-    icon: Shield,
-    title: "Risk Assessment",
-    description: "Comprehensive risk analysis for your financial decisions with actionable insights"
-  },
-  {
-    icon: Zap,
-    title: "Live Economic Data",
-    description: "Daily updates from Federal Reserve and other trusted sources for accurate analysis"
-  }
-];
-
+const features = [{
+  icon: Calculator,
+  title: "Advanced Calculators",
+  description: "Sophisticated loan, investment, and debt consolidation calculators with real-time scenarios"
+}, {
+  icon: Brain,
+  title: "AI Financial Advisor",
+  description: "Get personalized financial advice powered by advanced AI models and real economic data"
+}, {
+  icon: TrendingUp,
+  title: "Market Analysis",
+  description: "Real-time economic indicators, sector analysis, and market predictions"
+}, {
+  icon: BarChart3,
+  title: "Monte Carlo Simulation",
+  description: "Run thousands of scenarios to understand potential investment outcomes"
+}, {
+  icon: Shield,
+  title: "Risk Assessment",
+  description: "Comprehensive risk analysis for your financial decisions with actionable insights"
+}, {
+  icon: Zap,
+  title: "Live Economic Data",
+  description: "Daily updates from Federal Reserve and other trusted sources for accurate analysis"
+}];
 export default Index;
