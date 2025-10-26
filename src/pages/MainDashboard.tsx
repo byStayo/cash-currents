@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, X, LayoutDashboard, Settings } from "lucide-react";
@@ -23,35 +21,11 @@ const availableWidgets = [
 ];
 
 const MainDashboard = () => {
-  const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const { widgets, isLoading, addWidget, removeWidget } = useUserWidgets();
   const { data: economicData } = useEconomicData();
   const [isAddWidgetOpen, setIsAddWidgetOpen] = useState(false);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setIsAuthenticated(true);
-      } else {
-        navigate("/auth");
-      }
-      setIsCheckingAuth(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        setIsAuthenticated(true);
-      } else {
-        navigate("/auth");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  if (isCheckingAuth || isLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -60,10 +34,6 @@ const MainDashboard = () => {
         </div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   const visibleWidgets = widgets?.filter(w => w.is_visible) || [];

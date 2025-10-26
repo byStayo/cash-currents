@@ -1,6 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useEconomicData } from "@/hooks/useEconomicData";
 import { useUserWidgets } from "@/hooks/useUserWidgets";
 import { Button } from "@/components/ui/button";
@@ -57,41 +55,10 @@ const toolTitles: Record<string, string> = {
 const ToolPage = () => {
   const { toolName } = useParams();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const { data: economicData } = useEconomicData();
   const { widgets, addWidget } = useUserWidgets();
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setIsAuthenticated(true);
-      } else {
-        navigate("/auth");
-      }
-      setIsCheckingAuth(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        setIsAuthenticated(true);
-      } else {
-        navigate("/auth");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  if (isCheckingAuth) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated || !toolName || !toolComponents[toolName]) {
+  if (!toolName || !toolComponents[toolName]) {
     return null;
   }
 

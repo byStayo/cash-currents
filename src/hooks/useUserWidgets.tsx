@@ -12,20 +12,28 @@ export interface UserWidget {
   updated_at: string;
 }
 
+// Use a session ID stored in localStorage for anonymous users
+const getSessionId = () => {
+  let sessionId = localStorage.getItem('anonymous_session_id');
+  if (!sessionId) {
+    sessionId = `anon_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('anonymous_session_id', sessionId);
+  }
+  return sessionId;
+};
+
 export const useUserWidgets = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const sessionId = getSessionId();
 
   const { data: widgets, isLoading } = useQuery({
-    queryKey: ['user-widgets'],
+    queryKey: ['user-widgets', sessionId],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
       const { data, error } = await supabase
         .from('user_widgets')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', sessionId)
         .order('position');
 
       if (error) throw error;
@@ -35,15 +43,12 @@ export const useUserWidgets = () => {
 
   const addWidget = useMutation({
     mutationFn: async (widgetKey: string) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
       const maxPosition = widgets?.reduce((max, w) => Math.max(max, w.position), 0) || 0;
 
       const { data, error } = await supabase
         .from('user_widgets')
         .insert({
-          user_id: user.id,
+          user_id: sessionId,
           widget_key: widgetKey,
           position: maxPosition + 1,
           is_visible: true,
@@ -55,7 +60,7 @@ export const useUserWidgets = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-widgets'] });
+      queryClient.invalidateQueries({ queryKey: ['user-widgets', sessionId] });
       toast({
         title: "Widget added",
         description: "Widget has been added to your dashboard",
@@ -80,7 +85,7 @@ export const useUserWidgets = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-widgets'] });
+      queryClient.invalidateQueries({ queryKey: ['user-widgets', sessionId] });
       toast({
         title: "Widget removed",
         description: "Widget has been removed from your dashboard",
@@ -105,7 +110,7 @@ export const useUserWidgets = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-widgets'] });
+      queryClient.invalidateQueries({ queryKey: ['user-widgets', sessionId] });
     },
   });
 
@@ -119,7 +124,7 @@ export const useUserWidgets = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-widgets'] });
+      queryClient.invalidateQueries({ queryKey: ['user-widgets', sessionId] });
     },
   });
 
