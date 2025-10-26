@@ -64,8 +64,8 @@ const Index = () => {
         </section>}
 
       {/* CTA After Economic Indicators */}
-      <section className="container mx-auto py-12 px-[34px]">
-        <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in py-[31px] px-0">
+      <section className="container mx-auto py-12 px-[118px]">
+        <div className="text-center space-y-6 p-12 md:p-16 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border/50 rounded-3xl animate-fade-in py-[31px] px-[118px]">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
             Ready to Explore More Tools?
           </h2>
