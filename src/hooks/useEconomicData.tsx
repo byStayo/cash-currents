@@ -3,9 +3,13 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface EconomicData {
   inflation: number;
-  interestRate: number;
+  mortgageRate: number;
+  autoRate: number;
+  personalRate: number;
   lastUpdated: string;
 }
+
+export type LoanType = 'mortgage' | 'auto' | 'personal';
 
 export const useEconomicData = () => {
   return useQuery({
@@ -28,25 +32,56 @@ export const useEconomicData = () => {
 
       if (inflationError) throw inflationError;
 
-      // Fetch interest rate data - try today first, then yesterday
-      let { data: rateData, error: rateError } = await (supabase as any)
+      // Fetch mortgage rate data
+      let { data: mortgageData, error: mortgageError } = await (supabase as any)
         .from('economic_indicators')
         .select('value, created_at')
         .eq('indicator_type', 'interest_rate')
+        .eq('rate_type', 'mortgage')
         .eq('country_code', 'US')
         .order('date', { ascending: false })
         .limit(1)
         .maybeSingle();
 
-      if (rateError) throw rateError;
+      if (mortgageError) throw mortgageError;
+
+      // Fetch auto loan rate data
+      let { data: autoData, error: autoError } = await (supabase as any)
+        .from('economic_indicators')
+        .select('value, created_at')
+        .eq('indicator_type', 'interest_rate')
+        .eq('rate_type', 'auto')
+        .eq('country_code', 'US')
+        .order('date', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (autoError) throw autoError;
+
+      // Fetch personal loan rate data
+      let { data: personalData, error: personalError } = await (supabase as any)
+        .from('economic_indicators')
+        .select('value, created_at')
+        .eq('indicator_type', 'interest_rate')
+        .eq('rate_type', 'personal')
+        .eq('country_code', 'US')
+        .order('date', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (personalError) throw personalError;
 
       const inflation = (inflationData as any)?.value || 3.2;
-      const interestRate = (rateData as any)?.value || 7.5;
+      const mortgageRate = (mortgageData as any)?.value || 7.5;
+      const autoRate = (autoData as any)?.value || 6.5;
+      const personalRate = (personalData as any)?.value || 11.5;
       const lastUpdated = (inflationData as any)?.created_at || new Date().toISOString();
 
       return {
         inflation,
-        interestRate,
+        mortgageRate,
+        autoRate,
+        personalRate,
         lastUpdated,
       } as EconomicData;
     },

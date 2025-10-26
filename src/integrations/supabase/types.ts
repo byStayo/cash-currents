@@ -21,6 +21,7 @@ export type Database = {
           date: string
           id: string
           indicator_type: string
+          rate_type: string | null
           source: string | null
           updated_at: string
           value: number
@@ -31,6 +32,7 @@ export type Database = {
           date: string
           id?: string
           indicator_type: string
+          rate_type?: string | null
           source?: string | null
           updated_at?: string
           value: number
@@ -41,6 +43,7 @@ export type Database = {
           date?: string
           id?: string
           indicator_type?: string
+          rate_type?: string | null
           source?: string | null
           updated_at?: string
           value?: number

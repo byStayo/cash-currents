@@ -162,7 +162,7 @@ const MainDashboard = () => {
                 </Button>
                 <WidgetComponent
                   currentInflation={economicData?.inflation || 3.2}
-                  currentInterest={economicData?.interestRate || 7.5}
+                  currentInterest={economicData?.mortgageRate || 7.5}
                 />
               </Card>
             );
@@ -180,7 +180,7 @@ const MainDashboard = () => {
         <CardContent className="space-y-2 text-sm">
           <p>• Use the sidebar to access all available financial tools</p>
           <p>• Add your favorite tools as widgets for quick access</p>
-          <p>• Current inflation: {economicData?.inflation.toFixed(2)}% | Interest: {economicData?.interestRate.toFixed(2)}%</p>
+          <p>• Current inflation: {economicData?.inflation.toFixed(2)}% | Mortgage Rate: {economicData?.mortgageRate.toFixed(2)}%</p>
           <p>• All your preferences are automatically saved to your profile</p>
         </CardContent>
       </Card>

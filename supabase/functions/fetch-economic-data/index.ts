@@ -22,7 +22,9 @@ serve(async (req) => {
     // Fetch Federal Reserve Economic Data (FRED)
     // Using multiple reliable sources with fallbacks
     let currentInflation = 3.2; // Default fallback based on recent CPI data
-    let currentInterestRate = 7.5; // Default fallback for mortgage rates
+    let currentMortgageRate = 7.5; // Default fallback for mortgage rates
+    let currentAutoRate = 6.5; // Default fallback for auto loan rates
+    let currentPersonalRate = 11.5; // Default fallback for personal loan rates
     
     try {
       // Fetch from Federal Reserve Economic Data API using your API key
@@ -47,7 +49,7 @@ serve(async (req) => {
     }
 
     try {
-      // Fetch mortgage rates from Freddie Mac (public data)
+      // Fetch mortgage rates from Freddie Mac (30-year fixed)
       const mortgageResponse = await fetch('https://www.freddiemac.com/pmms/pmms30.json')
         .catch(() => null);
       
@@ -55,11 +57,45 @@ serve(async (req) => {
         const mortgageData = await mortgageResponse.json();
         if (mortgageData?.data?.[0]?.rate) {
           console.log('Successfully fetched mortgage rates from Freddie Mac');
-          currentInterestRate = parseFloat(mortgageData.data[0].rate);
+          currentMortgageRate = parseFloat(mortgageData.data[0].rate);
         }
       }
     } catch (error) {
       console.log('Mortgage rate fetch failed, using fallback:', error);
+    }
+
+    try {
+      // Fetch auto loan rates from FRED (TERMCBAUTO48NS - 48-month new car loan)
+      const fredApiKey = Deno.env.get('FRED_API_KEY');
+      const autoRateResponse = await fetch(`https://api.stlouisfed.org/fred/series/observations?series_id=TERMCBAUTO48NS&api_key=${fredApiKey}&file_type=json&sort_order=desc&limit=1`)
+        .catch(() => null);
+      
+      if (autoRateResponse?.ok) {
+        const autoData = await autoRateResponse.json();
+        if (autoData.observations?.[0]?.value) {
+          currentAutoRate = parseFloat(autoData.observations[0].value);
+          console.log('Successfully fetched auto loan rates from FRED:', currentAutoRate.toFixed(2) + '%');
+        }
+      }
+    } catch (error) {
+      console.log('Auto rate fetch failed, using fallback:', error);
+    }
+
+    try {
+      // Fetch personal loan rates from FRED (TERMCBPER24NS - 24-month personal loan)
+      const fredApiKey = Deno.env.get('FRED_API_KEY');
+      const personalRateResponse = await fetch(`https://api.stlouisfed.org/fred/series/observations?series_id=TERMCBPER24NS&api_key=${fredApiKey}&file_type=json&sort_order=desc&limit=1`)
+        .catch(() => null);
+      
+      if (personalRateResponse?.ok) {
+        const personalData = await personalRateResponse.json();
+        if (personalData.observations?.[0]?.value) {
+          currentPersonalRate = parseFloat(personalData.observations[0].value);
+          console.log('Successfully fetched personal loan rates from FRED:', currentPersonalRate.toFixed(2) + '%');
+        }
+      }
+    } catch (error) {
+      console.log('Personal loan rate fetch failed, using fallback:', error);
     }
 
     // Store inflation data
@@ -79,21 +115,58 @@ serve(async (req) => {
       console.error('Error storing inflation:', inflationError);
     }
 
-    // Store interest rate data
-    const { error: rateError } = await supabaseClient
+    // Store mortgage rate data
+    const { error: mortgageError } = await supabaseClient
       .from('economic_indicators')
       .upsert({
         indicator_type: 'interest_rate',
+        rate_type: 'mortgage',
         country_code: 'US',
         date: new Date().toISOString().split('T')[0],
-        value: currentInterestRate,
+        value: currentMortgageRate,
         source: 'API'
       }, {
-        onConflict: 'indicator_type,country_code,date'
+        onConflict: 'indicator_type,country_code,date,rate_type'
       });
 
-    if (rateError) {
-      console.error('Error storing rate:', rateError);
+    if (mortgageError) {
+      console.error('Error storing mortgage rate:', mortgageError);
+    }
+
+    // Store auto loan rate data
+    const { error: autoError } = await supabaseClient
+      .from('economic_indicators')
+      .upsert({
+        indicator_type: 'interest_rate',
+        rate_type: 'auto',
+        country_code: 'US',
+        date: new Date().toISOString().split('T')[0],
+        value: currentAutoRate,
+        source: 'API'
+      }, {
+        onConflict: 'indicator_type,country_code,date,rate_type'
+      });
+
+    if (autoError) {
+      console.error('Error storing auto rate:', autoError);
+    }
+
+    // Store personal loan rate data
+    const { error: personalError } = await supabaseClient
+      .from('economic_indicators')
+      .upsert({
+        indicator_type: 'interest_rate',
+        rate_type: 'personal',
+        country_code: 'US',
+        date: new Date().toISOString().split('T')[0],
+        value: currentPersonalRate,
+        source: 'API'
+      }, {
+        onConflict: 'indicator_type,country_code,date,rate_type'
+      });
+
+    if (personalError) {
+      console.error('Error storing personal loan rate:', personalError);
     }
 
     // Fetch exchange rates from multiple sources for reliability
@@ -128,14 +201,21 @@ serve(async (req) => {
       console.log('Exchange rate fetch failed:', error);
     }
 
-    console.log('Data stored successfully:', { inflation: currentInflation, interestRate: currentInterestRate });
+    console.log('Data stored successfully:', { 
+      inflation: currentInflation, 
+      mortgageRate: currentMortgageRate,
+      autoRate: currentAutoRate,
+      personalRate: currentPersonalRate
+    });
 
     return new Response(
       JSON.stringify({
         success: true,
         data: {
           inflation: currentInflation,
-          interestRate: currentInterestRate
+          mortgageRate: currentMortgageRate,
+          autoRate: currentAutoRate,
+          personalRate: currentPersonalRate
         }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

@@ -42,7 +42,12 @@ const Index = () => {
             <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
           </div>
         ) : (
-          <BorrowingDecisionTool realInflationRate={economicData?.inflation || 2.94} />
+        <BorrowingDecisionTool 
+          realInflationRate={economicData?.inflation}
+          realMortgageRate={economicData?.mortgageRate}
+          realAutoRate={economicData?.autoRate}
+          realPersonalRate={economicData?.personalRate}
+        />
         )}
       </section>
 

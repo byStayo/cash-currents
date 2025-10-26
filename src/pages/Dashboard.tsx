@@ -105,7 +105,7 @@ const Dashboard = () => {
     
     const interestRate = customInterest.length > 0 
       ? customInterest[0] 
-      : economicData?.interestRate ?? yearData?.interestRate ?? 7.5;
+      : economicData?.mortgageRate ?? yearData?.interestRate ?? 7.5;
     
     // Core mathematical logic: borrowing is beneficial when inflation > interest rate
     const beneficial = inflationRate > interestRate;
@@ -134,7 +134,7 @@ const Dashboard = () => {
       const data = result.data;
       toast({
         title: "Data Updated",
-        description: `Latest: Inflation ${data?.inflation.toFixed(2)}%, Interest ${data?.interestRate.toFixed(2)}%`,
+        description: `Latest: Inflation ${data?.inflation.toFixed(2)}%, Mortgage Rate ${data?.mortgageRate.toFixed(2)}%`,
       });
     } catch (error) {
       console.error('Refresh error:', error);

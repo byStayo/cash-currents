@@ -122,7 +122,7 @@ const ToolPage = () => {
           <div>
             <h1 className="text-3xl font-bold">{toolTitle}</h1>
             <p className="text-muted-foreground">
-              Current Inflation: {(economicData?.inflation || 3.2).toFixed(2)}% | Interest: {(economicData?.interestRate || 7.5).toFixed(2)}%
+              Current Inflation: {(economicData?.inflation || 3.2).toFixed(2)}% | Mortgage Rate: {(economicData?.mortgageRate || 7.5).toFixed(2)}%
             </p>
           </div>
         </div>
@@ -152,9 +152,9 @@ const ToolPage = () => {
       <div className="max-w-5xl">
         <ToolComponent
           currentInflation={economicData?.inflation || 3.2}
-          currentInterest={economicData?.interestRate || 7.5}
+          currentInterest={economicData?.mortgageRate || 7.5}
           baseInflation={economicData?.inflation || 3.2}
-          baseInterest={economicData?.interestRate || 7.5}
+          baseInterest={economicData?.mortgageRate || 7.5}
         />
       </div>
     </div>
