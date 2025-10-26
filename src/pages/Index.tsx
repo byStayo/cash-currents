@@ -64,7 +64,7 @@ const Index = () => {
         </section>}
 
       {/* Main Borrowing Decision Tool */}
-      <section className="container mx-auto px-6 py-16 md:py-24">
+      <section className="container mx-auto md:py-24 px-[25px] py-[2px]">
         {isLoading ? <div className="text-center py-20">
             <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
             <p className="mt-6 text-lg text-muted-foreground font-normal">Loading real-time economic data...</p>
