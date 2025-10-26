@@ -27,6 +27,44 @@ const Index = () => {
         </div>
       </nav>
 
+      {/* Economic Indicators Banner */}
+      {!isLoading && economicData && (
+        <section className="container mx-auto px-6 py-8 md:py-12">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            <div className="text-center">
+              <p className="text-sm font-medium text-muted-foreground mb-2">Current Inflation Rate</p>
+              <div className="flex items-baseline gap-2 justify-center">
+                <span className="text-4xl md:text-5xl font-bold text-primary">
+                  {economicData.inflation.toFixed(2)}%
+                </span>
+                <TrendingUp className="h-6 w-6 text-primary" />
+              </div>
+            </div>
+            <div className="h-12 w-px bg-border hidden md:block" />
+            <div className="text-center">
+              <p className="text-sm font-medium text-muted-foreground mb-2">Mortgage Rate</p>
+              <div className="text-3xl md:text-4xl font-semibold">
+                {economicData.mortgageRate.toFixed(2)}%
+              </div>
+            </div>
+            <div className="h-12 w-px bg-border hidden md:block" />
+            <div className="text-center">
+              <p className="text-sm font-medium text-muted-foreground mb-2">Auto Loan Rate</p>
+              <div className="text-3xl md:text-4xl font-semibold">
+                {economicData.autoRate.toFixed(2)}%
+              </div>
+            </div>
+            <div className="h-12 w-px bg-border hidden md:block" />
+            <div className="text-center">
+              <p className="text-sm font-medium text-muted-foreground mb-2">Personal Loan Rate</p>
+              <div className="text-3xl md:text-4xl font-semibold">
+                {economicData.personalRate.toFixed(2)}%
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Main Borrowing Decision Tool */}
       <section className="container mx-auto px-6 py-16 md:py-24">
         {isLoading ? (
