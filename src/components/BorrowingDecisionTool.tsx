@@ -3,23 +3,17 @@ import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, AlertCircle, ChevronDown, Home, Car, Wallet } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import type { LoanType } from "@/hooks/useEconomicData";
-
 interface BorrowingDecisionToolProps {
   realInflationRate?: number;
   realMortgageRate?: number;
   realAutoRate?: number;
   realPersonalRate?: number;
 }
-
-const BorrowingDecisionTool = ({ 
+const BorrowingDecisionTool = ({
   realInflationRate = 2.94,
   realMortgageRate = 7.5,
   realAutoRate = 6.5,
@@ -33,32 +27,30 @@ const BorrowingDecisionTool = ({
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const [showHistorical, setShowHistorical] = useState(false);
   const [showProfessional, setShowProfessional] = useState(false);
-
   useEffect(() => {
     setInflationRate(realInflationRate);
     setMortgageRate(realMortgageRate);
     setAutoRate(realAutoRate);
     setPersonalRate(realPersonalRate);
   }, [realInflationRate, realMortgageRate, realAutoRate, realPersonalRate]);
-
   const getCurrentRate = () => {
     switch (loanType) {
-      case 'mortgage': return mortgageRate;
-      case 'auto': return autoRate;
-      case 'personal': return personalRate;
+      case 'mortgage':
+        return mortgageRate;
+      case 'auto':
+        return autoRate;
+      case 'personal':
+        return personalRate;
     }
   };
-
   const currentRate = getCurrentRate();
   const difference = currentRate - inflationRate;
   const shouldBorrow = difference <= 0;
-
   const loanTypeLabels = {
     mortgage: 'Mortgage (30-year fixed)',
     auto: 'Auto Loan (48-month)',
     personal: 'Personal Loan (24-month)'
   };
-
   const getRecommendation = () => {
     if (shouldBorrow) {
       return {
@@ -80,14 +72,11 @@ const BorrowingDecisionTool = ({
       };
     }
   };
-
   const recommendation = getRecommendation();
   const RecommendationIcon = recommendation.icon;
-
-  return (
-    <div className="w-full max-w-6xl mx-auto space-y-12 animate-fade-in">
+  return <div className="w-full max-w-6xl mx-auto space-y-12 animate-fade-in">
       {/* Header */}
-      <div className="text-center space-y-6 pt-8">
+      <div className="text-center space-y-6 pt-8 py-0">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]">
           Should I Borrow Money?
         </h1>
@@ -113,19 +102,13 @@ const BorrowingDecisionTool = ({
       {/* Main Decision Card */}
       <Card className={`
         p-10 md:p-14 text-center space-y-8 border transition-all duration-700 animate-scale-in
-        ${shouldBorrow 
-          ? 'bg-[hsl(var(--beneficial-light))] border-[hsl(var(--beneficial-border))]' 
-          : 'bg-[hsl(var(--risk-light))] border-[hsl(var(--risk-border))]'
-        }
+        ${shouldBorrow ? 'bg-[hsl(var(--beneficial-light))] border-[hsl(var(--beneficial-border))]' : 'bg-[hsl(var(--risk-light))] border-[hsl(var(--risk-border))]'}
       `}>
         <div className="space-y-8">
           <div className={`
             inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-xl
             transition-all duration-500
-            ${shouldBorrow 
-              ? 'bg-beneficial/10 text-beneficial border border-beneficial/20' 
-              : 'bg-risk/10 text-risk border border-risk/20'
-            }
+            ${shouldBorrow ? 'bg-beneficial/10 text-beneficial border border-beneficial/20' : 'bg-risk/10 text-risk border border-risk/20'}
           `}>
             <RecommendationIcon className="h-6 w-6" />
             <span className="text-xl md:text-2xl tracking-tight">
@@ -171,7 +154,7 @@ const BorrowingDecisionTool = ({
           </div>
 
           {/* Loan Type Selector */}
-          <Tabs value={loanType} onValueChange={(value) => setLoanType(value as LoanType)} className="w-full">
+          <Tabs value={loanType} onValueChange={value => setLoanType(value as LoanType)} className="w-full">
             <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 h-14">
               <TabsTrigger value="mortgage" className="gap-2 text-base">
                 <Home className="h-4 w-4" />
@@ -200,14 +183,7 @@ const BorrowingDecisionTool = ({
                       {inflationRate.toFixed(1)}%
                     </span>
                   </div>
-                  <Slider
-                    value={[inflationRate]}
-                    onValueChange={(value) => setInflationRate(value[0])}
-                    min={0}
-                    max={10}
-                    step={0.1}
-                    className="w-full py-2"
-                  />
+                  <Slider value={[inflationRate]} onValueChange={value => setInflationRate(value[0])} min={0} max={10} step={0.1} className="w-full py-2" />
                   <div className="flex justify-between text-sm text-muted-foreground font-medium">
                     <span>0% No inflation</span>
                     <span>10% High inflation</span>
@@ -225,14 +201,7 @@ const BorrowingDecisionTool = ({
                       {mortgageRate.toFixed(1)}%
                     </span>
                   </div>
-                  <Slider
-                    value={[mortgageRate]}
-                    onValueChange={(value) => setMortgageRate(value[0])}
-                    min={0}
-                    max={15}
-                    step={0.1}
-                    className="w-full py-2"
-                  />
+                  <Slider value={[mortgageRate]} onValueChange={value => setMortgageRate(value[0])} min={0} max={15} step={0.1} className="w-full py-2" />
                   <div className="flex justify-between text-sm text-muted-foreground font-medium">
                     <span>0% Free money</span>
                     <span>15% Expensive</span>
@@ -254,14 +223,7 @@ const BorrowingDecisionTool = ({
                       {inflationRate.toFixed(1)}%
                     </span>
                   </div>
-                  <Slider
-                    value={[inflationRate]}
-                    onValueChange={(value) => setInflationRate(value[0])}
-                    min={0}
-                    max={10}
-                    step={0.1}
-                    className="w-full py-2"
-                  />
+                  <Slider value={[inflationRate]} onValueChange={value => setInflationRate(value[0])} min={0} max={10} step={0.1} className="w-full py-2" />
                   <div className="flex justify-between text-sm text-muted-foreground font-medium">
                     <span>0% No inflation</span>
                     <span>10% High inflation</span>
@@ -279,14 +241,7 @@ const BorrowingDecisionTool = ({
                       {autoRate.toFixed(1)}%
                     </span>
                   </div>
-                  <Slider
-                    value={[autoRate]}
-                    onValueChange={(value) => setAutoRate(value[0])}
-                    min={0}
-                    max={15}
-                    step={0.1}
-                    className="w-full py-2"
-                  />
+                  <Slider value={[autoRate]} onValueChange={value => setAutoRate(value[0])} min={0} max={15} step={0.1} className="w-full py-2" />
                   <div className="flex justify-between text-sm text-muted-foreground font-medium">
                     <span>0% Free money</span>
                     <span>15% Expensive</span>
@@ -308,14 +263,7 @@ const BorrowingDecisionTool = ({
                       {inflationRate.toFixed(1)}%
                     </span>
                   </div>
-                  <Slider
-                    value={[inflationRate]}
-                    onValueChange={(value) => setInflationRate(value[0])}
-                    min={0}
-                    max={10}
-                    step={0.1}
-                    className="w-full py-2"
-                  />
+                  <Slider value={[inflationRate]} onValueChange={value => setInflationRate(value[0])} min={0} max={10} step={0.1} className="w-full py-2" />
                   <div className="flex justify-between text-sm text-muted-foreground font-medium">
                     <span>0% No inflation</span>
                     <span>10% High inflation</span>
@@ -333,14 +281,7 @@ const BorrowingDecisionTool = ({
                       {personalRate.toFixed(1)}%
                     </span>
                   </div>
-                  <Slider
-                    value={[personalRate]}
-                    onValueChange={(value) => setPersonalRate(value[0])}
-                    min={0}
-                    max={20}
-                    step={0.1}
-                    className="w-full py-2"
-                  />
+                  <Slider value={[personalRate]} onValueChange={value => setPersonalRate(value[0])} min={0} max={20} step={0.1} className="w-full py-2" />
                   <div className="flex justify-between text-sm text-muted-foreground font-medium">
                     <span>0% Free money</span>
                     <span>20% Very expensive</span>
@@ -369,10 +310,7 @@ const BorrowingDecisionTool = ({
       <div className="space-y-3">
         <Collapsible open={showHowItWorks} onOpenChange={setShowHowItWorks}>
           <CollapsibleTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full justify-between text-lg py-7 px-8 hover:bg-muted/50 transition-all duration-200"
-            >
+            <Button variant="outline" className="w-full justify-between text-lg py-7 px-8 hover:bg-muted/50 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5" />
                 <span className="font-medium">Learn How This Works</span>
@@ -402,10 +340,7 @@ const BorrowingDecisionTool = ({
 
         <Collapsible open={showHistorical} onOpenChange={setShowHistorical}>
           <CollapsibleTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full justify-between text-lg py-7 px-8 hover:bg-muted/50 transition-all duration-200"
-            >
+            <Button variant="outline" className="w-full justify-between text-lg py-7 px-8 hover:bg-muted/50 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <TrendingUp className="h-5 w-5" />
                 <span className="font-medium">Historical Trends</span>
@@ -434,10 +369,7 @@ const BorrowingDecisionTool = ({
 
         <Collapsible open={showProfessional} onOpenChange={setShowProfessional}>
           <CollapsibleTrigger asChild>
-            <Button
-              variant="default"
-              className="w-full justify-between text-lg py-7 px-8 transition-all duration-200"
-            >
+            <Button variant="default" className="w-full justify-between text-lg py-7 px-8 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <TrendingUp className="h-5 w-5" />
                 <span className="font-medium">Professional Analysis</span>
@@ -469,9 +401,7 @@ const BorrowingDecisionTool = ({
                     borrowers pay {(realPersonalRate - realInflationRate).toFixed(1)}% above inflation
                   </p>
                   <p>
-                    • <strong className="text-foreground font-semibold">Recommendation:</strong> {shouldBorrow 
-                      ? "With rates near or below inflation, strategic borrowing for appreciating assets may be advantageous."
-                      : "Current rates exceed inflation. Consider waiting for rate decreases or focus on high-return investments."}
+                    • <strong className="text-foreground font-semibold">Recommendation:</strong> {shouldBorrow ? "With rates near or below inflation, strategic borrowing for appreciating assets may be advantageous." : "Current rates exceed inflation. Consider waiting for rate decreases or focus on high-return investments."}
                   </p>
                   <p className="text-sm italic pt-2">
                     Note: This analysis is for educational purposes. Always consult with a financial advisor
@@ -483,8 +413,6 @@ const BorrowingDecisionTool = ({
           </CollapsibleContent>
         </Collapsible>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default BorrowingDecisionTool;
